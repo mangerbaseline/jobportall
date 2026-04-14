@@ -1,0 +1,174 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider        = "prisma-client"
+  output          = "../generated/prisma"
+
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String?
+  deleted   Boolean  @default(false)
+  role      Role     @default(USER)
+  verified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  employed  Boolean  @default(false)
+  
+
+  // Relations
+  jobs         Job[]                @relation("EmployerJobs")
+  employerApplications Application[] @relation("EmployerApplications")
+  savedJobs SavedJob[]
+  applications Application[]
+  personal     PersonalDetail[]
+  professional ProfessionalDetail[]
+  
+}
+
+model Job {
+  id          String   @id @default(cuid())
+  title       String
+  vacancy     Int      @default(0)
+  description String
+  location    String
+  salary      Int?
+  createdAt   DateTime @default(now())
+  available   Boolean  @default(true) 
+
+  employerId String
+  employer   User   @relation("EmployerJobs", fields: [employerId], references: [id], onDelete: Cascade)
+  
+  savedJobs SavedJob[]
+  applications Application[]
+}
+
+model Application {
+  id        String            @id @default(cuid())
+  resumeUrl String
+  status    ApplicationStatus @default(PENDING)
+  createdAt DateTime          @default(now())
+
+  userId String
+  jobId  String
+  employerId String
+
+  user User @relation(fields: [userId], references: [id])
+  job  Job  @relation(fields: [jobId], references: [id])
+  employer User @relation("EmployerApplications", fields: [employerId], references: [id])
+
+  @@unique([userId, jobId]) // one apply per job
+}
+
+model PersonalDetail {
+  id        String    @id @default(cuid())
+  phone     String?
+  address   String?
+  city      String?
+  state     String?
+  country   String?
+  zipCode   String?
+  dob       DateTime?
+  gender    String?
+  bio       String?   @db.Text
+  avatar    String?
+  website   String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model ProfessionalDetail {
+  id             String   @id @default(cuid())
+  title          String?
+  company        String?
+  experience     Int?
+  skills         String?
+  education      String?  @db.Text
+  certifications String?  @db.Text
+  currentSalary  Int?
+  expectedSalary Int?
+  noticePeriod   Int?
+  resume         String?
+  linkedin       String?
+  github         String?
+  portfolio      String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model SavedJob {
+  id     String @id @default(cuid())
+
+  userId String
+  jobId  String
+
+  user User @relation(fields: [userId], references: [id])
+  job  Job  @relation(fields: [jobId], references: [id])
+
+  @@unique([userId, jobId]) // prevent duplicates
+}
+
+model AboutUs {
+  id         String   @id @default(cuid())
+  heading    String
+  subHeading String?
+  content    String   @db.Text
+  mission    String?  @db.Text
+  vision     String?  @db.Text
+  imageUrl   String?
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model ContactUs {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String   @db.Text
+  adminNote String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PrivacyPolicy {
+  id          String   @id @default(cuid())
+  version     String
+  title       String
+  content     String   @db.Text
+  effectiveAt DateTime
+  isActive    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+
+
+enum Role {
+  USER
+  ADMIN
+  EMPLOYER
+}
+
+enum ApplicationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
