@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 export default function Employer() {
   const router = useRouter();
   const user = useAppSelector((state) => state.user);
-  if (user.role === "EMPLOYER") {
+  if (user.role === "USER") {
     router.push("/user");
   }
   return (
