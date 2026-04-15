@@ -36,7 +36,7 @@ export default function EmployerDashboard() {
       <header className="bg-white border-b border-slate-200 px-4 sm:px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2 text-slate-500 text-sm">
           <LayoutDashboard className="w-4 h-4 shrink-0" />
-          <span className="hidden sm:inline">Employer Dashboard</span>
+          <span className="hidden sm:inline">Employer Dashboard is it ?</span>
           <span className="sm:hidden">Dashboard</span>
         </div>
         <div className="flex items-center gap-2 sm:gap-3">
