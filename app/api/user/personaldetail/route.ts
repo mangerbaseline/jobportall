@@ -53,11 +53,11 @@ export async function GET(request: NextRequest) {
 }
 
 // POST /api/user/personal - Create new personal detail
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const token = request.headers.get("Authorization");
-    const userCheck = await CheckAuth(token);
+    const token = request.cookies.get("token");
+    const userCheck = await CheckAuth(token?.value);
     const userId = userCheck.id;
     if (userCheck.role !== "USER") {
       return NextResponse.json(

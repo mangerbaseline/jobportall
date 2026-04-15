@@ -15,9 +15,11 @@ interface JobData {
 interface UserDetailData {
   name: string;
   role: string;
-  personal?: {
-    avatar?: string;
-  };
+  personal?: any;
+  professional: any;
+  employed: boolean;
+  verified: boolean;
+  savedJobs: any;
   jobs: JobData[];
   _count: {
     jobs: number;
@@ -33,7 +35,7 @@ interface UserDetailState {
 
 const initialState: UserDetailState = {
   data: null,
-  loading: false,
+  loading: true,
   error: null,
 };
 

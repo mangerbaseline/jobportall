@@ -60,8 +60,9 @@ export function LoginForm({
           role: data?.user?.role || "",
         }),
       );
-
-      router.push("/");
+      if (data?.user?.role === "EMPLOYER") {
+        router.push("/employer");
+      }
     } catch (err) {
       ////console.log(err)
       setError("Something went wrong. Please try again.");

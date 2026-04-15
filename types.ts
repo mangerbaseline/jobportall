@@ -45,3 +45,22 @@ export interface UserData {
     },
   ];
 }
+
+//Used in
+export interface UsersShow {
+  id: string;
+  name: string;
+  email: string;
+  role: Roles;
+  createdAt: string;
+  _count: {
+    jobs: string;
+    applications: string;
+  };
+}
+
+enum Roles {
+  USER,
+  ADMIN,
+  EMPLOYER,
+}

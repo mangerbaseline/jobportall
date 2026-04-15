@@ -23,6 +23,9 @@ export async function GET(
         email: true,
         role: true,
         createdAt: true,
+        verified: true,
+        employed: true,
+        savedJobs: true,
         deleted: false,
         jobs: {
           select: {
@@ -54,11 +57,8 @@ export async function GET(
           },
           orderBy: { createdAt: "desc" },
         },
-        personal: {
-          select: {
-            avatar: true,
-          },
-        },
+        professional: true,
+        personal: true,
         _count: {
           select: {
             jobs: true,
