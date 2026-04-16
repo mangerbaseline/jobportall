@@ -27,7 +27,7 @@ export async function GET(
     }
     //remove ""
     const user = await CheckAuth(token.value);
-    if (!user || !user.id) {
+    if (!user) {
       return NextResponse.json(
         { success: false, message: "Not Authorized ." },
         { status: 401 },
@@ -36,6 +36,23 @@ export async function GET(
 
     const existingJob = await prisma.job.findUnique({
       where: { id: id },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        location: true,
+        salary: true,
+        applications: {
+          include: {
+            user: {
+              select: {
+                name: true,
+                email: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     if (!existingJob) {
@@ -46,40 +63,10 @@ export async function GET(
       );
     }
 
-    const Company = await prisma.user.findUnique({
-      where: { id: existingJob.employerId },
-      select: { name: true },
-    });
-    if (!Company) {
-      return NextResponse.json(
-        {
-          success: false,
-          message:
-            "Company who offers this job may be deleted or blocked by the Organization.",
-        },
-        { status: 404 },
-      );
-    }
-
-    const hasApplied = await prisma.application.findUnique({
-      where: {
-        userId_jobId: {
-          userId: user.id,
-          jobId: id,
-        },
-      },
-    });
-
-    const Job = { ...existingJob, ...Company, applied: !!hasApplied };
-    if (!Job) {
-      return NextResponse.json({
-        success: false,
-        status: 404,
-        message: "Data for this job is not available.",
-      });
-    }
-
-    return NextResponse.json({ success: true, data: Job }, { status: 200 });
+    return NextResponse.json(
+      { success: true, data: existingJob },
+      { status: 200 },
+    );
   } catch (error) {
     console.error("Job update error:", error);
     return NextResponse.json(

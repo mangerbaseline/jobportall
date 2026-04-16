@@ -1,23 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { verifyToken } from "@/lib/jwt";
+import cloudinary from "@/lib/cloudinary/cloudinary";
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const { resumeUrl, jobId } = body;
-    const token = req.headers.get("Authorization");
-    if (!token)
+    const formData = await req.formData();
+    const file = formData.get("resume") as File | null;
+    const jobId = formData.get("jobId") as string | null;
+
+    if (!file || !jobId) {
+      return NextResponse.json(
+        { error: "Resume and Job ID are required" },
+        { status: 400 },
+      );
+    }
+
+    const token = req.cookies.get("token")?.value;
+    if (!token) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
     const decoded = await verifyToken(token);
-    if (!decoded)
+    if (!decoded || decoded.role !== "USER") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
-    ////console.log("---Decoded-----:", decoded)
-
-    if (decoded.role !== "USER")
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
     // Get the employerId from the job
     const job = await prisma.job.findUnique({
@@ -28,6 +35,24 @@ export async function POST(req: NextRequest) {
     if (!job) {
       return NextResponse.json({ error: "Job not found" }, { status: 404 });
     }
+
+    // Upload file to Cloudinary
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+
+    const uploadResponse: any = await new Promise((resolve, reject) => {
+      cloudinary.uploader
+        .upload_stream(
+          { resource_type: "auto", folder: "job_applications" },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          },
+        )
+        .end(buffer);
+    });
+
+    const resumeUrl = uploadResponse.secure_url;
 
     const application = await prisma.application.create({
       data: {
@@ -42,8 +67,13 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json(application, { status: 201 });
+    return NextResponse.json(
+      { success: true, data: application },
+      { status: 201 },
+    );
   } catch (error: any) {
+    console.error("Application error:", error);
+
     // Handle unique constraint violation
     if (error.code === "P2002") {
       return NextResponse.json(

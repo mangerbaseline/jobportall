@@ -1,20 +1,27 @@
 "use client";
-import React from "react";
-import USER from "@/components/employer/user";
+import { useEffect } from "react";
 import { useAppSelector } from "@/lib/hook/hook";
 import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
+import EmployerDashboard from "@/components/employer/dashboard";
 
 export default function Employer() {
   const router = useRouter();
   const user = useAppSelector((state) => state.user);
-  if (user.role === "USER") {
-    router.push("/user");
-  }
-  return (
-    <div className="w-full  mt-20 ">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6  lg:px-8 lg:py-2">
-        <USER />
+
+  useEffect(() => {
+    if (user.loading) return;
+    if (user.role === "USER") {
+      router.push("/user");
+    }
+  }, [user.role, user.loading, router]);
+
+  if (user.loading) {
+    return (
+      <div className="flex h-screen w-full justify-center items-center">
+        <Loader2 className="w-8 h-8 text-indigo-400 animate-spin" />
       </div>
-    </div>
-  );
+    );
+  }
+  return <EmployerDashboard />;
 }

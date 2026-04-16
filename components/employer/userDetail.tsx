@@ -6,38 +6,34 @@ import {
   fetchUserDetail,
   clearUserDetail,
 } from "@/lib/features/user/profileDetail";
-import { User as UserIcon, Briefcase, ShieldCheck } from "lucide-react";
+import { Briefcase, ShieldCheck, User as UserIcon, TrendingUp } from "lucide-react";
 
 export default function UserDetail() {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user);
-
-  // read from Redux, not local state
   const { data, loading, error } = useAppSelector((state) => state.details);
 
   useEffect(() => {
     if (!user.id) return;
-
     dispatch(fetchUserDetail(user.id));
-
     return () => {
-      dispatch(clearUserDetail()); // cleanup on unmount
+      dispatch(clearUserDetail());
     };
   }, [user.id, dispatch]);
 
   if (loading) {
     return (
-      <div className="w-full max-w-7xl p-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md animate-pulse">
+      <div className="glass-card rounded-2xl p-6 animate-pulse">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full bg-white/10"></div>
+          <div className="w-16 h-16 rounded-2xl bg-white/8 shrink-0" />
           <div className="flex-1 space-y-2">
-            <div className="h-4 bg-white/10 rounded w-3/4"></div>
-            <div className="h-3 bg-white/10 rounded w-1/2"></div>
+            <div className="h-4 bg-white/8 rounded-lg w-2/5" />
+            <div className="h-3 bg-white/5 rounded-lg w-1/4" />
           </div>
         </div>
-        <div className="mt-6 flex gap-4">
-          <div className="flex-1 h-12 bg-white/10 rounded-xl"></div>
-          <div className="flex-1 h-12 bg-white/10 rounded-xl"></div>
+        <div className="mt-6 grid grid-cols-2 gap-4">
+          <div className="h-16 bg-white/5 rounded-xl" />
+          <div className="h-16 bg-white/5 rounded-xl" />
         </div>
       </div>
     );
@@ -45,18 +41,18 @@ export default function UserDetail() {
 
   if (error || !data) {
     return (
-      <div className="w-full max-w-7xl p-6 rounded-2xl border border-red-500/20 bg-red-500/5 backdrop-blur-md text-red-400 text-sm">
+      <div className="glass-card rounded-2xl p-5 border-red-500/20 text-red-400 text-sm">
         Error loading profile: {error || "User not found"}
       </div>
     );
   }
 
   return (
-    <div className="w-full max-w-7xl p-6 rounded-2xl border border-gray-200 bg-white/5 backdrop-blur-sm shadow-xl transition-all duration-300 hover:border-gray-200">
-      <div className="flex items-center gap-6">
+    <div className="glass-card rounded-2xl p-6 hover:border-indigo-500/30 transition-all duration-300">
+      <div className="flex items-center gap-5">
         {/* Avatar */}
-        <div className="relative group">
-          <div className="w-20 h-20 rounded-2xl overflow-hidden bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center border border-white/10 group-hover:scale-105 transition-transform duration-300">
+        <div className="relative shrink-0">
+          <div className="w-16 h-16 rounded-2xl brand-gradient flex items-center justify-center shadow-lg shadow-indigo-500/25 overflow-hidden">
             {data.personal?.avatar ? (
               <img
                 src={data.personal.avatar}
@@ -64,48 +60,52 @@ export default function UserDetail() {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <UserIcon className="w-10 h-10 text-black/40" />
+              <span className="text-2xl font-extrabold text-white">
+                {data.name?.charAt(0)?.toUpperCase() ?? "E"}
+              </span>
             )}
           </div>
-          <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-blue-500 rounded-full border-4 border-[#0a0a0a] flex items-center justify-center">
-            <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+          {/* Online dot */}
+          <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-400 border-2 border-[oklch(0.14_0.006_264)] flex items-center justify-center">
+            <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
           </div>
         </div>
 
         {/* Info */}
         <div className="flex-1 min-w-0">
-          <h2 className="text-2xl text-gray-700 font-bold bg-clip-text bg-gradient-to-r from-white to-white/60 truncate">
-            {data.name}
-          </h2>
-          <div className="flex items-center gap-2 mt-1">
-            <div className="inline-flex items-center px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-bold text-blue-400 tracking-wider uppercase">
-              <ShieldCheck className="w-3 h-3 mr-1" />
+          <h2 className="text-xl font-bold text-white truncate">{data.name}</h2>
+          <div className="flex items-center gap-2 mt-1 flex-wrap">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-indigo-500/15 border border-indigo-500/25 text-[10px] font-bold text-indigo-300 tracking-widest uppercase">
+              <ShieldCheck className="w-3 h-3" />
               {data.role}
-            </div>
+            </span>
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/25 text-[10px] font-bold text-emerald-300 tracking-widest uppercase">
+              Active
+            </span>
           </div>
         </div>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 gap-4 mt-8">
-        <div className="p-4 rounded-xl bg-white/5 border-2 border-dashed border-gray-600 flex flex-col gap-1 transition-colors hover:bg-white/10">
-          <div className="flex items-center gap-2 text-black/40 text-xs font-medium">
+      <div className="grid grid-cols-2 gap-4 mt-6">
+        <div className="p-4 rounded-xl bg-indigo-500/8 border border-indigo-500/20 flex flex-col gap-1 hover:bg-indigo-500/12 transition-colors duration-200">
+          <div className="flex items-center gap-2 text-indigo-400 text-xs font-semibold uppercase tracking-wider">
             <Briefcase className="w-3.5 h-3.5" />
             Jobs Posted
           </div>
-          <div className="text-2xl font-semibold text-gray-600">
+          <div className="text-3xl font-extrabold brand-text mt-1">
             {data._count.jobs}
           </div>
         </div>
 
-        <div className="p-4 rounded-xl bg-white/5 border-2 border-dashed border-gray-600 flex flex-col gap-1 transition-colors hover:bg-white/10">
-          <div className="flex items-center gap-2 text-black/40 text-xs font-medium">
-            <ShieldCheck className="w-3.5 h-3.5" />
+        <div className="p-4 rounded-xl bg-emerald-500/8 border border-emerald-500/20 flex flex-col gap-1 hover:bg-emerald-500/12 transition-colors duration-200">
+          <div className="flex items-center gap-2 text-emerald-400 text-xs font-semibold uppercase tracking-wider">
+            <TrendingUp className="w-3.5 h-3.5" />
             Status
           </div>
-          <div className="text-2xl font-semibold text-green-400 flex items-center gap-1.5 leading-none">
+          <div className="text-3xl font-extrabold text-emerald-400 mt-1 flex items-center gap-2">
             Active
-            <span className="flex h-2 w-2 rounded-full bg-green-400"></span>
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
           </div>
         </div>
       </div>
