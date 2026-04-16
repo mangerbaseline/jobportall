@@ -27,16 +27,18 @@ export default function SignUpPage() {
               <Briefcase className="w-5 h-5 text-white" />
             </div>
             <span className="font-bold text-xl text-white">
-              Talent<span className="brand-text">Bridge</span>
+              Job<span className="brand-text">Portal</span>
             </span>
           </div>
 
           <h2 className="text-4xl font-extrabold text-white leading-snug mb-4">
-            Get hired faster.<br />
+            Get hired faster.
+            <br />
             <span className="brand-text">Or hire smarter.</span>
           </h2>
           <p className="text-white/50 text-base leading-relaxed mb-12 max-w-sm">
-            Whether you&apos;re seeking your next role or building your dream team — TalentBridge gets you there.
+            Whether you&apos;re seeking your next role or building your dream
+            team — JobPortal gets you there.
           </p>
 
           <div className="space-y-4">
@@ -55,13 +57,17 @@ export default function SignUpPage() {
         <div className="relative z-10 inline-flex items-center gap-3 glass-card rounded-2xl px-5 py-3">
           <div className="flex -space-x-2">
             {["A", "B", "C"].map((l) => (
-              <div key={l} className="w-8 h-8 rounded-full brand-gradient border-2 border-[oklch(0.14_0.006_264)] flex items-center justify-center text-xs font-bold text-white">
+              <div
+                key={l}
+                className="w-8 h-8 rounded-full brand-gradient border-2 border-[oklch(0.14_0.006_264)] flex items-center justify-center text-xs font-bold text-white"
+              >
                 {l}
               </div>
             ))}
           </div>
           <p className="text-sm text-white/70">
-            <span className="font-bold text-white">4,500+</span> members joined this month
+            <span className="font-bold text-white">4,500+</span> members joined
+            this month
           </p>
         </div>
       </div>

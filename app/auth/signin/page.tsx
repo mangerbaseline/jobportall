@@ -28,7 +28,7 @@ export default function SignInPage() {
               <Briefcase className="w-5 h-5 text-white" />
             </div>
             <span className="font-bold text-xl text-white">
-              Talent<span className="brand-text">Bridge</span>
+              Job<span className="brand-text">Portal</span>
             </span>
           </div>
 
@@ -38,7 +38,7 @@ export default function SignInPage() {
             <span className="brand-text">starts here.</span>
           </h2>
           <p className="text-white/50 text-base leading-relaxed mb-12 max-w-sm">
-            Join the platform connecting exceptional talent with world-class
+            Join the platform connecting exceptional Job with world-class
             employers.
           </p>
 

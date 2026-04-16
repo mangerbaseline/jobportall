@@ -13,9 +13,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "TalentBridge — Find Your Next Opportunity",
+  title: "JobPortal — Find Your Next Opportunity",
   description:
-    "TalentBridge connects top talent with world-class employers. Browse thousands of curated jobs or post openings and discover your next great hire.",
+    "JobPortal connects top Job with world-class employers. Browse thousands of curated jobs or post openings and discover your next great hire.",
   keywords: ["jobs", "hiring", "job portal", "careers", "recruitment"],
 };
 

@@ -58,7 +58,7 @@ export function HomeCard({ seek, postJob, link }: CardHome) {
           <p className="text-white/60 text-sm leading-relaxed">
             {isSeeker
               ? "Browse thousands of curated opportunities matched to your skills and ambitions."
-              : "Reach top talent instantly. Post openings and manage your hiring pipeline."}
+              : "Reach top Job instantly. Post openings and manage your hiring pipeline."}
           </p>
         </div>
 

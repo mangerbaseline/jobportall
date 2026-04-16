@@ -133,7 +133,7 @@ export function SignupForm({ ...props }: React.ComponentProps<"div">) {
           <Briefcase className="w-5 h-5 text-white" />
         </div>
         <span className="font-bold text-xl text-white">
-          Talent<span className="brand-text">Bridge</span>
+          Job<span className="brand-text">Portal</span>
         </span>
       </div>
 
@@ -143,7 +143,7 @@ export function SignupForm({ ...props }: React.ComponentProps<"div">) {
           Create your account
         </h1>
         <p className="text-white/50 text-sm">
-          Join thousands connecting talent with opportunity.
+          Join thousands connecting Job with opportunity.
         </p>
       </div>
 

@@ -7,7 +7,15 @@ import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/lib/hook/hook";
 import { setUser } from "@/lib/features/user/userSlice";
 import type { LoginUser } from "@/types";
-import { Briefcase, Mail, Lock, Loader2, Eye, EyeOff, ArrowRight } from "lucide-react";
+import {
+  Briefcase,
+  Mail,
+  Lock,
+  Loader2,
+  Eye,
+  EyeOff,
+  ArrowRight,
+} from "lucide-react";
 import Link from "next/link";
 
 export function LoginForm({
@@ -72,13 +80,15 @@ export function LoginForm({
           <Briefcase className="w-5 h-5 text-white" />
         </div>
         <span className="font-bold text-xl text-white">
-          Talent<span className="brand-text">Bridge</span>
+          Job<span className="brand-text">Portal</span>
         </span>
       </div>
 
       {/* Heading */}
       <div className="mb-8">
-        <h1 className="text-3xl font-extrabold text-white mb-2">Welcome back</h1>
+        <h1 className="text-3xl font-extrabold text-white mb-2">
+          Welcome back
+        </h1>
         <p className="text-white/50 text-sm">
           Sign in to your account to continue
         </p>
@@ -95,7 +105,10 @@ export function LoginForm({
 
         {/* Email */}
         <div className="space-y-1.5">
-          <label htmlFor="login-email" className="flex items-center gap-2 text-sm font-semibold text-white/70">
+          <label
+            htmlFor="login-email"
+            className="flex items-center gap-2 text-sm font-semibold text-white/70"
+          >
             <Mail className="w-3.5 h-3.5 text-indigo-400" />
             Email address
           </label>
@@ -113,11 +126,17 @@ export function LoginForm({
         {/* Password */}
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <label htmlFor="login-password" className="flex items-center gap-2 text-sm font-semibold text-white/70">
+            <label
+              htmlFor="login-password"
+              className="flex items-center gap-2 text-sm font-semibold text-white/70"
+            >
               <Lock className="w-3.5 h-3.5 text-indigo-400" />
               Password
             </label>
-            <a href="#" className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors">
+            <a
+              href="#"
+              className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
+            >
               Forgot password?
             </a>
           </div>
@@ -136,7 +155,11 @@ export function LoginForm({
               className="absolute right-3.5 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70 transition-colors"
               aria-label={showPass ? "Hide password" : "Show password"}
             >
-              {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              {showPass ? (
+                <EyeOff className="w-4 h-4" />
+              ) : (
+                <Eye className="w-4 h-4" />
+              )}
             </button>
           </div>
         </div>

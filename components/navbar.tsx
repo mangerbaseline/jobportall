@@ -66,8 +66,8 @@ const AppleNavbar = () => {
                 <Briefcase className="w-4 h-4 text-white" />
               </div>
               <span className="font-bold text-lg tracking-tight text-white">
-                Talent
-                <span className="brand-text">Bridge</span>
+                Job
+                <span className="brand-text">Portal</span>
               </span>
             </Link>
 
@@ -194,7 +194,9 @@ const AppleNavbar = () => {
                     {user?.name?.charAt(0)?.toUpperCase() ?? "U"}
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-white">{user.name}</p>
+                    <p className="text-sm font-semibold text-white">
+                      {user.name}
+                    </p>
                     <p className="text-xs text-indigo-300">
                       {user.role === "EMPLOYER" ? "Employer" : "Job Seeker"}
                     </p>

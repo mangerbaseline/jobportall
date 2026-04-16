@@ -75,11 +75,9 @@ export default function Home() {
             className="text-4xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight text-white mb-6 animate-fade-up"
             style={{ animationDelay: "0.1s", opacity: 0 }}
           >
-            Find Your{" "}
-            <span className="brand-text">Dream Job</span>
+            Find Your <span className="brand-text">Dream Job</span>
             <br />
-            or Your Next{" "}
-            <span className="brand-text">Great Hire</span>
+            or Your Next <span className="brand-text">Great Hire</span>
           </h1>
 
           {/* Sub-headline */}
@@ -87,7 +85,7 @@ export default function Home() {
             className="text-lg sm:text-xl text-white/55 max-w-2xl mx-auto mb-12 leading-relaxed animate-fade-up"
             style={{ animationDelay: "0.2s", opacity: 0 }}
           >
-            TalentBridge connects exceptional talent with world-class employers.
+            JobPortal connects exceptional Job with world-class employers.
             Whether you&apos;re searching or hiring — we make it seamless.
           </p>
 
@@ -114,7 +112,9 @@ export default function Home() {
                 <div className="w-10 h-10 rounded-xl brand-gradient mx-auto mb-3 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:scale-110 transition-transform duration-300">
                   <Icon className="w-5 h-5 text-white" />
                 </div>
-                <div className="text-2xl font-extrabold brand-text mb-1">{value}</div>
+                <div className="text-2xl font-extrabold brand-text mb-1">
+                  {value}
+                </div>
                 <div className="text-xs text-white/50 font-medium">{label}</div>
               </div>
             ))}
@@ -127,7 +127,7 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">
-              How <span className="brand-text">TalentBridge</span> Works
+              How <span className="brand-text">JobPortal</span> Works
             </h2>
             <p className="text-white/50 max-w-xl mx-auto">
               Simple, fast, and built for both job seekers and employers.
@@ -141,7 +141,9 @@ export default function Home() {
                 <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center">
                   <Search className="w-4 h-4 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-indigo-200">For Job Seekers</h3>
+                <h3 className="text-lg font-bold text-indigo-200">
+                  For Job Seekers
+                </h3>
               </div>
               {seekerSteps.map((step, i) => {
                 const Icon = step.icon;
@@ -151,8 +153,12 @@ export default function Home() {
                       {i + 1}
                     </div>
                     <div>
-                      <p className="font-semibold text-white text-sm mb-0.5">{step.title}</p>
-                      <p className="text-xs text-white/50 leading-relaxed">{step.desc}</p>
+                      <p className="font-semibold text-white text-sm mb-0.5">
+                        {step.title}
+                      </p>
+                      <p className="text-xs text-white/50 leading-relaxed">
+                        {step.desc}
+                      </p>
                     </div>
                   </div>
                 );
@@ -165,7 +171,9 @@ export default function Home() {
                 <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500 to-violet-700 flex items-center justify-center">
                   <Building2 className="w-4 h-4 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-violet-200">For Employers</h3>
+                <h3 className="text-lg font-bold text-violet-200">
+                  For Employers
+                </h3>
               </div>
               {employerSteps.map((step, i) => {
                 const Icon = step.icon;
@@ -175,8 +183,12 @@ export default function Home() {
                       {i + 1}
                     </div>
                     <div>
-                      <p className="font-semibold text-white text-sm mb-0.5">{step.title}</p>
-                      <p className="text-xs text-white/50 leading-relaxed">{step.desc}</p>
+                      <p className="font-semibold text-white text-sm mb-0.5">
+                        {step.title}
+                      </p>
+                      <p className="text-xs text-white/50 leading-relaxed">
+                        {step.desc}
+                      </p>
                     </div>
                   </div>
                 );
@@ -193,7 +205,7 @@ export default function Home() {
             Ready to take the next step?
           </h2>
           <p className="text-white/50 mb-8">
-            Join thousands of professionals already using TalentBridge.
+            Join thousands of professionals already using JobPortal.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
