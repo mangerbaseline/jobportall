@@ -34,6 +34,7 @@ const AppleNavbar = () => {
     if (res.ok) {
       dispatch(clearUser());
       setIsMobileMenuOpen(false);
+      router.refresh();
       router.push("/auth/signin");
     }
   };
@@ -121,12 +122,14 @@ const AppleNavbar = () => {
                 <>
                   <Link
                     href="/auth/signin"
+                    prefetch={false}
                     className="px-4 py-2 text-sm font-medium text-white/70 hover:text-white transition-colors duration-200"
                   >
                     Sign In
                   </Link>
                   <Link
                     href="/auth/signup"
+                    prefetch={false}
                     className="px-4 py-2 text-sm font-semibold text-white rounded-lg brand-gradient hover:opacity-90 transition-all duration-200 shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-105"
                   >
                     Get Started
@@ -209,6 +212,7 @@ const AppleNavbar = () => {
               <div className="space-y-2">
                 <Link
                   href="/auth/signin"
+                  prefetch={false}
                   className="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white/80 hover:text-white bg-white/5 hover:bg-white/10 rounded-xl transition-all duration-200"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
@@ -216,6 +220,7 @@ const AppleNavbar = () => {
                 </Link>
                 <Link
                   href="/auth/signup"
+                  prefetch={false}
                   className="flex items-center justify-center w-full px-4 py-3 text-sm font-semibold text-white brand-gradient rounded-xl transition-all duration-200"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
