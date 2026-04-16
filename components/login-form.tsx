@@ -51,8 +51,10 @@ export function LoginForm({
       );
 
       if (data?.user?.role === "EMPLOYER") {
+        router.refresh();
         router.push("/employer");
       } else {
+        router.refresh();
         router.push("/user");
       }
     } catch (err) {
