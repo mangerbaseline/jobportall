@@ -6,12 +6,35 @@ import cloudinary from "@/lib/cloudinary/cloudinary";
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
+
     const file = formData.get("resume") as File | null;
     const jobId = formData.get("jobId") as string | null;
+
+    // New applicant-provided fields
+    const jobTitle = (formData.get("jobTitle") as string) || null;
+    const experience = formData.get("experience")
+      ? parseInt(formData.get("experience") as string)
+      : null;
+    const availableDate = formData.get("availableDate")
+      ? new Date(formData.get("availableDate") as string)
+      : null;
+    const expectedSalary = formData.get("expectedSalary")
+      ? parseInt(formData.get("expectedSalary") as string)
+      : null;
+    const noticePeriod = formData.get("noticePeriod")
+      ? parseInt(formData.get("noticePeriod") as string)
+      : null;
 
     if (!file || !jobId) {
       return NextResponse.json(
         { error: "Resume and Job ID are required" },
+        { status: 400 },
+      );
+    }
+
+    if (!jobTitle) {
+      return NextResponse.json(
+        { error: "Job title is required" },
         { status: 400 },
       );
     }
@@ -36,7 +59,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Job not found" }, { status: 404 });
     }
 
-    // Upload file to Cloudinary
+    // Upload resume to Cloudinary
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
@@ -60,6 +83,11 @@ export async function POST(req: NextRequest) {
         userId: decoded.id,
         jobId,
         employerId: job.employerId,
+        jobTitle,
+        experience,
+        availableDate,
+        expectedSalary,
+        noticePeriod,
       },
       include: {
         user: true,

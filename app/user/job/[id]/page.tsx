@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import ResumeUploader from "@/components/user/resume";
+import { useForm } from "react-hook-form";
 
 interface Job {
   id: string;
@@ -22,6 +23,14 @@ interface Job {
 
 type FetchStatus = "idle" | "loading" | "success" | "error";
 type ApplyStatus = "idle" | "loading" | "success" | "error";
+
+type ApplicationFormData = {
+  jobTitle: string;
+  experience: number | "";
+  availableDate: string;
+  expectedSalary: number | "";
+  noticePeriod: number | "";
+};
 
 function timeAgo(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime();
@@ -112,6 +121,27 @@ function ErrorState({
   );
 }
 
+/* ─── Input field helper ─── */
+function Field({
+  label,
+  error,
+  children,
+}: {
+  label: string;
+  error?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="space-y-1.5">
+      <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+        {label}
+      </label>
+      {children}
+      {error && <p className="text-rose-400 text-xs mt-1">{error}</p>}
+    </div>
+  );
+}
+
 /* ─── Main page ─── */
 export default function JobPage() {
   const router = useRouter();
@@ -124,8 +154,23 @@ export default function JobPage() {
 
   const [applyStatus, setApplyStatus] = useState<ApplyStatus>("idle");
   const [applyError, setApplyError] = useState("");
-  const [showResumeUploader, setShowResumeUploader] = useState(false);
+  const [showForm, setShowForm] = useState(false);
   const [resumeFile, setResumeFile] = useState<File | null>(null);
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<ApplicationFormData>({
+    defaultValues: {
+      jobTitle: "",
+      experience: "",
+      availableDate: "",
+      expectedSalary: "",
+      noticePeriod: "",
+    },
+  });
 
   const loadJob = async () => {
     if (!id) {
@@ -148,10 +193,11 @@ export default function JobPage() {
         );
       }
       const json = await res.json();
-      console.log(json);
       if (!json.success || !json.data)
         throw new Error("Invalid response from server.");
       setJob(json.data);
+      // Pre-fill job title in form
+      setValue("jobTitle", json.data.title);
       setFetchStatus("success");
     } catch (err) {
       setFetchError(
@@ -165,21 +211,11 @@ export default function JobPage() {
     loadJob();
   }, [id]);
 
-  const handleApplyClick = () => {
-    setShowResumeUploader(true);
-  };
-
   const handleFileUpload = (file: File | null) => {
-    if (file) {
-      console.log("File selected:", file.name);
-      setResumeFile(file);
-    } else {
-      console.log("File removed");
-      setResumeFile(null);
-    }
+    setResumeFile(file ?? null);
   };
 
-  const handleSubmitApplication = async () => {
+  const onSubmit = async (data: ApplicationFormData) => {
     if (!resumeFile) {
       setApplyError("Please upload your resume before submitting.");
       return;
@@ -192,19 +228,25 @@ export default function JobPage() {
       const formData = new FormData();
       formData.append("resume", resumeFile);
       formData.append("jobId", id || "");
+      formData.append("jobTitle", data.jobTitle);
+      if (data.experience !== "") formData.append("experience", String(data.experience));
+      if (data.availableDate) formData.append("availableDate", data.availableDate);
+      if (data.expectedSalary !== "") formData.append("expectedSalary", String(data.expectedSalary));
+      if (data.noticePeriod !== "") formData.append("noticePeriod", String(data.noticePeriod));
 
       const response = await fetch("/api/application", {
         method: "POST",
         body: formData,
       });
 
+      const result = await response.json();
+
       if (response.ok) {
         setApplyStatus("success");
-        setShowResumeUploader(false);
+        setShowForm(false);
         setResumeFile(null);
-        console.log("Application submitted successfully");
       } else {
-        throw new Error("Failed to submit application");
+        throw new Error(result.error || "Failed to submit application");
       }
     } catch (err) {
       setApplyError(
@@ -212,12 +254,6 @@ export default function JobPage() {
       );
       setApplyStatus("error");
     }
-  };
-
-  const handleCancelApplication = () => {
-    setShowResumeUploader(false);
-    setResumeFile(null);
-    setApplyError("");
   };
 
   /* ── Render states ── */
@@ -342,7 +378,7 @@ export default function JobPage() {
                     d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-                ${job.salary} Month
+                ${job.salary} / Month
               </div>
 
               <div className="flex items-center gap-2 bg-slate-800/70 border border-slate-700/50 text-slate-300 text-sm px-4 py-2 rounded-lg">
@@ -424,41 +460,141 @@ export default function JobPage() {
                     </p>
                   </div>
                 </div>
-              ) : showResumeUploader ? (
-                <div className="space-y-4">
-                  <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
-                    <h3 className="text-lg font-semibold mb-4">
-                      Upload Your Resume
-                    </h3>
-                    <ResumeUploader
-                      id={`resume-${job.id}`}
-                      onFileSelect={handleFileUpload}
-                    />
+              ) : showForm ? (
+                /* ── Application form ── */
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+                  <h3 className="text-base font-bold text-white tracking-tight">
+                    Complete Your Application
+                  </h3>
 
-                    {applyError && (
-                      <div className="mt-4 flex items-start gap-3 bg-rose-950 border border-rose-800/50 rounded-xl px-4 py-3">
-                        <svg
-                          className="w-4 h-4 text-rose-400 shrink-0 mt-0.5"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth={2}
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
-                          />
-                        </svg>
-                        <p className="text-rose-400 text-sm">{applyError}</p>
-                      </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Job Title */}
+                    <div className="sm:col-span-2">
+                      <Field label="Job Title *" error={errors.jobTitle?.message}>
+                        <input
+                          {...register("jobTitle", { required: "Job title is required" })}
+                          type="text"
+                          placeholder="e.g. Frontend Developer"
+                          className={`w-full h-11 bg-slate-800/60 border rounded-xl px-4 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:ring-2 transition-all ${
+                            errors.jobTitle
+                              ? "border-rose-600 focus:ring-rose-500/30"
+                              : "border-slate-700 focus:ring-emerald-500/30 focus:border-emerald-500/50"
+                          }`}
+                        />
+                      </Field>
+                    </div>
+
+                    {/* Experience */}
+                    <Field label="Experience (Years) *" error={errors.experience?.message}>
+                      <input
+                        {...register("experience", {
+                          required: "Experience is required",
+                          min: { value: 0, message: "Cannot be negative" },
+                        })}
+                        type="number"
+                        placeholder="e.g. 3"
+                        min={0}
+                        className={`w-full h-11 bg-slate-800/60 border rounded-xl px-4 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:ring-2 transition-all ${
+                          errors.experience
+                            ? "border-rose-600 focus:ring-rose-500/30"
+                            : "border-slate-700 focus:ring-emerald-500/30 focus:border-emerald-500/50"
+                        }`}
+                      />
+                    </Field>
+
+                    {/* Notice Period */}
+                    <Field label="Notice Period (Days) *" error={errors.noticePeriod?.message}>
+                      <input
+                        {...register("noticePeriod", {
+                          required: "Notice period is required",
+                          min: { value: 0, message: "Cannot be negative" },
+                        })}
+                        type="number"
+                        placeholder="e.g. 30"
+                        min={0}
+                        className={`w-full h-11 bg-slate-800/60 border rounded-xl px-4 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:ring-2 transition-all ${
+                          errors.noticePeriod
+                            ? "border-rose-600 focus:ring-rose-500/30"
+                            : "border-slate-700 focus:ring-emerald-500/30 focus:border-emerald-500/50"
+                        }`}
+                      />
+                    </Field>
+
+                    {/* Expected Salary */}
+                    <Field label="Expected Salary *" error={errors.expectedSalary?.message}>
+                      <input
+                        {...register("expectedSalary", {
+                          required: "Expected salary is required",
+                          min: { value: 0, message: "Cannot be negative" },
+                        })}
+                        type="number"
+                        placeholder="e.g. 80000"
+                        min={0}
+                        className={`w-full h-11 bg-slate-800/60 border rounded-xl px-4 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:ring-2 transition-all ${
+                          errors.expectedSalary
+                            ? "border-rose-600 focus:ring-rose-500/30"
+                            : "border-slate-700 focus:ring-emerald-500/30 focus:border-emerald-500/50"
+                        }`}
+                      />
+                    </Field>
+
+                    {/* Available Date */}
+                    <Field label="Available From *" error={errors.availableDate?.message}>
+                      <input
+                        {...register("availableDate", {
+                          required: "Available date is required",
+                        })}
+                        type="date"
+                        className={`w-full h-11 bg-slate-800/60 border rounded-xl px-4 text-white text-sm focus:outline-none focus:ring-2 transition-all [color-scheme:dark] ${
+                          errors.availableDate
+                            ? "border-rose-600 focus:ring-rose-500/30"
+                            : "border-slate-700 focus:ring-emerald-500/30 focus:border-emerald-500/50"
+                        }`}
+                      />
+                    </Field>
+                  </div>
+
+                  {/* Resume Upload */}
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                      Resume *
+                    </label>
+                    <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4">
+                      <ResumeUploader
+                        id={`resume-${job.id}`}
+                        onFileSelect={handleFileUpload}
+                      />
+                    </div>
+                    {!resumeFile && applyStatus === "error" && (
+                      <p className="text-rose-400 text-xs">Resume is required.</p>
                     )}
                   </div>
 
-                  <div className="flex gap-3">
+                  {/* Error banner */}
+                  {applyError && (
+                    <div className="flex items-start gap-3 bg-rose-950 border border-rose-800/50 rounded-xl px-4 py-3">
+                      <svg
+                        className="w-4 h-4 text-rose-400 shrink-0 mt-0.5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
+                        />
+                      </svg>
+                      <p className="text-rose-400 text-sm">{applyError}</p>
+                    </div>
+                  )}
+
+                  {/* Action buttons */}
+                  <div className="flex gap-3 pt-1">
                     <button
-                      onClick={handleSubmitApplication}
-                      disabled={applyStatus === "loading" || !resumeFile}
+                      type="submit"
+                      disabled={applyStatus === "loading"}
                       className="flex-1 py-3.5 rounded-xl font-bold text-sm tracking-wide
                         bg-gradient-to-r from-emerald-500 to-teal-500
                         hover:from-emerald-400 hover:to-teal-400
@@ -494,9 +630,13 @@ export default function JobPage() {
                         "Submit Application"
                       )}
                     </button>
-
                     <button
-                      onClick={handleCancelApplication}
+                      type="button"
+                      onClick={() => {
+                        setShowForm(false);
+                        setResumeFile(null);
+                        setApplyError("");
+                      }}
                       disabled={applyStatus === "loading"}
                       className="px-6 py-3.5 rounded-xl font-bold text-sm
                         bg-slate-800 hover:bg-slate-700
@@ -506,7 +646,7 @@ export default function JobPage() {
                       Cancel
                     </button>
                   </div>
-                </div>
+                </form>
               ) : (
                 <>
                   {applyStatus === "error" && (
@@ -529,7 +669,7 @@ export default function JobPage() {
                   )}
 
                   <button
-                    onClick={handleApplyClick}
+                    onClick={() => setShowForm(true)}
                     className="w-full py-3.5 rounded-xl font-bold text-sm tracking-wide
                       bg-gradient-to-r from-emerald-500 to-teal-500
                       hover:from-emerald-400 hover:to-teal-400

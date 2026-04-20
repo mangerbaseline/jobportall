@@ -43,6 +43,7 @@ function JOB() {
     }
 
     fetchJob();
+    console.log(job);
   }, [id]);
 
   if (loading) {

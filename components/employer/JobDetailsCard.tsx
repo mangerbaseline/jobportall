@@ -1,13 +1,13 @@
 "use client";
 
 import React from "react";
-import { 
-  Briefcase, 
-  MapPin, 
-  CircleDollarSign, 
-  Calendar, 
+import {
+  Briefcase,
+  MapPin,
+  CircleDollarSign,
+  Calendar,
   Edit3,
-  Users
+  Users,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -25,6 +25,7 @@ interface JobDetailsCardProps {
 
 export default function JobDetailsCard({ job }: JobDetailsCardProps) {
   const router = useRouter();
+  console.log(job.vacancy);
 
   return (
     <div className="glass-card rounded-3xl overflow-hidden border border-white/10 shadow-2xl shadow-black/20">
@@ -33,7 +34,7 @@ export default function JobDetailsCard({ job }: JobDetailsCardProps) {
         <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
           <Briefcase className="w-32 h-32 text-indigo-400" />
         </div>
-        
+
         <div className="relative z-10">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="space-y-2">
@@ -47,7 +48,9 @@ export default function JobDetailsCard({ job }: JobDetailsCardProps) {
                 </div>
                 <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
                   <CircleDollarSign className="w-4 h-4" />
-                  {job.salary ? `$${job.salary.toLocaleString()}` : "Not specified"}
+                  {job.salary
+                    ? `$${job.salary.toLocaleString()}`
+                    : "Not specified"}
                 </div>
                 <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/5">
                   <Calendar className="w-4 h-4 text-violet-400" />
@@ -96,7 +99,11 @@ export default function JobDetailsCard({ job }: JobDetailsCardProps) {
               Posted On
             </div>
             <div className="text-2xl font-bold text-white">
-              {new Date(job.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+              {new Date(job.createdAt).toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              })}
             </div>
           </div>
         </div>

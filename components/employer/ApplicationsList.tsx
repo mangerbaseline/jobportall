@@ -1,17 +1,19 @@
 "use client";
 
 import React from "react";
-import { 
-  User, 
-  Mail, 
-  FileText, 
-  ExternalLink, 
-  CheckCircle2, 
-  XCircle, 
+import {
+  User,
+  Mail,
+  FileText,
+  ExternalLink,
+  CheckCircle2,
+  XCircle,
   Clock,
-  ArrowRight
+  ArrowRight,
+  Briefcase,
 } from "lucide-react";
 import Link from "next/link";
+import ApplicantProfileDialog from "./ApplicantProfileDialog";
 
 interface Application {
   id: string;
@@ -21,6 +23,16 @@ interface Application {
   user: {
     name: string;
     email: string;
+    professional?: {
+      title?: string;
+      company?: string;
+      experience?: number;
+      skills?: string;
+      education?: string;
+      linkedin?: string;
+      github?: string;
+      portfolio?: string;
+    } | null;
   };
 }
 
@@ -40,7 +52,9 @@ const statusIcons: Record<string, React.ReactNode> = {
   REJECTED: <XCircle className="w-3.5 h-3.5" />,
 };
 
-export default function ApplicationsList({ applications }: ApplicationsListProps) {
+export default function ApplicationsList({
+  applications,
+}: ApplicationsListProps) {
   if (!applications || applications.length === 0) {
     return (
       <div className="glass-card rounded-3xl p-12 flex flex-col items-center justify-center text-center gap-4 border-dashed">
@@ -71,42 +85,54 @@ export default function ApplicationsList({ applications }: ApplicationsListProps
 
       <div className="grid grid-cols-1 gap-4">
         {applications.map((app) => (
-          <div 
-            key={app.id} 
+          <div
+            key={app.id}
             className="group glass-card rounded-2xl p-6 hover:border-indigo-500/40 hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-300"
           >
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
               {/* Applicant Info */}
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-xl font-bold text-white shadow-lg">
-                  {app.user.name.charAt(0).toUpperCase()}
-                </div>
-                <div>
-                  <h4 className="font-bold text-white group-hover:text-indigo-300 transition-colors">
-                    {app.user.name}
-                  </h4>
-                  <div className="flex items-center gap-3 mt-1">
-                    <span className="flex items-center gap-1.5 text-xs text-white/40">
-                      <Mail className="w-3.5 h-3.5 text-white/20" />
-                      {app.user.email}
-                    </span>
-                    <span className="flex items-center gap-1.5 text-xs text-white/40 border-l border-white/10 pl-3">
-                      <Clock className="w-3.5 h-3.5 text-white/20" />
-                      Applied {new Date(app.createdAt).toLocaleDateString()}
-                    </span>
+              <ApplicantProfileDialog
+                applicationId={app.id}
+                basicData={{
+                  name: app.user.name,
+                  email: app.user.email,
+                  createdAt: app.createdAt,
+                  resumeUrl: app.resumeUrl,
+                }}
+              >
+                <div className="flex items-center gap-4 cursor-pointer">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-xl font-bold text-white shadow-lg">
+                    {app.user.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-white group-hover:text-indigo-300 transition-colors text-left">
+                      {app.user.name}
+                    </h4>
+                    <div className="flex items-center gap-3 mt-1">
+                      <span className="flex items-center gap-1.5 text-xs text-white/40">
+                        <Mail className="w-3.5 h-3.5 text-white/20" />
+                        {app.user.email}
+                      </span>
+                      <span className="flex items-center gap-1.5 text-xs text-white/40 border-l border-white/10 pl-3">
+                        <Clock className="w-3.5 h-3.5 text-white/20" />
+                        Applied {new Date(app.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </ApplicantProfileDialog>
 
               {/* Status & Actions */}
               <div className="flex items-center flex-wrap gap-4">
-                <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-bold ${statusStyles[app.status] || statusStyles.PENDING}`}>
+                <div
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-bold ${statusStyles[app.status] || statusStyles.PENDING}`}
+                >
                   {statusIcons[app.status] || statusIcons.PENDING}
                   {app.status}
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <a
+                  <Link
                     href={app.resumeUrl}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -115,15 +141,7 @@ export default function ApplicationsList({ applications }: ApplicationsListProps
                     <FileText className="w-3.5 h-3.5" />
                     Resume
                     <ExternalLink className="w-3 h-3 opacity-50" />
-                  </a>
-                  
-                  {/* Link to full application details if needed */}
-                  {/* <Link
-                    href={`/employer/application/${app.id}`}
-                    className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 hover:bg-indigo-500 hover:text-white transition-all"
-                  >
-                    <ArrowRight className="w-4 h-4" />
-                  </Link> */}
+                  </Link>
                 </div>
               </div>
             </div>

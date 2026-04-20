@@ -6,7 +6,12 @@ import {
   fetchUserDetail,
   clearUserDetail,
 } from "@/lib/features/user/profileDetail";
-import { Briefcase, ShieldCheck, User as UserIcon, TrendingUp } from "lucide-react";
+import {
+  Briefcase,
+  ShieldCheck,
+  User as UserIcon,
+  TrendingUp,
+} from "lucide-react";
 
 export default function UserDetail() {
   const dispatch = useAppDispatch();
@@ -74,6 +79,9 @@ export default function UserDetail() {
         {/* Info */}
         <div className="flex-1 min-w-0">
           <h2 className="text-xl font-bold text-white truncate">{data.name}</h2>
+          <h2 className="text-md font-bold text-white truncate">
+            {data.companyName || "Nan"}
+          </h2>
           <div className="flex items-center gap-2 mt-1 flex-wrap">
             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-indigo-500/15 border border-indigo-500/25 text-[10px] font-bold text-indigo-300 tracking-widest uppercase">
               <ShieldCheck className="w-3 h-3" />

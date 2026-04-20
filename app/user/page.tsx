@@ -94,6 +94,10 @@ export default function UserPage() {
       router.push("/employer");
       return;
     }
+    if (user.role === "ADMIN") {
+      router.push("/admin");
+      return;
+    }
     const fetchJobs = async () => {
       setLoading(true);
       setError("");
@@ -149,6 +153,17 @@ export default function UserPage() {
       <GradientBlobs />
 
       <div className="pt-24 pb-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        {/* Profile Update Banner */}
+        <Link href="/user/profile/update-profile" className="block w-full animate-in fade-in slide-in-from-top-4 duration-500">
+          <div className="bg-indigo-500/10 border border-indigo-500/20 px-4 py-3 rounded-xl flex items-center gap-3 hover:bg-indigo-500/20 transition-colors cursor-pointer shadow-sm">
+            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-bold shrink-0">i</span>
+            <span className="text-sm font-medium text-indigo-200 flex-1">
+              Keep your profile complete and up to date. Make your chances higher to get a job.
+            </span>
+            <ChevronRight className="w-4 h-4 text-indigo-400 shrink-0" />
+          </div>
+        </Link>
+        
         {/* ── Page Header ── */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>

@@ -12,6 +12,7 @@ import {
   Zap,
   Shield,
 } from "lucide-react";
+import Link from "next/link";
 
 const stats = [
   { icon: Briefcase, value: "1,200+", label: "Active Jobs" },
@@ -208,18 +209,18 @@ export default function Home() {
             Join thousands of professionals already using JobPortal.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
+            <Link
               href="/auth/signup"
               className="px-8 py-3.5 font-semibold text-white rounded-xl brand-gradient hover:opacity-90 transition-all duration-200 shadow-xl shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:scale-105"
             >
               Create Free Account
-            </a>
-            <a
+            </Link>
+            <Link
               href="/user"
               className="px-8 py-3.5 font-semibold text-white/80 rounded-xl bg-white/8 border border-white/12 hover:bg-white/12 hover:text-white transition-all duration-200"
             >
               Browse Jobs
-            </a>
+            </Link>
           </div>
         </div>
       </section>

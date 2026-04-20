@@ -42,6 +42,8 @@ export async function GET(
         description: true,
         location: true,
         salary: true,
+        vacancy: true,
+        createdAt: true,
         applications: {
           include: {
             user: {

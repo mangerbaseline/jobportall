@@ -12,15 +12,33 @@ interface JobData {
   };
 }
 
+interface ApplicationData {
+  id: string;
+  status: string;
+  createdAt: string;
+  employer: {
+    name: string;
+    companyName: string | null;
+  };
+  job: {
+    id: string;
+    title: string;
+    location: string;
+    salary: string;
+  };
+}
+
 interface UserDetailData {
   name: string;
+  companyName: string;
   role: string;
   personal?: any;
-  professional: any;
+  professional?: any;
   employed: boolean;
   verified: boolean;
   savedJobs: any;
   jobs: JobData[];
+  applications: ApplicationData[];
   _count: {
     jobs: number;
     applications: number;

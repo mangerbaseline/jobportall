@@ -13,6 +13,8 @@ export default function Employer() {
     if (user.loading) return;
     if (user.role === "USER") {
       router.push("/user");
+    } else if (user.role === "ADMIN") {
+      router.push("/admin");
     }
   }, [user.role, user.loading, router]);
 

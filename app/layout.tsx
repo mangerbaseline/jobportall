@@ -5,6 +5,7 @@ import StoreProvider from "@/lib/storeProvide";
 import AuthProvider from "@/components/provider/authProvider";
 import { Toaster } from "sonner";
 import AppleNavbar from "@/components/navbar";
+import Footer from "@/components/footer";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -31,7 +32,10 @@ export default function RootLayout({
           <StoreProvider>
             <AuthProvider>
               <AppleNavbar />
-              {children}
+              <main className="min-h-[80vh]">
+                {children}
+              </main>
+              <Footer />
               <Toaster
                 position="top-right"
                 richColors

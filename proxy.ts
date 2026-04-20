@@ -5,6 +5,17 @@ import {
   isProtectedRoute,
   PROTECTED_ROUTES,
 } from "./lib/proxyFunction/protectedroute";
+const getRoleBasedRedirect = (role?: string) => {
+  switch (role) {
+    case "EMPLOYER":
+      return "/employer";
+    case "ADMIN":
+      return "/admin";
+    case "USER":
+    default:
+      return "/user";
+  }
+};
 
 //suppose user doesnt havetoken
 export async function proxy(request: NextRequest) {
@@ -46,7 +57,16 @@ export async function proxy(request: NextRequest) {
     pathname.startsWith("/auth/signin") || pathname.startsWith("/auth/signup");
   //public page check
   if (user && isPublicPage) {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL(getRoleBasedRedirect(user.role), request.url));
+  }
+
+  // Redirect ADMIN to /admin if they try to access other routes
+  if (user && user.role === "ADMIN" && !pathname.startsWith("/admin") && !pathname.startsWith("/api")) {
+    return NextResponse.redirect(new URL("/admin", request.url));
+  }
+
+  if (user && pathname === "/") {
+    return NextResponse.redirect(new URL(getRoleBasedRedirect(user.role), request.url));
   }
 
   return NextResponse.next();

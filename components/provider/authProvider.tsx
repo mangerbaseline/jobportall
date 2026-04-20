@@ -35,6 +35,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
               id: data.user.id ?? "",
               name: data.user.name ?? "",
               role: data.user.role ?? "",
+              avatar: data.user.personal?.avatar ?? "",
               loading: false,
             }),
           );

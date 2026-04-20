@@ -16,9 +16,10 @@ export async function GET(
     const where: any = { id };
 
     const user = await prisma.user.findUnique({
-      where,
+      where: { id: id },
       select: {
         id: true,
+        companyName: true,
         name: true,
         email: true,
         role: true,
@@ -46,6 +47,12 @@ export async function GET(
             id: true,
             status: true,
             createdAt: true,
+            employer: {
+              select: {
+                name: true,
+                companyName: true,
+              },
+            },
             job: {
               select: {
                 id: true,

@@ -1,5 +1,6 @@
 "use client";
 import { clearUser } from "@/lib/features/user/userSlice";
+import { clearUserDetail } from "@/lib/features/user/profileDetail";
 import { useAppSelector } from "@/lib/hook/hook";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
@@ -33,20 +34,35 @@ const AppleNavbar = () => {
     });
     if (res.ok) {
       dispatch(clearUser());
+      dispatch(clearUserDetail());
       setIsMobileMenuOpen(false);
       router.refresh();
       router.push("/auth/signin");
     }
   };
 
-  const navItems = [
-    { name: "Home", href: "/" },
-    { name: "About", href: "/about" },
-    { name: "Contact", href: "/contact" },
-  ];
-
   const dashboardLink =
-    user.role === "EMPLOYER" ? "/employer" : user.role ? "/user" : null;
+    user.role === "ADMIN"
+      ? "/admin"
+      : user.role === "EMPLOYER"
+      ? "/employer"
+      : user.role === "USER"
+      ? "/user"
+      : null;
+
+  // When logged in: Dashboard first, no Home link
+  // When guest: Home, About, Contact
+  const navItems = user.role
+    ? [
+        { name: "Dashboard", href: dashboardLink! },
+        { name: "About", href: "/about" },
+        { name: "Contact", href: "/contact" },
+      ]
+    : [
+        { name: "Home", href: "/" },
+        { name: "About", href: "/about" },
+        { name: "Contact", href: "/contact" },
+      ];
 
   return (
     <>
@@ -82,19 +98,16 @@ const AppleNavbar = () => {
                   {item.name}
                 </Link>
               ))}
-              {dashboardLink && (
-                <Link
-                  href={dashboardLink}
-                  className="relative px-4 py-2 text-sm font-medium text-white/70 hover:text-white rounded-lg hover:bg-white/8 transition-all duration-200"
-                >
-                  Dashboard
-                </Link>
-              )}
+              {/* Dashboard is already included in navItems when logged in */}
             </div>
 
             {/* ── Right Actions (Desktop) ── */}
             <div className="hidden md:flex items-center gap-3">
-              {user.role ? (
+              {user.loading ? (
+                <div className="flex items-center gap-3">
+                  <div className="w-32 h-9 rounded-xl bg-white/8 animate-pulse" />
+                </div>
+              ) : user.role ? (
                 <div className="flex items-center gap-3">
                   {/* User chip */}
                   <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/8 border border-white/10">
@@ -105,7 +118,11 @@ const AppleNavbar = () => {
                       {user.name?.split(" ")[0]}
                     </span>
                     <span className="text-xs px-1.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 font-semibold">
-                      {user.role === "EMPLOYER" ? "Employer" : "Seeker"}
+                      {user.role === "ADMIN"
+                        ? "Admin"
+                        : user.role === "EMPLOYER"
+                        ? "Employer"
+                        : "Seeker"}
                     </span>
                   </div>
                   {/* Logout */}
@@ -174,20 +191,20 @@ const AppleNavbar = () => {
                 {item.name}
               </Link>
             ))}
-            {dashboardLink && (
-              <Link
-                href={dashboardLink}
-                className="flex items-center px-4 py-3 text-base font-medium text-white/80 hover:text-white hover:bg-white/8 rounded-xl transition-all duration-200"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Dashboard
-              </Link>
-            )}
+            {/* Dashboard is already included in navItems when logged in */}
           </div>
 
           {/* Mobile auth section */}
           <div className="border-t border-white/8 p-4">
-            {user.role ? (
+            {user.loading ? (
+              <div className="flex items-center gap-3 px-4 py-3 bg-white/5 rounded-xl animate-pulse">
+                <div className="w-9 h-9 rounded-full bg-white/10 shrink-0" />
+                <div className="space-y-2 w-full">
+                  <div className="h-4 bg-white/10 rounded w-1/2" />
+                  <div className="h-3 bg-white/10 rounded w-1/3" />
+                </div>
+              </div>
+            ) : user.role ? (
               <div className="space-y-3">
                 <div className="flex items-center gap-3 px-4 py-3 bg-white/5 rounded-xl">
                   <div className="w-9 h-9 rounded-full brand-gradient flex items-center justify-center text-sm font-bold text-white shrink-0">
@@ -198,7 +215,11 @@ const AppleNavbar = () => {
                       {user.name}
                     </p>
                     <p className="text-xs text-indigo-300">
-                      {user.role === "EMPLOYER" ? "Employer" : "Job Seeker"}
+                      {user.role === "ADMIN"
+                        ? "Admin"
+                        : user.role === "EMPLOYER"
+                        ? "Employer"
+                        : "Job Seeker"}
                     </p>
                   </div>
                 </div>

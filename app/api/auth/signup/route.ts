@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { signToken } from "@/lib/jwt";
+import { success } from "zod";
 
 export async function POST(req: NextRequest) {
   try {
@@ -9,7 +10,7 @@ export async function POST(req: NextRequest) {
     if (hasToken)
       return NextResponse.json({ error: "Already logged in" }, { status: 400 });
 
-    const { name, email, password, role } = await req.json();
+    const { name, email, password, role, companyName } = await req.json();
 
     if (!name || !email || !password || !role)
       return NextResponse.json(
@@ -27,10 +28,28 @@ export async function POST(req: NextRequest) {
         { status: 409 },
       );
 
+    if (role === "EMPLOYER" && !companyName) {
+      return NextResponse.json(
+        { error: "Company Name is required." },
+        { status: 400 },
+      );
+    }
+
     const hashed = await bcrypt.hash(password, 10);
+    let User: any = {
+      id: crypto.randomUUID(),
+      name: name,
+      email: email,
+      password: hashed,
+      role: role,
+    };
+
+    if (role === "EMPLOYER") {
+      User.companyName = companyName;
+    }
 
     const user = await prisma.user.create({
-      data: { id: crypto.randomUUID(), name, email, password: hashed, role },
+      data: User,
     });
     ////console.log("its here : ", user);
 
@@ -39,12 +58,14 @@ export async function POST(req: NextRequest) {
     ////console.log("its here at token : ", token);
     const response = NextResponse.json(
       {
+        success: true,
         token,
         user: {
           id: user.id,
           name: user.name,
           email: user.email,
           role: user.role,
+          companyName: user.companyName,
         },
       },
       { status: 201 },
@@ -58,6 +79,9 @@ export async function POST(req: NextRequest) {
     });
     return response;
   } catch (err) {
-    return NextResponse.json({ error: err || "Server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "Server error" },
+      { status: 500 },
+    );
   }
 }

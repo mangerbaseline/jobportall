@@ -46,7 +46,7 @@ export function LoginForm({
       const data: LoginUser = await res.json();
 
       if (!res.ok) {
-        setError(data.error || "Invalid credentials");
+        setError(typeof data.error === "string" ? data.error : "Invalid credentials");
         return;
       }
 
@@ -55,6 +55,7 @@ export function LoginForm({
           id: data?.user?.id || "",
           name: data?.user?.name || "",
           role: data?.user?.role || "",
+          avatar: "",
         }),
       );
 
@@ -133,12 +134,12 @@ export function LoginForm({
               <Lock className="w-3.5 h-3.5 text-indigo-400" />
               Password
             </label>
-            <a
+            <Link
               href="#"
               className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
             >
               Forgot password?
-            </a>
+            </Link>
           </div>
           <div className="relative">
             <input

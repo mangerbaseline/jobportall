@@ -1,7 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { CheckAuth } from "@/utility/checkAuth";
-import { json, success } from "zod";
 
 export async function GET(
   request: NextRequest,
@@ -71,6 +70,7 @@ export async function GET(
     });
 
     const Job = { ...existingJob, ...Company, applied: !!hasApplied };
+    console.log("job  : ", Job);
     if (!Job) {
       return NextResponse.json({
         success: false,

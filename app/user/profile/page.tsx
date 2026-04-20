@@ -18,13 +18,26 @@ import {
   Award,
   PlusCircle,
   Building,
+  ChevronRight,
+  ChevronDown,
+  Info,
 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Profile() {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user);
   const { data, loading, error } = useAppSelector((state) => state.details);
+  const [showApplications, setShowApplications] = React.useState(false);
+  console.log("data : ", data);
 
   useEffect(() => {
     if (user?.id) {
@@ -58,10 +71,33 @@ export default function Profile() {
 
   return (
     <div className="max-w-5xl mx-auto mt-20 p-6 space-y-8 animate-in fade-in duration-500">
+      {/* Profile Update Banner */}
+      <Link href="/user/profile/update-profile" className="block w-full">
+        <div className="bg-primary/10 border border-primary/20 px-4 py-3 rounded-xl flex items-center gap-3 hover:bg-primary/20 transition-colors cursor-pointer shadow-sm">
+          <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/20 text-primary font-bold shrink-0 text-xs">
+            i
+          </span>
+          <span className="text-sm font-medium text-primary flex-1">
+            Keep your profile complete and up to date. Make your chances higher
+            to get a job.
+          </span>
+          <ChevronRight className="w-4 h-4 text-primary shrink-0" />
+        </div>
+      </Link>
+
       {/* Profile Header Card */}
       <div className="bg-card text-card-foreground p-8 rounded-2xl shadow-sm border border-border flex flex-col md:flex-row items-center md:items-start gap-6">
-        <div className="w-32 h-32 rounded-full bg-muted flex items-center justify-center shrink-0 border-4 border-background shadow-sm">
-          <User className="w-16 h-16 text-muted-foreground" />
+        <div className="w-32 h-32 rounded-full bg-muted flex items-center justify-center shrink-0 border-4 border-background shadow-sm relative overflow-hidden">
+          {user?.avatar ? (
+            <Image
+              src={user.avatar}
+              alt={user.name || "User avatar"}
+              fill
+              className="object-cover"
+            />
+          ) : (
+            <User className="w-16 h-16 text-muted-foreground" />
+          )}
         </div>
 
         <div className="flex-1 text-center md:text-left space-y-4">
@@ -88,6 +124,23 @@ export default function Profile() {
             )}
           </div>
         </div>
+        {!data.personal ? (
+          <Link
+            href="/user/profile/update-profile"
+            className="text-sm flex items-center gap-1.5 text-primary hover:text-primary/80 transition-colors bg-primary/10 px-3 py-1.5 rounded-full font-medium"
+          >
+            <PlusCircle className="w-4 h-4" />
+            Add Details
+          </Link>
+        ) : (
+          <Link
+            href="/user/profile/update-profile"
+            className="text-sm flex items-center gap-1.5 text-primary hover:text-primary/80 transition-colors bg-primary/10 px-3 py-1.5 rounded-full font-medium"
+          >
+            <PlusCircle className="w-4 h-4" />
+            Update Details
+          </Link>
+        )}
       </div>
 
       {/* Personal & Professional Details Grid */}
@@ -99,26 +152,17 @@ export default function Profile() {
               <User className="w-5 h-5 text-primary" />
               Personal Details
             </h2>
-            {(!data.personal || data.personal.length === 0) && (
-              <Link
-                href="/user/personal/new"
-                className="text-sm flex items-center gap-1.5 text-primary hover:text-primary/80 transition-colors bg-primary/10 px-3 py-1.5 rounded-full font-medium"
-              >
-                <PlusCircle className="w-4 h-4" />
-                Add Details
-              </Link>
-            )}
           </div>
 
-          {data.personal && data.personal.length > 0 ? (
+          {data.personal ? (
             <div className="space-y-4 flex-1">
-              {data.personal[0].bio && (
+              {data.personal.bio && (
                 <div className="text-muted-foreground text-sm leading-relaxed bg-muted/50 p-4 rounded-lg">
-                  {data.personal[0].bio}
+                  {data.personal.bio}
                 </div>
               )}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-                {data.personal[0].phone && (
+                {data.personal.phone && (
                   <div className="flex items-start gap-3">
                     <Phone className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
                     <div>
@@ -126,12 +170,12 @@ export default function Profile() {
                         Phone
                       </p>
                       <p className="text-sm font-medium">
-                        {data.personal[0].phone}
+                        {data.personal.phone}
                       </p>
                     </div>
                   </div>
                 )}
-                {(data.personal[0].city || data.personal[0].country) && (
+                {(data.personal.city || data.personal.country) && (
                   <div className="flex items-start gap-3">
                     <MapPin className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
                     <div>
@@ -140,9 +184,9 @@ export default function Profile() {
                       </p>
                       <p className="text-sm font-medium">
                         {[
-                          data.personal[0].city,
-                          data.personal[0].state,
-                          data.personal[0].country,
+                          data.personal.city,
+                          data.personal.state,
+                          data.personal.country,
                         ]
                           .filter(Boolean)
                           .join(", ")}
@@ -150,29 +194,29 @@ export default function Profile() {
                     </div>
                   </div>
                 )}
-                {data.personal[0].website && (
+                {data.personal.website && (
                   <div className="flex items-start gap-3">
                     <Globe className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
                     <div>
                       <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
                         Website
                       </p>
-                      <a
+                      <Link
                         href={
-                          data.personal[0].website.startsWith("http")
-                            ? data.personal[0].website
-                            : `https://${data.personal[0].website}`
+                          data.personal.website.startsWith("http")
+                            ? data.personal.website
+                            : `https://${data.personal.website}`
                         }
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-sm font-medium text-primary hover:underline truncate block max-w-[150px]"
                       >
-                        {data.personal[0].website}
-                      </a>
+                        {data.personal.website}
+                      </Link>
                     </div>
                   </div>
                 )}
-                {data.personal[0].dob && (
+                {data.personal.dob && (
                   <div className="flex items-start gap-3">
                     <Calendar className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
                     <div>
@@ -180,7 +224,7 @@ export default function Profile() {
                         Date of Birth
                       </p>
                       <p className="text-sm font-medium">
-                        {new Date(data.personal[0].dob).toLocaleDateString()}
+                        {new Date(data.personal.dob).toLocaleDateString()}
                       </p>
                     </div>
                   </div>
@@ -204,35 +248,26 @@ export default function Profile() {
               <Briefcase className="w-5 h-5 text-primary" />
               Professional Details
             </h2>
-            {(!data.professional || data.professional.length === 0) && (
-              <Link
-                href="/user/professional/new"
-                className="text-sm flex items-center gap-1.5 text-primary hover:text-primary/80 transition-colors bg-primary/10 px-3 py-1.5 rounded-full font-medium"
-              >
-                <PlusCircle className="w-4 h-4" />
-                Add Details
-              </Link>
-            )}
           </div>
 
-          {data.professional && data.professional.length > 0 ? (
+          {data.professional ? (
             <div className="space-y-5 flex-1">
               <div className="pb-4 border-b border-border">
                 <h3 className="font-bold text-lg">
-                  {data.professional[0].title || "Professional Title"}
+                  {data.professional.title || "Professional Title"}
                 </h3>
-                {data.professional[0].company && (
+                {data.professional.company && (
                   <div className="flex items-center gap-2 text-muted-foreground mt-1">
                     <Building className="w-4 h-4" />
                     <span className="text-sm font-medium">
-                      {data.professional[0].company}
+                      {data.professional.company}
                     </span>
                   </div>
                 )}
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {data.professional[0].experience !== null && (
+                {data.professional.experience !== null && (
                   <div className="flex items-start gap-3">
                     <Award className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
                     <div>
@@ -240,12 +275,12 @@ export default function Profile() {
                         Experience
                       </p>
                       <p className="text-sm font-medium">
-                        {data.professional[0].experience} Years
+                        {data.professional.experience} Years
                       </p>
                     </div>
                   </div>
                 )}
-                {data.professional[0].skills && (
+                {data.professional.skills && (
                   <div className="flex items-start gap-3">
                     <CheckCircle className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
                     <div>
@@ -254,14 +289,14 @@ export default function Profile() {
                       </p>
                       <p
                         className="text-sm font-medium truncate max-w-[150px]"
-                        title={data.professional[0].skills}
+                        title={data.professional.skills}
                       >
-                        {data.professional[0].skills}
+                        {data.professional.skills}
                       </p>
                     </div>
                   </div>
                 )}
-                {data.professional[0].education && (
+                {data.professional.education && (
                   <div className="flex items-start gap-3 sm:col-span-2">
                     <GraduationCap className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
                     <div>
@@ -269,13 +304,13 @@ export default function Profile() {
                         Education
                       </p>
                       <p className="text-sm font-medium line-clamp-2">
-                        {data.professional[0].education}
+                        {data.professional.education}
                       </p>
                     </div>
                   </div>
                 )}
-                {(data.professional[0].currentSalary !== null ||
-                  data.professional[0].expectedSalary !== null) && (
+                {(data.professional.currentSalary !== null ||
+                  data.professional.expectedSalary !== null) && (
                   <div className="flex items-start gap-3 sm:col-span-2">
                     <DollarSign className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
                     <div>
@@ -283,10 +318,10 @@ export default function Profile() {
                         Salary Stats
                       </p>
                       <p className="text-sm font-medium">
-                        {data.professional[0].currentSalary &&
-                          `Current: $${data.professional[0].currentSalary} `}
-                        {data.professional[0].expectedSalary &&
-                          `| Expected: $${data.professional[0].expectedSalary}`}
+                        {data.professional.currentSalary &&
+                          `Current: $${data.professional.currentSalary} `}
+                        {data.professional.expectedSalary &&
+                          `| Expected: $${data.professional.expectedSalary}`}
                       </p>
                     </div>
                   </div>
@@ -312,17 +347,20 @@ export default function Profile() {
           </div>
           <div>
             <p className="text-sm text-muted-foreground font-medium">
-              Total Jobs
+              Total Offers
             </p>
             <p className="text-2xl font-bold">{data._count?.jobs || 0}</p>
           </div>
         </div>
 
-        <div className="bg-card border border-border rounded-xl p-6 shadow-sm flex items-center gap-4">
-          <div className="p-3 bg-primary/10 rounded-lg text-primary">
+        <div 
+          onClick={() => setShowApplications(true)}
+          className="bg-card border border-border rounded-xl p-6 shadow-sm flex items-center gap-4 cursor-pointer hover:bg-muted/30 transition-colors group"
+        >
+          <div className="p-3 bg-primary/10 rounded-lg text-primary group-hover:bg-primary group-hover:text-white transition-all">
             <Users className="w-6 h-6" />
           </div>
-          <div>
+          <div className="flex-1">
             <p className="text-sm text-muted-foreground font-medium">
               Total Applications
             </p>
@@ -330,8 +368,82 @@ export default function Profile() {
               {data._count?.applications || 0}
             </p>
           </div>
+          <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
         </div>
       </div>
+
+      {/* Applications Dialog */}
+      <Dialog open={showApplications} onOpenChange={setShowApplications}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold flex items-center gap-2">
+              <Briefcase className="w-6 h-6 text-primary" />
+              Your Applications
+            </DialogTitle>
+            <DialogDescription>
+              View the status of all jobs you have applied for.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="mt-4 space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+            {data.applications && data.applications.length > 0 ? (
+              data.applications.map((app: any) => (
+                <div 
+                  key={app.id}
+                  className="p-4 rounded-xl border border-border bg-muted/20 hover:bg-muted/40 transition-colors"
+                >
+                  <div className="flex flex-col sm:flex-row justify-between gap-4">
+                    <div className="space-y-1">
+                      <h4 className="font-bold text-lg leading-tight">{app.job.title}</h4>
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Building className="w-4 h-4" />
+                        <span>{app.employer.companyName || app.employer.name}</span>
+                      </div>
+                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground pt-1">
+                        <div className="flex items-center gap-1">
+                          <MapPin className="w-3 h-3" />
+                          {app.job.location}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Calendar className="w-3 h-3" />
+                          Applied on {new Date(app.createdAt).toLocaleDateString()}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-2">
+                      <span className={`px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
+                        app.status === "PENDING" 
+                          ? "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
+                          : app.status === "ACCEPTED"
+                          ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                          : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                      }`}>
+                        {app.status}
+                      </span>
+                      <div className="flex items-center gap-1 text-sm font-bold text-primary">
+                        <DollarSign className="w-4 h-4" />
+                        {app.job.salary}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="text-center py-12 space-y-3">
+                <Briefcase className="w-12 h-12 text-muted-foreground mx-auto opacity-20" />
+                <p className="text-muted-foreground">You haven&apos;t applied for any jobs yet.</p>
+                <Link 
+                  href="/user" 
+                  className="inline-block text-primary font-medium hover:underline"
+                  onClick={() => setShowApplications(false)}
+                >
+                  Browse available jobs
+                </Link>
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Jobs Section */}
       {data.jobs && data.jobs.length > 0 && (

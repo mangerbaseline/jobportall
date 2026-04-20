@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
     const userId = auth.id;
     const {
       title,
-      company,
+      companyName,
       experience,
       skills,
       education,
@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) {
       data: {
         userId,
         title,
-        company,
+        companyName,
         experience: Number(experience),
         skills,
         education,
@@ -147,7 +147,7 @@ export async function PUT(request: Request) {
     const {
       id,
       title,
-      company,
+      companyName,
       experience,
       skills,
       education,
@@ -182,7 +182,7 @@ export async function PUT(request: Request) {
       where: { id },
       data: {
         title,
-        company,
+        companyName,
         experience,
         skills,
         education,

@@ -1,15 +1,15 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { verifyToken } from "@/lib/jwt";
 
 // GET /api/applications - Get all applications
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   try {
-    const token = req.headers.get("Authorization");
+    const token = req.cookies.get("token");
     if (!token)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const decoded = await verifyToken(token);
+    const decoded = await verifyToken(token.value);
     if (!decoded)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
@@ -42,6 +42,12 @@ export async function GET(req: Request) {
               name: true,
               email: true,
               role: true,
+            },
+          },
+          employer: {
+            select: {
+              name: true,
+              companyName: true,
             },
           },
           job: {

@@ -4,45 +4,50 @@ import { verifyToken } from "@/lib/jwt";
 import { CheckAuth } from "@/utility/checkAuth";
 
 export async function GET(
-  request: Request,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     // Unwrap params with await
-    const token = request.headers.get("Authorization");
+    const token = request.cookies.get("token");
     if (!token)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const decoded = await verifyToken(token);
+    const decoded = await verifyToken(token.value);
     if (!decoded)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     ////console.log("---Decoded-----:", decoded)
 
-    if (decoded.role !== "USER")
+    if (decoded.role === "USER")
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const { id } = await params;
 
-    const jobApplication = await prisma.application.findMany({
-      where: { jobId: id },
+    const application = await prisma.application.findUnique({
+      where: { id: id },
       include: {
         user: {
           select: {
             id: true,
             name: true,
             email: true,
+            professional: true,
           },
         },
       },
-      orderBy: {
-        createdAt: "desc",
-      },
     });
+
+    if (!application) {
+      return NextResponse.json(
+        { error: "Application not found" },
+        { status: 404 }
+      );
+    }
 
     return NextResponse.json({
       success: true,
-      applications: jobApplication,
+      application: application,
     });
   } catch (error) {
     console.error("Error fetching applications:", error);
