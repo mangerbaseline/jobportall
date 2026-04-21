@@ -21,9 +21,9 @@ export async function POST(req: NextRequest) {
 
     const Employer = decoded;
 
-    const { title, description, location, salary, companyId } = await req.json();
+    const { title, description, location, salary, vacancy, companyId } = await req.json();
 
-    if (!title || !description || !location || !salary)
+    if (!title || !description || !location || !salary || !vacancy)
       return NextResponse.json(
         { error: "All fields are required" },
         { status: 400 },
@@ -35,12 +35,24 @@ export async function POST(req: NextRequest) {
         description,
         location,
         salary: salary ? parseInt(salary) : null,
+        vacancy: vacancy ? parseInt(vacancy) : 0,
         employerId: Employer.id,
         ...(companyId ? { companyId } : {}),
       },
+      select: {
+        id: true,
+        title: true,
+        vacancy: true,
+        location: true,
+        salary: true,
+        createdAt: true,
+        _count: {
+          select: { applications: true },
+        },
+      },
     });
 
-    return NextResponse.json({ job }, { status: 201 });
+    return NextResponse.json({ success: true, job }, { status: 201 });
   } catch (err) {
     //console.log(err);
     return NextResponse.json({ error: err || "Server error" }, { status: 500 });

@@ -122,6 +122,12 @@ export default function Jobs() {
                       <h4 className="font-bold text-white text-base group-hover:text-indigo-200 transition-colors truncate">
                         {job.title}
                       </h4>
+                      {job.company?.name && (
+                        <p className="text-xs text-indigo-300/70 font-medium mt-0.5 truncate flex items-center gap-1">
+                          <Briefcase className="w-3 h-3 shrink-0" />
+                          {job.company.name}
+                        </p>
+                      )}
                       <div className="flex flex-wrap items-center gap-3 mt-1 text-xs text-white/45">
                         <span className="flex items-center gap-1">
                           <MapPin className="w-3 h-3 text-white/30" />
@@ -141,7 +147,7 @@ export default function Jobs() {
                       <div className="mt-2.5 flex items-center gap-2">
                         <div className="flex-1 max-w-[160px] h-1.5 rounded-full bg-white/8 overflow-hidden">
                           <div
-                            className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 transition-all duration-500"
+                            className="h-full rounded-full bg-linear-to-r from-indigo-500 to-violet-500 transition-all duration-500"
                             style={{ width: `${fillRate}%` }}
                           />
                         </div>

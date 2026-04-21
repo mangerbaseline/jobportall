@@ -37,6 +37,9 @@ export async function GET(
             location: true,
             salary: true,
             createdAt: true,
+            company: {
+              select: { id: true, name: true },
+            },
             _count: {
               select: { applications: true },
             },

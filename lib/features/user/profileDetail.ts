@@ -5,11 +5,21 @@ interface JobData {
   title: string;
   vacancy: number;
   location: string;
-  salary: string;
+  salary: number | null;
   createdAt: string;
+  company?: { id: string; name: string } | null;
   _count: {
     applications: number;
   };
+}
+
+interface PostJobPayload {
+  title: string;
+  description: string;
+  location: string;
+  salary: string;
+  vacancy: string;
+  companyId?: string;
 }
 
 interface ApplicationData {
@@ -91,6 +101,31 @@ export const fetchUserDetail = createAsyncThunk<UserDetailData, string>(
   },
 );
 
+// Thunk – post a new job and return the created JobData
+export const postJob = createAsyncThunk<JobData, PostJobPayload>(
+  "userDetail/postJob",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const res = await fetch("/api/job/create", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        throw new Error(result.message || result.error || "Failed to post job");
+      }
+
+      return result.job as JobData;
+    } catch (err: any) {
+      return rejectWithValue(err.message);
+    }
+  },
+);
+
 const userDetailSlice = createSlice({
   name: "userDetail",
   initialState,
@@ -113,6 +148,12 @@ const userDetailSlice = createSlice({
       .addCase(fetchUserDetail.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+      .addCase(postJob.fulfilled, (state, action) => {
+        if (state.data) {
+          state.data.jobs = [action.payload, ...state.data.jobs];
+          state.data._count.jobs += 1;
+        }
       });
   },
 });

@@ -12,12 +12,37 @@ export default function ContactPage() {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    
-    setIsSubmitting(false);
-    setSubmitted(true);
-    toast.success("Message sent successfully! We'll get back to you soon.");
+    try {
+      const formData = new FormData(e.currentTarget);
+      const data = {
+        name: formData.get("name"),
+        email: formData.get("email"),
+        subject: formData.get("subject"),
+        message: formData.get("message"),
+      };
+
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        setSubmitted(true);
+        toast.success("Message sent successfully! We'll get back to you soon.");
+      } else {
+        toast.error(result.message || "Failed to send message. Please try again.");
+      }
+    } catch (error) {
+      console.error("Contact form error:", error);
+      toast.error("An error occurred. Please try again later.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -110,6 +135,7 @@ export default function ContactPage() {
                         <label htmlFor="name" className="text-sm font-medium text-white/70 ml-1">Full Name</label>
                         <input
                           id="name"
+                          name="name"
                           type="text"
                           required
                           placeholder="John Doe"
@@ -120,6 +146,7 @@ export default function ContactPage() {
                         <label htmlFor="email" className="text-sm font-medium text-white/70 ml-1">Email Address</label>
                         <input
                           id="email"
+                          name="email"
                           type="email"
                           required
                           placeholder="john@example.com"
@@ -132,6 +159,7 @@ export default function ContactPage() {
                       <label htmlFor="subject" className="text-sm font-medium text-white/70 ml-1">Subject</label>
                       <input
                         id="subject"
+                        name="subject"
                         type="text"
                         required
                         placeholder="How can we help?"
@@ -143,6 +171,7 @@ export default function ContactPage() {
                       <label htmlFor="message" className="text-sm font-medium text-white/70 ml-1">Message</label>
                       <textarea
                         id="message"
+                        name="message"
                         required
                         rows={5}
                         placeholder="Tell us more about your inquiry..."

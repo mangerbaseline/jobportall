@@ -14,6 +14,8 @@ import {
   Loader2,
   CheckCircle2,
 } from "lucide-react";
+import { useAppDispatch } from "@/lib/hook/hook";
+import { postJob } from "@/lib/features/user/profileDetail";
 import {
   Field,
   FieldDescription,
@@ -41,7 +43,10 @@ const formSchema = z.object({
     .string()
     .min(3, "Job title must be at least 3 characters.")
     .max(50, "Job title must be at most 50 characters."),
-  vacancy: z.string().min(1, "Vacancy is required."),
+  vacancy: z
+    .string()
+    .min(1, "Vacancy is required.")
+    .regex(/^\d+$/, "Vacancy must be a number."),
   description: z
     .string()
     .min(20, "Description must be at least 20 characters.")
@@ -56,6 +61,7 @@ interface CreatePostFormProps {
 }
 
 export function CreatePostForm({ onClose }: CreatePostFormProps = {}) {
+  const dispatch = useAppDispatch();
   const [companies, setCompanies] = React.useState<any[]>([]);
   const [isLoadingCompanies, setIsLoadingCompanies] = React.useState(true);
 
@@ -84,23 +90,9 @@ export function CreatePostForm({ onClose }: CreatePostFormProps = {}) {
   const { isSubmitting } = form.formState;
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    try {
-      const res = await fetch("/api/job/create", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+    const result = await dispatch(postJob(data));
 
-      const result = await res.json();
-
-      if (!res.ok) {
-        toast.error(result.message || "Failed to post job");
-        return;
-      }
-
+    if (postJob.fulfilled.match(result)) {
       toast.success("Job posted successfully", {
         duration: 4000,
         description: "Your job is now live.",
@@ -108,8 +100,10 @@ export function CreatePostForm({ onClose }: CreatePostFormProps = {}) {
       });
       form.reset();
       onClose?.();
-    } catch (error) {
-      toast.error("Network error. Please try again.");
+    } else {
+      const errMsg =
+        (result.payload as string) || "Failed to post job";
+      toast.error(errMsg);
     }
   }
 

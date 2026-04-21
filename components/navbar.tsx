@@ -55,6 +55,9 @@ const AppleNavbar = () => {
   const navItems = user.role
     ? [
         { name: "Dashboard", href: dashboardLink! },
+        ...(user.role === "ADMIN"
+          ? [{ name: "Customer Queries", href: "/admin/customer-queries" }]
+          : []),
         { name: "About", href: "/about" },
         { name: "Contact", href: "/contact" },
       ]
