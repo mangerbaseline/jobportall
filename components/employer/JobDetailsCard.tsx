@@ -30,7 +30,7 @@ export default function JobDetailsCard({ job }: JobDetailsCardProps) {
   return (
     <div className="glass-card rounded-3xl overflow-hidden border border-white/10 shadow-2xl shadow-black/20">
       {/* Header with Gradient Background */}
-      <div className="bg-gradient-to-br from-indigo-500/20 to-violet-500/20 p-8 border-b border-white/10 relative overflow-hidden">
+      <div className="bg-linear-to-br from-indigo-500/20 to-violet-500/20 p-8 border-b border-white/10 relative overflow-hidden">
         <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
           <Briefcase className="w-32 h-32 text-indigo-400" />
         </div>
@@ -41,6 +41,7 @@ export default function JobDetailsCard({ job }: JobDetailsCardProps) {
               <h1 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
                 {job.title}
               </h1>
+              <h1></h1>
               <div className="flex flex-wrap items-center gap-4 text-sm text-white/60">
                 <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/5">
                   <MapPin className="w-4 h-4 text-indigo-400" />

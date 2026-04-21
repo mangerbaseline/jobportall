@@ -19,6 +19,7 @@ export default function UserDetail() {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user);
   const { data, loading, error } = useAppSelector((state) => state.details);
+  console.log("data : ", data);
   const [isAddCompanyOpen, setIsAddCompanyOpen] = useState(false);
 
   useEffect(() => {
@@ -81,12 +82,14 @@ export default function UserDetail() {
 
         {/* Info */}
         <div className="flex-1 min-w-0">
-          <h2 className="text-xl font-bold text-white truncate">{data.name}</h2>
+          <h2 className="text-xl font-bold text-white truncate">
+            {data?.companies[0]?.name ?? "Null"}
+          </h2>
           <div className="flex items-center gap-3 mt-1 mb-2">
             <h2 className="text-md font-bold text-white/90 truncate">
               {data.companyName || "No Company Selected"}
             </h2>
-            <button 
+            <button
               onClick={() => setIsAddCompanyOpen(true)}
               className="inline-flex cursor-pointer hover:bg-indigo-500/30 hover:shadow-indigo-500/20 hover:-translate-y-0.5 items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-[10px] font-bold text-indigo-200 tracking-wider uppercase transition-all duration-200 shadow-sm shadow-indigo-500/10"
             >
@@ -131,10 +134,10 @@ export default function UserDetail() {
         </div>
       </div>
 
-      <AddCompanyDialog 
-        open={isAddCompanyOpen} 
-        onOpenChange={setIsAddCompanyOpen} 
-        userId={user.id!} 
+      <AddCompanyDialog
+        open={isAddCompanyOpen}
+        onOpenChange={setIsAddCompanyOpen}
+        userId={user.id!}
       />
     </div>
   );

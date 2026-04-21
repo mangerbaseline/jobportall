@@ -31,6 +31,15 @@ interface ApplicationData {
 interface UserDetailData {
   name: string;
   companyName: string;
+  companies: [
+    {
+      id: string;
+      name: string;
+      description: string;
+      logoUrl: string;
+      website: string;
+    },
+  ];
   role: string;
   personal?: any;
   professional?: any;

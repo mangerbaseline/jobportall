@@ -14,6 +14,7 @@ interface JOB_DATA {
   salary: number | null;
   vacancy: number;
   createdAt: string;
+  company?: { name: string } | null;
   applications: any[];
 }
 
