@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
 
     const Employer = decoded;
 
-    const { title, description, location, salary } = await req.json();
+    const { title, description, location, salary, companyId } = await req.json();
 
     if (!title || !description || !location || !salary)
       return NextResponse.json(
@@ -36,6 +36,7 @@ export async function POST(req: NextRequest) {
         location,
         salary: salary ? parseInt(salary) : null,
         employerId: Employer.id,
+        ...(companyId ? { companyId } : {}),
       },
     });
 

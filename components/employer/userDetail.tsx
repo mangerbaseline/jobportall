@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppSelector, useAppDispatch } from "@/lib/hook/hook";
 import {
   fetchUserDetail,
@@ -11,12 +11,15 @@ import {
   ShieldCheck,
   User as UserIcon,
   TrendingUp,
+  Plus,
 } from "lucide-react";
+import { AddCompanyDialog } from "./addCompanyDialog";
 
 export default function UserDetail() {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user);
   const { data, loading, error } = useAppSelector((state) => state.details);
+  const [isAddCompanyOpen, setIsAddCompanyOpen] = useState(false);
 
   useEffect(() => {
     if (!user.id) return;
@@ -79,9 +82,19 @@ export default function UserDetail() {
         {/* Info */}
         <div className="flex-1 min-w-0">
           <h2 className="text-xl font-bold text-white truncate">{data.name}</h2>
-          <h2 className="text-md font-bold text-white truncate">
-            {data.companyName || "Nan"}
-          </h2>
+          <div className="flex items-center gap-3 mt-1 mb-2">
+            <h2 className="text-md font-bold text-white/90 truncate">
+              {data.companyName || "No Company Selected"}
+            </h2>
+            <button 
+              onClick={() => setIsAddCompanyOpen(true)}
+              className="inline-flex cursor-pointer hover:bg-indigo-500/30 hover:shadow-indigo-500/20 hover:-translate-y-0.5 items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-[10px] font-bold text-indigo-200 tracking-wider uppercase transition-all duration-200 shadow-sm shadow-indigo-500/10"
+            >
+              <Plus className="w-3 h-3" />
+              Add Company
+            </button>
+          </div>
+
           <div className="flex items-center gap-2 mt-1 flex-wrap">
             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-indigo-500/15 border border-indigo-500/25 text-[10px] font-bold text-indigo-300 tracking-widest uppercase">
               <ShieldCheck className="w-3 h-3" />
@@ -117,6 +130,12 @@ export default function UserDetail() {
           </div>
         </div>
       </div>
+
+      <AddCompanyDialog 
+        open={isAddCompanyOpen} 
+        onOpenChange={setIsAddCompanyOpen} 
+        userId={user.id!} 
+      />
     </div>
   );
 }

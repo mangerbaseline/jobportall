@@ -28,6 +28,13 @@ import {
   InputGroupText,
   InputGroupTextarea,
 } from "@/components/ui/input-group";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const formSchema = z.object({
   title: z
@@ -41,6 +48,7 @@ const formSchema = z.object({
     .max(1000, "Description must be at most 1000 characters."),
   location: z.string().min(2, "Location must be at least 2 characters."),
   salary: z.string().min(1, "Salary is required."),
+  companyId: z.string().optional(),
 });
 
 interface CreatePostFormProps {
@@ -48,6 +56,20 @@ interface CreatePostFormProps {
 }
 
 export function CreatePostForm({ onClose }: CreatePostFormProps = {}) {
+  const [companies, setCompanies] = React.useState<any[]>([]);
+  const [isLoadingCompanies, setIsLoadingCompanies] = React.useState(true);
+
+  React.useEffect(() => {
+    fetch("/api/employer/company")
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.success && res.data) {
+          setCompanies(res.data);
+        }
+      })
+      .finally(() => setIsLoadingCompanies(false));
+  }, []);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -56,6 +78,7 @@ export function CreatePostForm({ onClose }: CreatePostFormProps = {}) {
       description: "",
       location: "",
       salary: "",
+      companyId: "",
     },
   });
   const { isSubmitting } = form.formState;
@@ -107,6 +130,44 @@ export function CreatePostForm({ onClose }: CreatePostFormProps = {}) {
 
       <form id="create-post-form" onSubmit={form.handleSubmit(onSubmit)}>
         <FieldGroup>
+          {/* Company Selection */}
+          <Controller
+            name="companyId"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel
+                  htmlFor="create-post-company"
+                  className="text-white/70 text-sm font-semibold mb-1.5 flex items-center gap-2"
+                >
+                  <Briefcase className="w-3.5 h-3.5 text-indigo-400" />
+                  Company
+                </FieldLabel>
+                <Select
+                  disabled={isLoadingCompanies || companies.length === 0}
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <SelectTrigger 
+                    className="w-full bg-white/5 border-white/12 focus:border-indigo-500/60 focus:ring-indigo-500/20 text-white rounded-xl h-11"
+                  >
+                    <SelectValue placeholder={isLoadingCompanies ? "Loading companies..." : (companies.length === 0 ? "No companies available" : "Select a company")} />
+                  </SelectTrigger>
+                  <SelectContent className="bg-zinc-950 border-white/10 text-white">
+                    {companies.map((company) => (
+                      <SelectItem key={company.id} value={company.id} className="hover:bg-white/10 focus:bg-white/10 focus:text-white cursor-pointer">
+                        {company.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+
           {/* Job Title */}
           <Controller
             name="title"

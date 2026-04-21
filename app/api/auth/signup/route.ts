@@ -46,6 +46,11 @@ export async function POST(req: NextRequest) {
 
     if (role === "EMPLOYER") {
       User.companyName = companyName;
+      User.companies = {
+        create: {
+          name: companyName,
+        },
+      };
     }
 
     const user = await prisma.user.create({
