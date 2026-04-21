@@ -83,11 +83,11 @@ export default function UserDetail() {
         {/* Info */}
         <div className="flex-1 min-w-0">
           <h2 className="text-xl font-bold text-white truncate">
-            {data?.companies[0]?.name ?? "Null"}
+            {data.name ?? "Null"}
           </h2>
           <div className="flex items-center gap-3 mt-1 mb-2">
             <h2 className="text-md font-bold text-white/90 truncate">
-              {data.companyName || "No Company Selected"}
+              {data?.companies[0]?.name || "No Company Selected"}
             </h2>
             <button
               onClick={() => setIsAddCompanyOpen(true)}
