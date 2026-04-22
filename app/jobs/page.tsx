@@ -280,7 +280,7 @@ function JobsPageContent() {
                   <div className="group glass-card rounded-2xl p-5 flex flex-col gap-4 hover:border-indigo-500/35 hover:shadow-xl hover:shadow-indigo-500/10 hover:-translate-y-0.5 transition-all duration-200">
                     <div className="flex items-start gap-3">
                       <div
-                        className={`shrink-0 w-11 h-11 rounded-xl bg-gradient-to-br ${grad} flex items-center justify-center text-base font-extrabold text-white shadow-lg`}
+                        className={`shrink-0 w-11 h-11 rounded-xl bg-linear-to-br ${grad} flex items-center justify-center text-base font-extrabold text-white shadow-lg`}
                       >
                         {job.title?.charAt(0)?.toUpperCase() ?? "J"}
                       </div>

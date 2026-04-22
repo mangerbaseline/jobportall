@@ -1,6 +1,5 @@
 export const PROTECTED_ROUTES = [
   "/employer",
-  "/user",
   "/profile",
   "/settings",
   "/jobs/apply",

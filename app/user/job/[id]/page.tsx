@@ -19,6 +19,7 @@ interface Job {
   employerId: string;
   name: string;
   applied?: boolean;
+  isLoggedIn?: boolean;
 }
 
 type FetchStatus = "idle" | "loading" | "success" | "error";
@@ -669,7 +670,13 @@ export default function JobPage() {
                   )}
 
                   <button
-                    onClick={() => setShowForm(true)}
+                    onClick={() => {
+                      if (!job.isLoggedIn) {
+                        router.push("/auth/signin");
+                      } else {
+                        setShowForm(true);
+                      }
+                    }}
                     className="w-full py-3.5 rounded-xl font-bold text-sm tracking-wide
                       bg-gradient-to-r from-emerald-500 to-teal-500
                       hover:from-emerald-400 hover:to-teal-400
@@ -677,7 +684,7 @@ export default function JobPage() {
                       shadow-lg shadow-emerald-900/30
                       flex items-center justify-center gap-2"
                   >
-                    Apply Now
+                    {!job.isLoggedIn ? "Login to Apply" : "Apply Now"}
                     <svg
                       className="w-4 h-4"
                       fill="none"

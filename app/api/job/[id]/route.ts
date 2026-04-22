@@ -17,20 +17,15 @@ export async function GET(
     }
 
     const token = request.cookies.get("token");
-    //console.log("token : ", token);
-    if (!token) {
-      return NextResponse.json(
-        { success: false, message: "Not Authorized" },
-        { status: 401 },
-      );
-    }
-    //remove ""
-    const user = await CheckAuth(token.value);
-    if (!user || !user.id) {
-      return NextResponse.json(
-        { success: false, message: "Not Authorized ." },
-        { status: 401 },
-      );
+    let user = null;
+    
+    if (token) {
+      try {
+        user = await CheckAuth(token.value);
+      } catch (e) {
+        // Ignore token errors, treat as unauthenticated
+        user = null;
+      }
     }
 
     const existingJob = await prisma.job.findUnique({
@@ -60,16 +55,19 @@ export async function GET(
       );
     }
 
-    const hasApplied = await prisma.application.findUnique({
-      where: {
-        userId_jobId: {
-          userId: user.id,
-          jobId: id,
+    let hasApplied = null;
+    if (user && user.id) {
+      hasApplied = await prisma.application.findUnique({
+        where: {
+          userId_jobId: {
+            userId: user.id,
+            jobId: id,
+          },
         },
-      },
-    });
+      });
+    }
 
-    const Job = { ...existingJob, ...Company, applied: !!hasApplied };
+    const Job = { ...existingJob, ...Company, applied: !!hasApplied, isLoggedIn: !!(user && user.id) };
     console.log("job  : ", Job);
     if (!Job) {
       return NextResponse.json({
