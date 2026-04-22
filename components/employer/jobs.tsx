@@ -114,7 +114,7 @@ export default function Jobs() {
                   {/* Left: icon + info */}
                   <div className="flex items-start gap-4 flex-1 min-w-0">
                     <div
-                      className={`shrink-0 w-11 h-11 rounded-xl bg-gradient-to-br ${grad} flex items-center justify-center text-base font-extrabold text-white shadow-lg`}
+                      className={`shrink-0 w-11 h-11 rounded-xl bg-linear-to-br ${grad} flex items-center justify-center text-base font-extrabold text-white shadow-lg`}
                     >
                       {job.title?.charAt(0)?.toUpperCase() ?? "J"}
                     </div>

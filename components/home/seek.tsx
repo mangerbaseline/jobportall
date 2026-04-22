@@ -16,8 +16,8 @@ export function HomeCard({ seek, postJob, link }: CardHome) {
         className={`relative overflow-hidden h-full rounded-3xl border transition-all duration-300 p-8 flex flex-col items-start gap-6 cursor-pointer
           ${
             isSeeker
-              ? "bg-gradient-to-br from-indigo-600/20 to-indigo-900/20 border-indigo-500/25 hover:border-indigo-400/50 hover:shadow-2xl hover:shadow-indigo-500/20"
-              : "bg-gradient-to-br from-violet-600/20 to-violet-900/20 border-violet-500/25 hover:border-violet-400/50 hover:shadow-2xl hover:shadow-violet-500/20"
+              ? "bg-linear-to-br from-indigo-600/20 to-indigo-900/20 border-indigo-500/25 hover:border-indigo-400/50 hover:shadow-2xl hover:shadow-indigo-500/20"
+              : "bg-linear-to-br from-violet-600/20 to-violet-900/20 border-violet-500/25 hover:border-violet-400/50 hover:shadow-2xl hover:shadow-violet-500/20"
           }
           hover:-translate-y-1
         `}
@@ -34,8 +34,8 @@ export function HomeCard({ seek, postJob, link }: CardHome) {
           className={`relative z-10 w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110 group-hover:animate-float
             ${
               isSeeker
-                ? "bg-gradient-to-br from-indigo-500 to-indigo-700 shadow-indigo-500/40"
-                : "bg-gradient-to-br from-violet-500 to-violet-700 shadow-violet-500/40"
+                ? "bg-linear-to-br from-indigo-500 to-indigo-700 shadow-indigo-500/40"
+                : "bg-linear-to-br from-violet-500 to-violet-700 shadow-violet-500/40"
             }
           `}
         >

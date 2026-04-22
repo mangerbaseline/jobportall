@@ -13,6 +13,7 @@ import {
   Shield,
 } from "lucide-react";
 import Link from "next/link";
+import { SearchSelect } from "@/components/home/Search";
 
 const stats = [
   { icon: Briefcase, value: "1,200+", label: "Active Jobs" },
@@ -91,8 +92,16 @@ export default function Home() {
           </p>
 
           {/* CTA Cards */}
+
+          {/* Search Section */}
           <div
-            className="flex flex-col sm:flex-row gap-5 justify-center items-stretch max-w-2xl mx-auto animate-fade-up"
+            className="animate-fade-up mb-5 relative z-10"
+            style={{ animationDelay: "0.4s", opacity: 0 }}
+          >
+            <SearchSelect />
+          </div>
+          <div
+            className="flex flex-col sm:flex-row gap-5 justify-center items-stretch max-w-2xl mx-auto animate-fade-up "
             style={{ animationDelay: "0.3s", opacity: 0 }}
           >
             <HomeCard seek="Seeker" link="/user" />
@@ -139,7 +148,7 @@ export default function Home() {
             {/* Seeker steps */}
             <div className="glass-card rounded-3xl p-8 space-y-6 hover:border-indigo-500/30 transition-all duration-300">
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-xl bg-linear-to-br from-indigo-500 to-indigo-700 flex items-center justify-center">
                   <Search className="w-4 h-4 text-white" />
                 </div>
                 <h3 className="text-lg font-bold text-indigo-200">
@@ -169,7 +178,7 @@ export default function Home() {
             {/* Employer steps */}
             <div className="glass-card rounded-3xl p-8 space-y-6 hover:border-violet-500/30 transition-all duration-300">
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500 to-violet-700 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-xl bg-linear-to-br from-violet-500 to-violet-700 flex items-center justify-center">
                   <Building2 className="w-4 h-4 text-white" />
                 </div>
                 <h3 className="text-lg font-bold text-violet-200">

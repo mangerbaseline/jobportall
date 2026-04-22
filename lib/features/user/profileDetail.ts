@@ -1,4 +1,8 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  isRejectedWithValue,
+} from "@reduxjs/toolkit";
 
 interface JobData {
   id: string;
@@ -20,6 +24,34 @@ interface PostJobPayload {
   salary: string;
   vacancy: string;
   companyId?: string;
+}
+
+interface UpdateJob {
+  title: string;
+  vacancy: string;
+  description: string;
+  location: string;
+  salary: string;
+}
+
+interface UpdateJobPayload {
+  id: string;
+  updatedData: Partial<UpdateJob>;
+}
+
+interface UpdateJobPayload {
+  success: boolean;
+  job: {
+    id: string;
+    title: string;
+    vacancy: number;
+    location: string;
+    salary: number;
+    createdAt: string;
+    _count: {
+      applications: number;
+    };
+  };
 }
 
 interface ApplicationData {
@@ -106,7 +138,7 @@ export const postJob = createAsyncThunk<JobData, PostJobPayload>(
   "userDetail/postJob",
   async (payload, { rejectWithValue }) => {
     try {
-      const res = await fetch("/api/job/create", {
+      const res = await fetch(`/api/job/create`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -125,6 +157,17 @@ export const postJob = createAsyncThunk<JobData, PostJobPayload>(
     }
   },
 );
+
+// export const updateJob = createAsyncThunk (
+//   "update/job",
+//   async ({id ,updatedData},thunkAPI) => {
+//     try {
+//         const res = await fetch(`api/employ/job/update/${id}`)
+//         } catch (error) {
+
+// }
+//   }
+// );
 
 const userDetailSlice = createSlice({
   name: "userDetail",
@@ -151,7 +194,6 @@ const userDetailSlice = createSlice({
       })
       .addCase(postJob.fulfilled, (state, action) => {
         if (state.data) {
-          state.data.jobs = [action.payload, ...state.data.jobs];
           state.data._count.jobs += 1;
         }
       });
