@@ -38,6 +38,7 @@ model Job {
   companyId    String?
   vacancy      Int           @default(0)
   available    Boolean       @default(true)
+  tags         String[]      
   applications Application[]
   employer     User          @relation("EmployerJobs", fields: [employerId], references: [id], onDelete: Cascade)
   company      Company?      @relation(fields: [companyId], references: [id], onDelete: Cascade)

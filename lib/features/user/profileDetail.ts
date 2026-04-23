@@ -12,6 +12,7 @@ interface JobData {
   salary: number | null;
   createdAt: string;
   company?: { id: string; name: string } | null;
+  tags: string[];
   _count: {
     applications: number;
   };
@@ -23,6 +24,7 @@ interface PostJobPayload {
   location: string;
   salary: string;
   vacancy: string;
+  tags?: string[];
   companyId?: string;
 }
 

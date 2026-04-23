@@ -13,6 +13,7 @@ import {
   FileText,
   Loader2,
   CheckCircle2,
+  Tag,
 } from "lucide-react";
 import { useAppDispatch } from "@/lib/hook/hook";
 import { postJob } from "@/lib/features/user/profileDetail";
@@ -54,6 +55,7 @@ const formSchema = z.object({
   location: z.string().min(2, "Location must be at least 2 characters."),
   salary: z.string().min(1, "Salary is required."),
   companyId: z.string().optional(),
+  tags: z.string().optional(),
 });
 
 interface CreatePostFormProps {
@@ -85,12 +87,19 @@ export function CreatePostForm({ onClose }: CreatePostFormProps = {}) {
       location: "",
       salary: "",
       companyId: "",
+      tags: "",
     },
   });
   const { isSubmitting } = form.formState;
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    const result = await dispatch(postJob(data));
+    const processedData = {
+      ...data,
+      tags: data.tags
+        ? data.tags.split(",").map((tag) => tag.trim()).filter((tag) => tag !== "")
+        : [],
+    };
+    const result = await dispatch(postJob(processedData));
 
     if (postJob.fulfilled.match(result)) {
       toast.success("Job posted successfully", {
@@ -271,6 +280,38 @@ export function CreatePostForm({ onClose }: CreatePostFormProps = {}) {
                   autoComplete="off"
                   className="bg-white/5 border-white/12 focus:border-indigo-500/60 focus:ring-indigo-500/20 text-white placeholder-white/30 rounded-xl"
                 />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+
+          {/* Tags */}
+          <Controller
+            name="tags"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel
+                  htmlFor="create-post-tags"
+                  className="text-white/70 text-sm font-semibold mb-1.5 flex items-center gap-2"
+                >
+                  <Tag className="w-3.5 h-3.5 text-indigo-400" />
+                  Tags (comma separated)
+                </FieldLabel>
+                <Input
+                  {...field}
+                  value={field.value ?? ""}
+                  id="create-post-tags"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="e.g. React, Next.js, TypeScript"
+                  autoComplete="off"
+                  className="bg-white/5 border-white/12 focus:border-indigo-500/60 focus:ring-indigo-500/20 text-white placeholder-white/30 rounded-xl"
+                />
+                <FieldDescription className="text-white/35 text-xs mt-1">
+                  Separate tags with commas to help candidates find your job.
+                </FieldDescription>
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}

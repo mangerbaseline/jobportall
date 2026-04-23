@@ -7,6 +7,15 @@ import { useRouter } from "next/navigation";
 import ResumeUploader from "@/components/user/resume";
 import { useForm } from "react-hook-form";
 
+interface RelatedJob {
+  id: string;
+  title: string;
+  name: string;
+  location: string;
+  salary: number | null;
+  createdAt: string;
+}
+
 interface Job {
   id: string;
   title: string;
@@ -20,6 +29,7 @@ interface Job {
   name: string;
   applied?: boolean;
   isLoggedIn?: boolean;
+  relatedJobs?: RelatedJob[];
 }
 
 type FetchStatus = "idle" | "loading" | "success" | "error";
@@ -47,7 +57,7 @@ function timeAgo(dateStr: string): string {
 function LoadingSkeleton() {
   return (
     <div className="min-h-screen bg-slate-950 flex items-center justify-center px-4">
-      <div className="w-full max-w-2xl space-y-6 animate-pulse">
+      <div className="w-full max-w-5xl space-y-6 animate-pulse">
         <div className="h-4 w-24 bg-slate-800 rounded-full" />
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 space-y-6">
           <div className="flex gap-4">
@@ -230,10 +240,14 @@ export default function JobPage() {
       formData.append("resume", resumeFile);
       formData.append("jobId", id || "");
       formData.append("jobTitle", data.jobTitle);
-      if (data.experience !== "") formData.append("experience", String(data.experience));
-      if (data.availableDate) formData.append("availableDate", data.availableDate);
-      if (data.expectedSalary !== "") formData.append("expectedSalary", String(data.expectedSalary));
-      if (data.noticePeriod !== "") formData.append("noticePeriod", String(data.noticePeriod));
+      if (data.experience !== "")
+        formData.append("experience", String(data.experience));
+      if (data.availableDate)
+        formData.append("availableDate", data.availableDate);
+      if (data.expectedSalary !== "")
+        formData.append("expectedSalary", String(data.expectedSalary));
+      if (data.noticePeriod !== "")
+        formData.append("noticePeriod", String(data.noticePeriod));
 
       const response = await fetch("/api/application", {
         method: "POST",
@@ -275,7 +289,7 @@ export default function JobPage() {
   return (
     <div className="min-h-screen bg-slate-950 text-white px-4 py-20">
       {/* Back link */}
-      <div className="max-w-2xl mx-auto mb-6">
+      <div className="max-w-5xl mx-auto mb-6">
         <Link
           href="/user"
           className="inline-flex items-center gap-1.5 text-slate-500 hover:text-slate-300 text-sm transition-colors duration-200 group"
@@ -297,16 +311,16 @@ export default function JobPage() {
         </Link>
       </div>
 
-      <div className="max-w-2xl mx-auto space-y-4">
+      <div className="max-w-5xl mx-auto space-y-4">
         {/* ── Main card ── */}
         <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl shadow-black/40">
           {/* Accent bar */}
-          <div className="h-1 w-full bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-500" />
+          <div className="h-1 w-full bg-linear-to-r from-emerald-500 via-teal-400 to-cyan-500" />
 
           <div className="p-8">
             {/* Header */}
             <div className="flex items-start gap-5 mb-6">
-              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 flex items-center justify-center text-white font-black text-xl shrink-0 shadow-lg shadow-emerald-900/40">
+              <div className="w-14 h-14 rounded-xl bg-linear-to-br from-emerald-600 to-teal-700 flex items-center justify-center text-white font-black text-xl shrink-0 shadow-lg shadow-emerald-900/40">
                 {initials}
               </div>
 
@@ -471,9 +485,14 @@ export default function JobPage() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {/* Job Title */}
                     <div className="sm:col-span-2">
-                      <Field label="Job Title *" error={errors.jobTitle?.message}>
+                      <Field
+                        label="Job Title *"
+                        error={errors.jobTitle?.message}
+                      >
                         <input
-                          {...register("jobTitle", { required: "Job title is required" })}
+                          {...register("jobTitle", {
+                            required: "Job title is required",
+                          })}
                           type="text"
                           placeholder="e.g. Frontend Developer"
                           className={`w-full h-11 bg-slate-800/60 border rounded-xl px-4 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:ring-2 transition-all ${
@@ -486,7 +505,10 @@ export default function JobPage() {
                     </div>
 
                     {/* Experience */}
-                    <Field label="Experience (Years) *" error={errors.experience?.message}>
+                    <Field
+                      label="Experience (Years) *"
+                      error={errors.experience?.message}
+                    >
                       <input
                         {...register("experience", {
                           required: "Experience is required",
@@ -504,7 +526,10 @@ export default function JobPage() {
                     </Field>
 
                     {/* Notice Period */}
-                    <Field label="Notice Period (Days) *" error={errors.noticePeriod?.message}>
+                    <Field
+                      label="Notice Period (Days) *"
+                      error={errors.noticePeriod?.message}
+                    >
                       <input
                         {...register("noticePeriod", {
                           required: "Notice period is required",
@@ -522,7 +547,10 @@ export default function JobPage() {
                     </Field>
 
                     {/* Expected Salary */}
-                    <Field label="Expected Salary *" error={errors.expectedSalary?.message}>
+                    <Field
+                      label="Expected Salary *"
+                      error={errors.expectedSalary?.message}
+                    >
                       <input
                         {...register("expectedSalary", {
                           required: "Expected salary is required",
@@ -540,13 +568,16 @@ export default function JobPage() {
                     </Field>
 
                     {/* Available Date */}
-                    <Field label="Available From *" error={errors.availableDate?.message}>
+                    <Field
+                      label="Available From *"
+                      error={errors.availableDate?.message}
+                    >
                       <input
                         {...register("availableDate", {
                           required: "Available date is required",
                         })}
                         type="date"
-                        className={`w-full h-11 bg-slate-800/60 border rounded-xl px-4 text-white text-sm focus:outline-none focus:ring-2 transition-all [color-scheme:dark] ${
+                        className={`w-full h-11 bg-slate-800/60 border rounded-xl px-4 text-white text-sm focus:outline-none focus:ring-2 transition-all scheme-dark ${
                           errors.availableDate
                             ? "border-rose-600 focus:ring-rose-500/30"
                             : "border-slate-700 focus:ring-emerald-500/30 focus:border-emerald-500/50"
@@ -567,7 +598,9 @@ export default function JobPage() {
                       />
                     </div>
                     {!resumeFile && applyStatus === "error" && (
-                      <p className="text-rose-400 text-xs">Resume is required.</p>
+                      <p className="text-rose-400 text-xs">
+                        Resume is required.
+                      </p>
                     )}
                   </div>
 
@@ -597,7 +630,7 @@ export default function JobPage() {
                       type="submit"
                       disabled={applyStatus === "loading"}
                       className="flex-1 py-3.5 rounded-xl font-bold text-sm tracking-wide
-                        bg-gradient-to-r from-emerald-500 to-teal-500
+                        bg-linear-to-rrom-emerald-500 to-teal-500
                         hover:from-emerald-400 hover:to-teal-400
                         disabled:opacity-50 disabled:cursor-not-allowed
                         text-slate-950 transition-all duration-200
@@ -678,7 +711,7 @@ export default function JobPage() {
                       }
                     }}
                     className="w-full py-3.5 rounded-xl font-bold text-sm tracking-wide
-                      bg-gradient-to-r from-emerald-500 to-teal-500
+                      bg-linear-to-r from-emerald-500 to-teal-500
                       hover:from-emerald-400 hover:to-teal-400
                       text-slate-950 transition-all duration-200
                       shadow-lg shadow-emerald-900/30
@@ -713,6 +746,70 @@ export default function JobPage() {
         <p className="text-center text-slate-700 text-xs pb-6">
           Job ID: {job.id}
         </p>
+
+        {/* ── Related Jobs Section ── */}
+        {job.relatedJobs && job.relatedJobs.length > 0 && (
+          <div className="mt-16 mb-20">
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h2 className="text-2xl font-black tracking-tight text-white">
+                  Related Opportunities
+                </h2>
+                <p className="text-slate-500 text-sm mt-1">
+                  Jobs you might be interested in based on your tags
+                </p>
+              </div>
+              <div className="h-px flex-1 bg-slate-800 mx-8 hidden sm:block" />
+              <Link
+                href="/user"
+                className="text-emerald-400 hover:text-emerald-300 text-sm font-bold transition-colors shrink-0"
+              >
+                View All →
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {job.relatedJobs.map((rj) => (
+                <Link
+                  key={rj.id}
+                  href={`/user/job/${rj.id}`}
+                  className="group bg-slate-900/40 border border-slate-800 hover:border-emerald-500/30 rounded-2xl p-5 transition-all duration-300 hover:shadow-2xl hover:shadow-emerald-900/10 hover:-translate-y-1"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-slate-800 flex items-center justify-center text-white font-bold text-sm shrink-0 group-hover:bg-emerald-500/10 group-hover:text-emerald-400 transition-colors">
+                      {rj.title.substring(0, 2).toUpperCase()}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-white font-bold text-base truncate group-hover:text-emerald-400 transition-colors">
+                        {rj.title}
+                      </h3>
+                      <p className="text-slate-500 text-sm mb-3">{rj.name}</p>
+                      
+                      <div className="flex flex-wrap gap-3 items-center">
+                        <div className="flex items-center gap-1.5 text-slate-400 text-xs">
+                          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                          </svg>
+                          {rj.location}
+                        </div>
+                        <div className="flex items-center gap-1.5 text-emerald-400/80 text-xs font-semibold">
+                          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          ${rj.salary}
+                        </div>
+                        <div className="text-slate-600 text-[10px] uppercase tracking-wider font-bold ml-auto">
+                          {timeAgo(rj.createdAt)}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

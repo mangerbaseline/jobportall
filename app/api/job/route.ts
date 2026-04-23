@@ -18,11 +18,17 @@ export async function GET(req: NextRequest) {
     const search = searchParams.get("search") || "";
     const title = searchParams.get("title") || "";
     const location = searchParams.get("location") || "";
+    const tags = searchParams.get("tags") || "";
     const skip = (page - 1) * limit;
 
     const where: any = { available: true };
     
     const andConditions: any[] = [];
+
+    if (tags) {
+      const tagList = tags.split(",").map(t => t.trim());
+      andConditions.push({ tags: { hasSome: tagList } });
+    }
 
     if (search) {
       andConditions.push({

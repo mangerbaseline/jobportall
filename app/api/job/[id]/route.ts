@@ -40,10 +40,43 @@ export async function GET(
       );
     }
 
-    const Company = await prisma.user.findUnique({
-      where: { id: existingJob.employerId },
-      select: { name: true },
-    });
+    const [relatedJobs, Company, hasApplied] = await Promise.all([
+      prisma.job.findMany({
+        where: {
+          id: { not: id },
+          available: true,
+          tags: { hasSome: existingJob.tags },
+        },
+        take: 6,
+        select: {
+          id: true,
+          title: true,
+          location: true,
+          salary: true,
+          createdAt: true,
+          employer: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      }),
+      prisma.user.findUnique({
+        where: { id: existingJob.employerId },
+        select: { name: true },
+      }),
+      user && user.id
+        ? prisma.application.findUnique({
+            where: {
+              userId_jobId: {
+                userId: user.id,
+                jobId: id,
+              },
+            },
+          })
+        : Promise.resolve(null),
+    ]);
+
     if (!Company) {
       return NextResponse.json(
         {
@@ -55,19 +88,17 @@ export async function GET(
       );
     }
 
-    let hasApplied = null;
-    if (user && user.id) {
-      hasApplied = await prisma.application.findUnique({
-        where: {
-          userId_jobId: {
-            userId: user.id,
-            jobId: id,
-          },
-        },
-      });
-    }
-
-    const Job = { ...existingJob, ...Company, applied: !!hasApplied, isLoggedIn: !!(user && user.id) };
+    const Job = {
+      ...existingJob,
+      ...Company,
+      applied: !!hasApplied,
+      isLoggedIn: !!(user && user.id),
+      relatedJobs: relatedJobs.map(j => ({
+        ...j,
+        name: j.employer.name,
+        employer: undefined
+      }))
+    };
     console.log("job  : ", Job);
     if (!Job) {
       return NextResponse.json({

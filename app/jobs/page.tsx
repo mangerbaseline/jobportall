@@ -10,6 +10,7 @@ import {
   Loader2,
   MapPin,
   Search,
+  Tag,
   Users,
   X,
 } from "lucide-react";
@@ -74,6 +75,7 @@ function JobsPageContent() {
   const initTitle = searchParams.get("title") ?? "";
   const initLocation = searchParams.get("location") ?? "";
   const initPage = parseInt(searchParams.get("page") ?? "1");
+  const initTags = searchParams.get("tags") ?? "";
 
   const [searchInput, setSearchInput] = useState(initSearch);
   const [jobs, setJobs] = useState<any[]>([]);
@@ -81,12 +83,15 @@ function JobsPageContent() {
   const [currentPage, setCurrentPage] = useState(initPage);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [availableTags, setAvailableTags] = useState<string[]>([]);
+  const [shuffledTags, setShuffledTags] = useState<string[]>([]);
 
   // Build active filter labels for display
   const activeFilters = [
     initTitle && { key: "title", label: `Title: ${initTitle}` },
     initLocation && { key: "location", label: `Location: ${initLocation}` },
     initSearch && { key: "search", label: `Keyword: ${initSearch}` },
+    initTags && { key: "tags", label: `Tags: ${initTags}` },
   ].filter(Boolean) as { key: string; label: string }[];
 
   const fetchJobs = useCallback(async () => {
@@ -100,6 +105,7 @@ function JobsPageContent() {
         params.set("location", initLocation);
         console.log(`Location init${initLocation} , ${params.getAll}`);
       }
+      if (initTags) params.set("tags", initTags);
       params.set("page", String(currentPage));
       params.set("limit", String(LIMIT));
 
@@ -113,11 +119,47 @@ function JobsPageContent() {
     } finally {
       setLoading(false);
     }
-  }, [initSearch, initTitle, initLocation, currentPage]);
+  }, [initSearch, initTitle, initLocation, initTags, currentPage]);
 
   useEffect(() => {
     fetchJobs();
   }, [fetchJobs]);
+
+  useEffect(() => {
+    const fetchFilters = async () => {
+      try {
+        const res = await fetch("/api/job/filters");
+        const data = await res.json();
+        if (data.tags) {
+          setAvailableTags(data.tags);
+          setShuffledTags([...data.tags].sort(() => 0.5 - Math.random()).slice(0, 6));
+        }
+      } catch (err) {
+        console.error("Failed to fetch tags", err);
+      }
+    };
+    fetchFilters();
+  }, []);
+
+  const toggleTag = (tag: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    const currentTags = params.get("tags") ? params.get("tags")!.split(",") : [];
+    
+    let newTags: string[];
+    if (currentTags.includes(tag)) {
+      newTags = currentTags.filter((t) => t !== tag);
+    } else {
+      newTags = [...currentTags, tag];
+    }
+    
+    if (newTags.length > 0) {
+      params.set("tags", newTags.join(","));
+    } else {
+      params.delete("tags");
+    }
+    params.set("page", "1");
+    router.push(`/jobs?${params.toString()}`);
+  };
 
   const goToPage = (page: number) => {
     setCurrentPage(page);
@@ -201,8 +243,38 @@ function JobsPageContent() {
                 <X className="size-3.5" />
               </button>
             )}
+            </div>
           </div>
-        </div>
+
+        {/* ── Random Tags / Options ── */}
+        {shuffledTags.length > 0 && (
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2">
+              <Tag className="w-3.5 h-3.5 text-indigo-400" />
+              <span className="text-xs font-semibold text-white/50 uppercase tracking-wider">
+                Popular Tags
+              </span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {shuffledTags.map((tag) => {
+                const isActive = initTags.split(",").includes(tag);
+                return (
+                  <button
+                    key={tag}
+                    onClick={() => toggleTag(tag)}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all duration-200 border ${
+                      isActive
+                        ? "bg-indigo-500/20 border-indigo-500/50 text-indigo-300 shadow-lg shadow-indigo-500/10"
+                        : "bg-white/5 border-white/10 text-white/50 hover:bg-white/10 hover:border-white/20 hover:text-white/80"
+                    }`}
+                  >
+                    {tag}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* ── Active filter chips ── */}
         {activeFilters.length > 0 && (
@@ -297,6 +369,24 @@ function JobsPageContent() {
                     <p className="text-white/50 text-sm line-clamp-2 leading-relaxed flex-1">
                       {job.description}
                     </p>
+
+                    {job.tags && job.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 mt-auto">
+                        {job.tags.slice(0, 3).map((tag: string) => (
+                          <span
+                            key={tag}
+                            className="px-2 py-0.5 rounded-lg bg-white/5 border border-white/10 text-[10px] font-medium text-white/40"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                        {job.tags.length > 3 && (
+                          <span className="text-[10px] text-white/25 self-center">
+                            +{job.tags.length - 3}
+                          </span>
+                        )}
+                      </div>
+                    )}
 
                     <div className="flex flex-wrap gap-x-4 gap-y-2 pt-3 border-t border-white/6 text-xs font-medium">
                       <span className="flex items-center gap-1.5 text-white/45">
