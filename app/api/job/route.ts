@@ -31,17 +31,29 @@ export async function GET(req: NextRequest) {
     }
 
     if (search) {
-      const searchLower = search.toLowerCase();
-      const searchCapitalized = search.charAt(0).toUpperCase() + search.slice(1).toLowerCase();
-      
-      andConditions.push({
-        OR: [
-          { title: { contains: search, mode: "insensitive" } },
-          { location: { contains: search, mode: "insensitive" } },
-          { description: { contains: search, mode: "insensitive" } },
-          { tags: { hasSome: [search, searchLower, searchCapitalized] } },
-        ],
+      // 1. Fetch all tags to find case-insensitive and partial matches
+      const allJobsWithTags = await prisma.job.findMany({
+        where: { available: true },
+        select: { tags: true },
       });
+      const uniqueTags = Array.from(new Set(allJobsWithTags.flatMap(j => j.tags)));
+      const matchedTags = uniqueTags.filter(tag => 
+        tag.toLowerCase().includes(search.toLowerCase())
+      );
+
+      // 2. Build the OR condition
+      const searchOrConditions: any[] = [
+        { title: { contains: search, mode: "insensitive" } },
+        { location: { contains: search, mode: "insensitive" } },
+        { description: { contains: search, mode: "insensitive" } },
+      ];
+
+      // Add tag matching only if we found matching tags (hasSome with empty array matches nothing)
+      if (matchedTags.length > 0) {
+        searchOrConditions.push({ tags: { hasSome: matchedTags } });
+      }
+
+      andConditions.push({ OR: searchOrConditions });
     }
 
     if (title) {
