@@ -83,7 +83,7 @@ export function SearchSelect() {
   }, []);
 
   const handleSearch = useCallback(
-    async (overrideTitle?: string) => {
+    async (overrideTitle?: string, overrideKeyword?: string) => {
       const params = new URLSearchParams();
 
       // title field (from input or popular tag override)
@@ -94,7 +94,8 @@ export function SearchSelect() {
       if (location) params.set("location", location);
 
       // keyword — not debounced, sent as-is at search time
-      if (keyword) params.set("search", keyword);
+      const resolvedKeyword = overrideKeyword ?? keyword;
+      if (resolvedKeyword) params.set("search", resolvedKeyword);
 
       // always reset to page 1
       params.set("page", "1");
@@ -113,8 +114,8 @@ export function SearchSelect() {
   );
 
   const handleTagClick = (tag: string) => {
-    setTitle(tag);
-    handleSearch(tag);
+    setKeyword(tag);
+    handleSearch(undefined, tag);
   };
 
   return (

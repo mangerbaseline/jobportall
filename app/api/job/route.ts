@@ -31,11 +31,15 @@ export async function GET(req: NextRequest) {
     }
 
     if (search) {
+      const searchLower = search.toLowerCase();
+      const searchCapitalized = search.charAt(0).toUpperCase() + search.slice(1).toLowerCase();
+      
       andConditions.push({
         OR: [
           { title: { contains: search, mode: "insensitive" } },
           { location: { contains: search, mode: "insensitive" } },
           { description: { contains: search, mode: "insensitive" } },
+          { tags: { hasSome: [search, searchLower, searchCapitalized] } },
         ],
       });
     }
