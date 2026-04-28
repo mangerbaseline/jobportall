@@ -45,10 +45,10 @@ const AppleNavbar = () => {
     user.role === "ADMIN"
       ? "/admin"
       : user.role === "EMPLOYER"
-      ? "/employer"
-      : user.role === "USER"
-      ? "/user"
-      : null;
+        ? "/employer"
+        : user.role === "USER"
+          ? "/user"
+          : null;
 
   // When logged in: Dashboard first, no Home link
   // When guest: Home, About, Contact
@@ -124,8 +124,8 @@ const AppleNavbar = () => {
                       {user.role === "ADMIN"
                         ? "Admin"
                         : user.role === "EMPLOYER"
-                        ? "Employer"
-                        : "Seeker"}
+                          ? "Employer"
+                          : "Seeker"}
                     </span>
                   </div>
                   {/* Logout */}
@@ -221,8 +221,8 @@ const AppleNavbar = () => {
                       {user.role === "ADMIN"
                         ? "Admin"
                         : user.role === "EMPLOYER"
-                        ? "Employer"
-                        : "Job Seeker"}
+                          ? "Employer"
+                          : "Job Seeker"}
                     </p>
                   </div>
                 </div>

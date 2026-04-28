@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 import { prisma } from "@/lib/prisma";
 import { signToken } from "@/lib/jwt";
-import { success } from "zod";
+import { sendVerificationEmail } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   try {
@@ -36,12 +37,17 @@ export async function POST(req: NextRequest) {
     }
 
     const hashed = await bcrypt.hash(password, 10);
+    const verificationToken = crypto.randomBytes(32).toString("hex");
+    const tokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+
     let User: any = {
       id: crypto.randomUUID(),
       name: name,
       email: email,
       password: hashed,
       role: role,
+      verificationToken,
+      tokenExpires,
     };
 
     if (role === "EMPLOYER") {
@@ -59,6 +65,9 @@ export async function POST(req: NextRequest) {
     ////console.log("its here : ", user);
 
     const token = signToken({ id: user.id, role: user.role });
+    
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || `${req.headers.get("x-forwarded-proto") || "http"}://${req.headers.get("host")}`;
+    await sendVerificationEmail(user.email, verificationToken, baseUrl);
 
     ////console.log("its here at token : ", token);
     const response = NextResponse.json(

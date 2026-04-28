@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import { CreatePostForm } from "@/components/employer/CreatePost";
 import Jobs from "@/components/employer/jobs";
 import UserDetail from "@/components/employer/userDetail";
+import EmployerAnalytics from "@/components/employer/EmployerAnalytics";
 import GradientBlobs from "@/components/bg/gradientblobs";
 import { Plus, X, Briefcase, Loader2 } from "lucide-react";
 
@@ -72,6 +73,9 @@ export default function EmployerDashboard() {
 
         {/* ── Employer Profile Card ── */}
         <UserDetail />
+
+        {/* ── Analytics Section ── */}
+        <EmployerAnalytics />
 
         {/* ── Create Post Form (toggle) ── */}
         {postjob && (

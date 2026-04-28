@@ -21,6 +21,7 @@ export async function GET(request: NextRequest) {
         role: true,
         email: true,
         name: true,
+        verified: true,
         personal: {
           select: {
             avatar: true,

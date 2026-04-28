@@ -170,6 +170,30 @@ export const postJob = createAsyncThunk<JobData, PostJobPayload>(
 // }
 //   }
 // );
+export const updatePersonalDetail = createAsyncThunk<any, FormData>(
+  "userDetail/updatePersonalDetail",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const res = await fetch(`/api/user/personaldetail`, {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        throw new Error(
+          result.error || result.message || "Failed to update personal details",
+        );
+      }
+
+      return result.data;
+    } catch (err: any) {
+      return rejectWithValue(err.message);
+    }
+  },
+);
 
 const userDetailSlice = createSlice({
   name: "userDetail",
@@ -198,6 +222,20 @@ const userDetailSlice = createSlice({
         if (state.data) {
           state.data._count.jobs += 1;
         }
+      })
+      .addCase(updatePersonalDetail.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updatePersonalDetail.fulfilled, (state, action) => {
+        state.loading = false;
+        if (state.data) {
+          state.data.personal = action.payload;
+        }
+      })
+      .addCase(updatePersonalDetail.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
   },
 });

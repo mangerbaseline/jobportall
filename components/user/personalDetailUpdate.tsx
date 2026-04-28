@@ -14,10 +14,15 @@ import {
   AlertCircle,
   Briefcase,
   ChevronRight,
+  Mail,
+  Send,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAppDispatch } from "@/lib/hook/hook";
+import { updatePersonalDetail } from "@/lib/features/user/profileDetail";
 
 const PersonalDetailsForm = () => {
+  const dispatch = useAppDispatch();
   const [formData, setFormData] = useState({
     phone: "",
     address: "",
@@ -33,6 +38,9 @@ const PersonalDetailsForm = () => {
   });
 
   const [previewUrl, setPreviewUrl] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [isVerified, setIsVerified] = useState(false);
+  const [resendingEmail, setResendingEmail] = useState(false);
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
   const [error, setError] = useState("");
@@ -42,8 +50,18 @@ const PersonalDetailsForm = () => {
   useEffect(() => {
     const fetchExisting = async () => {
       try {
-        const response = await fetch("/api/user/personaldetail");
-        const json = await response.json();
+        const [personalRes, userRes] = await Promise.all([
+          fetch("/api/user/personaldetail"),
+          fetch("/api/user")
+        ]);
+        
+        const json = await personalRes.json();
+        const userJson = await userRes.json();
+        
+        if (userJson.success && userJson.user) {
+          setUserEmail(userJson.user.email);
+          setIsVerified(userJson.user.verified);
+        }
         if (json.success && json.data && json.data.length > 0) {
           const existing = json.data[0];
           console.log(existing);
@@ -110,13 +128,13 @@ const PersonalDetailsForm = () => {
 
       console.log("submit - data : ", submitData);
 
-      const response = await fetch("/api/user/personaldetail", {
-        method: "POST",
-        body: submitData,
-      });
+      const resultAction = await dispatch(updatePersonalDetail(submitData));
 
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "Failed to save details");
+      if (updatePersonalDetail.rejected.match(resultAction)) {
+        throw new Error(
+          (resultAction.payload as string) || "Failed to save details",
+        );
+      }
 
       setSuccess("Your personal profile has been updated successfully!");
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -124,6 +142,24 @@ const PersonalDetailsForm = () => {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleResendVerification = async () => {
+    setResendingEmail(true);
+    setError("");
+    setSuccess("");
+    try {
+      const res = await fetch("/api/auth/resend-verification", {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to resend");
+      setSuccess("Verification email sent! Please check your inbox.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error resending email");
+    } finally {
+      setResendingEmail(false);
     }
   };
 
@@ -210,7 +246,7 @@ const PersonalDetailsForm = () => {
             <div className="glass-card p-6 rounded-3xl space-y-4">
               <div className="flex items-center gap-2 text-primary ml-1">
                 <Briefcase className="w-4 h-4" />
-                <h3 className="text-xs font-bold uppercase tracking-[0.1em]">
+                <h3 className="text-xs font-bold uppercase tracking-widest">
                   Your Bio
                 </h3>
               </div>
@@ -229,6 +265,48 @@ const PersonalDetailsForm = () => {
           <div className="lg:col-span-2 space-y-6">
             <div className="glass-card p-6 md:p-8 rounded-[2.5rem] shadow-xl shadow-black/40">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6">
+                
+                {/* Email (Read-only) & Verification */}
+                <div className="md:col-span-2 space-y-2">
+                  <div className="flex justify-between items-center">
+                    <label className="text-xs font-bold text-white/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
+                      <Mail className="w-3 h-3 text-primary/60" /> Email Address
+                    </label>
+                    {isVerified ? (
+                      <span className="flex items-center gap-1 text-xs font-bold text-green-400 bg-green-500/10 px-2 py-1 rounded-full">
+                        <CheckCircle2 className="w-3 h-3" /> Verified
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-1 text-xs font-bold text-amber-400 bg-amber-500/10 px-2 py-1 rounded-full">
+                        <AlertCircle className="w-3 h-3" /> Unverified
+                      </span>
+                    )}
+                  </div>
+                  <div className="relative flex items-center">
+                    <input
+                      type="email"
+                      value={userEmail}
+                      disabled
+                      className="w-full h-12 bg-white/5 border border-white/10 rounded-xl px-4 text-white/50 focus:outline-none font-medium cursor-not-allowed"
+                    />
+                    {!isVerified && (
+                      <button
+                        type="button"
+                        onClick={handleResendVerification}
+                        disabled={resendingEmail}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 bg-primary/20 hover:bg-primary/40 text-primary px-3 py-1.5 rounded-lg text-xs font-bold transition-colors flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {resendingEmail ? (
+                          <Loader2 className="w-3 h-3 animate-spin" />
+                        ) : (
+                          <Send className="w-3 h-3" />
+                        )}
+                        Resend
+                      </button>
+                    )}
+                  </div>
+                </div>
+
                 {/* Phone */}
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-white/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
@@ -255,7 +333,7 @@ const PersonalDetailsForm = () => {
                     name="dob"
                     value={formData.dob}
                     onChange={handleInputChange}
-                    className="w-full h-12 bg-white/5 border border-white/10 rounded-xl px-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all [color-scheme:dark] cursor-pointer"
+                    className="w-full h-12 bg-white/5 border border-white/10 rounded-xl px-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all scheme-dark cursor-pointer"
                   />
                 </div>
 

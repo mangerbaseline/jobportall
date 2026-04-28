@@ -40,6 +40,15 @@ export async function GET(
       );
     }
 
+    // Increment view count (fire-and-forget, non-blocking)
+    // Only count if viewer is not the employer who owns this job
+    if (!user || user.id !== existingJob.employerId) {
+      prisma.job.update({
+        where: { id },
+        data: { views: { increment: 1 } },
+      }).catch(() => {}); // silently ignore errors
+    }
+
     const [relatedJobs, Company, hasApplied] = await Promise.all([
       prisma.job.findMany({
         where: {

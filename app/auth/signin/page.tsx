@@ -15,7 +15,7 @@ export default function SignInPage() {
       <GradientBlobs />
 
       {/* ── Left Panel (decorative) — hidden on mobile ── */}
-      <div className="hidden lg:flex flex-col justify-between w-[45%] shrink-0 p-12 relative overflow-hidden">
+      <div className=" hidden lg:flex flex-col justify-between w-[45%] shrink-0 p-12 relative overflow-hidden">
         {/* Glow orbs */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-indigo-600/20 rounded-full blur-3xl" />
