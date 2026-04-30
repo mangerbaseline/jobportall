@@ -57,10 +57,10 @@ function JobCardSkeleton() {
         <div className="h-3 bg-white/5 rounded-lg" />
         <div className="h-3 bg-white/5 rounded-lg w-5/6" />
       </div>
-      <div className="flex gap-3 pt-2 border-t border-white/6">
-        <div className="h-3 w-20 bg-white/5 rounded-lg" />
-        <div className="h-3 w-16 bg-white/5 rounded-lg" />
-        <div className="h-3 w-14 bg-white/5 rounded-lg ml-auto" />
+      <div className="flex items-start gap-3 pt-2 border-t border-border">
+        <div className="h-3 w-20 bg-muted rounded-lg" />
+        <div className="h-3 w-16 bg-muted rounded-lg" />
+        <div className="h-3 w-14 bg-muted rounded-lg ml-auto" />
       </div>
     </div>
   );
@@ -199,11 +199,11 @@ function JobsPageContent() {
         {/* ── Header ── */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-extrabold text-white">
+            <h1 className="text-3xl font-extrabold text-foreground">
               Browse <span className="brand-text">Jobs</span>
             </h1>
             {pagination && !loading && (
-              <p className="text-sm text-white/45 mt-1">
+              <p className="text-sm text-muted-foreground mt-1">
                 {pagination.total} opportunit
                 {pagination.total === 1 ? "y" : "ies"} found
               </p>
@@ -212,10 +212,10 @@ function JobsPageContent() {
 
           {/* Inline search */}
           <div className="relative w-full sm:w-72">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40 pointer-events-none" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/40 pointer-events-none" />
             <input
               id="jobs-search"
-              className="w-full h-10 pl-10 pr-9 rounded-xl bg-white/6 border border-white/10 text-white placeholder-white/35 text-sm focus:outline-none focus:border-indigo-500/60 focus:ring-2 focus:ring-indigo-500/20 transition-all duration-200"
+              className="w-full h-10 pl-10 pr-9 rounded-xl bg-muted border border-border text-foreground placeholder:text-muted-foreground/35 text-sm focus:outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
               placeholder="Quick search…"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
@@ -251,7 +251,7 @@ function JobsPageContent() {
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
               <Tag className="w-3.5 h-3.5 text-indigo-400" />
-              <span className="text-xs font-semibold text-white/50 uppercase tracking-wider">
+              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                 Popular Tags
               </span>
             </div>
@@ -264,8 +264,8 @@ function JobsPageContent() {
                     onClick={() => toggleTag(tag)}
                     className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all duration-200 border ${
                       isActive
-                        ? "bg-indigo-500/20 border-indigo-500/50 text-indigo-300 shadow-lg shadow-indigo-500/10"
-                        : "bg-white/5 border-white/10 text-white/50 hover:bg-white/10 hover:border-white/20 hover:text-white/80"
+                        ? "bg-primary/20 border-primary/50 text-primary shadow-lg shadow-primary/10"
+                        : "bg-muted border-border text-muted-foreground hover:bg-accent hover:border-border/50 hover:text-foreground"
                     }`}
                   >
                     {tag}
@@ -279,16 +279,16 @@ function JobsPageContent() {
         {/* ── Active filter chips ── */}
         {activeFilters.length > 0 && (
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs text-white/40">Filters:</span>
+            <span className="text-xs text-muted-foreground">Filters:</span>
             {activeFilters.map((f) => (
               <span
                 key={f.key}
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/15 border border-indigo-500/25 text-indigo-300 text-xs font-medium"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/15 border border-primary/25 text-primary text-xs font-medium"
               >
                 {f.label}
                 <button
                   onClick={() => removeFilter(f.key)}
-                  className="hover:text-white transition-colors"
+                  className="hover:text-foreground transition-colors"
                 >
                   <X className="size-3" />
                 </button>
@@ -296,7 +296,7 @@ function JobsPageContent() {
             ))}
             <button
               onClick={clearAll}
-              className="text-xs text-white/30 hover:text-white/60 transition-colors underline underline-offset-2"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2"
             >
               Clear all
             </button>
@@ -305,14 +305,14 @@ function JobsPageContent() {
 
         {/* ── Results strip ── */}
         {pagination && !loading && (
-          <p className="text-xs text-white/40">
+          <p className="text-xs text-muted-foreground">
             Showing{" "}
-            <span className="text-white/70 font-semibold">
+            <span className="text-foreground font-semibold">
               {(pagination.page - 1) * LIMIT + 1}–
               {Math.min(pagination.page * LIMIT, pagination.total)}
             </span>{" "}
             of{" "}
-            <span className="text-white/70 font-semibold">
+            <span className="text-foreground font-semibold">
               {pagination.total}
             </span>{" "}
             jobs
@@ -332,12 +332,12 @@ function JobsPageContent() {
           </div>
         ) : jobs.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-32 gap-4 glass-card rounded-3xl">
-            <Briefcase className="w-14 h-14 text-white/15" />
-            <p className="text-lg font-semibold text-white/40">No jobs found</p>
+            <Briefcase className="w-14 h-14 text-muted-foreground/15" />
+            <p className="text-lg font-semibold text-muted-foreground">No jobs found</p>
             {activeFilters.length > 0 && (
               <button
                 onClick={clearAll}
-                className="text-sm text-indigo-400 hover:text-indigo-300 transition-colors"
+                className="text-sm text-primary hover:text-primary/80 transition-colors"
               >
                 Clear all filters
               </button>
@@ -349,7 +349,7 @@ function JobsPageContent() {
               const grad = colorFromString(job.title ?? "job");
               return (
                 <Link key={job.id} href={`/user/job/${job.id}`}>
-                  <div className="group glass-card rounded-2xl p-5 flex flex-col gap-4 hover:border-indigo-500/35 hover:shadow-xl hover:shadow-indigo-500/10 hover:-translate-y-0.5 transition-all duration-200">
+                  <div className="group glass-card rounded-2xl p-5 flex flex-col gap-4 hover:border-primary/35 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-0.5 transition-all duration-200">
                     <div className="flex items-start gap-3">
                       <div
                         className={`shrink-0 w-11 h-11 rounded-xl bg-linear-to-br ${grad} flex items-center justify-center text-base font-extrabold text-white shadow-lg`}
@@ -357,16 +357,16 @@ function JobsPageContent() {
                         {job.title?.charAt(0)?.toUpperCase() ?? "J"}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-bold text-base text-white group-hover:text-indigo-200 transition-colors line-clamp-1">
+                        <h3 className="font-bold text-base text-foreground group-hover:text-primary transition-colors line-clamp-1">
                           {job.title}
                         </h3>
-                        <p className="text-xs text-white/40 mt-0.5 font-medium">
+                        <p className="text-xs text-muted-foreground mt-0.5 font-medium">
                           Full Time
                         </p>
                       </div>
                     </div>
 
-                    <p className="text-white/50 text-sm line-clamp-2 leading-relaxed flex-1">
+                    <p className="text-muted-foreground text-sm line-clamp-2 leading-relaxed flex-1">
                       {job.description}
                     </p>
 
@@ -375,29 +375,29 @@ function JobsPageContent() {
                         {job.tags.slice(0, 3).map((tag: string) => (
                           <span
                             key={tag}
-                            className="px-2 py-0.5 rounded-lg bg-white/5 border border-white/10 text-[10px] font-medium text-white/40"
+                            className="px-2 py-0.5 rounded-lg bg-muted border border-border text-[10px] font-medium text-muted-foreground"
                           >
                             {tag}
                           </span>
                         ))}
                         {job.tags.length > 3 && (
-                          <span className="text-[10px] text-white/25 self-center">
+                          <span className="text-[10px] text-muted-foreground/30 self-center">
                             +{job.tags.length - 3}
                           </span>
                         )}
                       </div>
                     )}
 
-                    <div className="flex flex-wrap gap-x-4 gap-y-2 pt-3 border-t border-white/6 text-xs font-medium">
-                      <span className="flex items-center gap-1.5 text-white/45">
-                        <MapPin className="w-3.5 h-3.5 text-white/30" />
+                    <div className="flex flex-wrap gap-x-4 gap-y-2 pt-3 border-t border-border text-xs font-medium">
+                      <span className="flex items-center gap-1.5 text-muted-foreground">
+                        <MapPin className="w-3.5 h-3.5 text-muted-foreground/40" />
                         {job.location}
                       </span>
-                      <span className="flex items-center gap-1.5 text-emerald-400">
+                      <span className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400">
                         <DollarSign className="w-3.5 h-3.5" />
                         {job.salary ?? "—"}
                       </span>
-                      <span className="flex items-center gap-1.5 text-indigo-300 ml-auto">
+                      <span className="flex items-center gap-1.5 text-primary ml-auto">
                         <Users className="w-3.5 h-3.5" />
                         {job.vacancy} vacanc{job.vacancy === 1 ? "y" : "ies"}
                       </span>
@@ -415,7 +415,7 @@ function JobsPageContent() {
             <button
               onClick={() => goToPage(currentPage - 1)}
               disabled={!pagination.hasPrevPage}
-              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl glass-card text-sm text-white/60 hover:text-white hover:border-indigo-500/30 disabled:opacity-25 disabled:cursor-not-allowed transition-all duration-200"
+              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl glass-card text-sm text-muted-foreground hover:text-foreground hover:border-primary/30 disabled:opacity-25 disabled:cursor-not-allowed transition-all duration-200"
             >
               <ChevronLeft className="w-4 h-4" />
               Prev
@@ -426,7 +426,7 @@ function JobsPageContent() {
                 item === "..." ? (
                   <span
                     key={`ellipsis-${idx}`}
-                    className="px-2 text-white/30 text-sm"
+                    className="px-2 text-muted-foreground/30 text-sm"
                   >
                     …
                   </span>
@@ -437,7 +437,7 @@ function JobsPageContent() {
                     className={`w-10 h-10 rounded-xl text-sm font-semibold transition-all duration-200 ${
                       currentPage === item
                         ? "brand-gradient text-white shadow-lg shadow-indigo-500/30"
-                        : "glass-card text-white/50 hover:text-white hover:border-indigo-500/30"
+                        : "glass-card text-muted-foreground hover:text-foreground hover:border-primary/30"
                     }`}
                   >
                     {item}
@@ -449,7 +449,7 @@ function JobsPageContent() {
             <button
               onClick={() => goToPage(currentPage + 1)}
               disabled={!pagination.hasNextPage}
-              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl glass-card text-sm text-white/60 hover:text-white hover:border-indigo-500/30 disabled:opacity-25 disabled:cursor-not-allowed transition-all duration-200"
+              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl glass-card text-sm text-muted-foreground hover:text-foreground hover:border-primary/30 disabled:opacity-25 disabled:cursor-not-allowed transition-all duration-200"
             >
               Next
               <ChevronRight className="w-4 h-4" />

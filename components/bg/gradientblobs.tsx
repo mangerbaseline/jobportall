@@ -8,7 +8,7 @@ export default function GradientBlobs() {
     >
       {/* Primary indigo blob — top left */}
       <div
-        className="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full opacity-25 animate-blob"
+        className="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full opacity-[0.08] dark:opacity-25 animate-blob"
         style={{
           background:
             "radial-gradient(circle, #6366f1 0%, transparent 70%)",
@@ -18,7 +18,7 @@ export default function GradientBlobs() {
       />
       {/* Violet blob — top right */}
       <div
-        className="absolute -top-20 -right-40 w-[500px] h-[500px] rounded-full opacity-20 animate-blob"
+        className="absolute -top-20 -right-40 w-[500px] h-[500px] rounded-full opacity-[0.06] dark:opacity-20 animate-blob"
         style={{
           background:
             "radial-gradient(circle, #8b5cf6 0%, transparent 70%)",
@@ -28,7 +28,7 @@ export default function GradientBlobs() {
       />
       {/* Subtle indigo blob — bottom center */}
       <div
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full opacity-15 animate-blob"
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full opacity-[0.05] dark:opacity-15 animate-blob"
         style={{
           background:
             "radial-gradient(ellipse, #4f46e5 0%, transparent 60%)",

@@ -100,7 +100,7 @@ function DonutChart({
           fill="none"
           stroke="currentColor"
           strokeWidth="3.5"
-          className="text-white/5"
+          className="text-muted-foreground/10"
         />
       </svg>
     );
@@ -187,12 +187,12 @@ export default function EmployerAnalytics() {
     return (
       <div className="glass-card rounded-[2rem] p-8 animate-pulse">
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 rounded-2xl bg-white/8" />
-          <div className="h-5 bg-white/8 rounded-lg w-48" />
+          <div className="w-10 h-10 rounded-2xl bg-muted" />
+          <div className="h-5 bg-muted rounded-lg w-48" />
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="h-32 bg-white/5 rounded-2xl" />
+            <div key={i} className="h-32 bg-muted/50 rounded-2xl" />
           ))}
         </div>
       </div>
@@ -217,7 +217,7 @@ export default function EmployerAnalytics() {
   const SortBtn = ({ field, label }: { field: SortField; label: string }) => (
     <th
       onClick={() => toggleSort(field)}
-      className="text-right text-[10px] font-bold text-white/40 uppercase tracking-wider p-4 cursor-pointer hover:text-white/60 transition-colors select-none"
+      className="text-right text-[10px] font-bold text-muted-foreground uppercase tracking-wider p-4 cursor-pointer hover:text-foreground transition-colors select-none"
     >
       <span className="inline-flex items-center gap-1">
         {label}
@@ -228,7 +228,7 @@ export default function EmployerAnalytics() {
             <ChevronUp className="w-3 h-3 text-indigo-400" />
           )
         ) : (
-          <ChevronDown className="w-3 h-3 text-white/15" />
+          <ChevronDown className="w-3 h-3 text-muted-foreground/30" />
         )}
       </span>
     </th>
@@ -296,10 +296,10 @@ export default function EmployerAnalytics() {
             <BarChart3 className="w-5 h-5 text-indigo-400" />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-white tracking-tight">
+            <h2 className="text-lg font-bold text-foreground tracking-tight">
               Recruitment Analytics
             </h2>
-            <p className="text-xs text-white/30">
+            <p className="text-xs text-muted-foreground">
               {summary.totalJobs} active listing
               {summary.totalJobs !== 1 ? "s" : ""}
             </p>
@@ -318,7 +318,7 @@ export default function EmployerAnalytics() {
         {statCards.map((card) => (
           <div
             key={card.label}
-            className={`group relative rounded-2xl p-5 bg-linear-to-br from-white/4 to-white/1 border border-white/6 hover:border-${card.color}-500/30 transition-all duration-300 hover:shadow-xl ${card.glow} overflow-hidden`}
+            className={`group relative rounded-2xl p-5 bg-card border border-border hover:border-${card.color}-500/30 transition-all duration-300 hover:shadow-xl ${card.glow} overflow-hidden`}
           >
             {/* Glow orb */}
             <div
@@ -339,10 +339,10 @@ export default function EmployerAnalytics() {
                   </span>
                 )}
               </div>
-              <p className="text-3xl font-black text-white tracking-tight">
+              <p className="text-3xl font-black text-foreground tracking-tight">
                 <AnimatedNumber value={card.value} suffix={card.suffix} />
               </p>
-              <p className="text-[10px] text-white/35 font-semibold mt-1.5 uppercase tracking-[0.15em]">
+              <p className="text-[10px] text-muted-foreground font-semibold mt-1.5 uppercase tracking-[0.15em]">
                 {card.label}
               </p>
             </div>
@@ -351,10 +351,10 @@ export default function EmployerAnalytics() {
       </div>
 
       {/* ── Pipeline Section ── */}
-      <div className="glass-card rounded-2xl p-6 bg-linear-to-br from-white/3 to-transparent">
+      <div className="glass-card rounded-2xl p-6">
         <div className="flex items-center gap-2 mb-5">
           <Zap className="w-4 h-4 text-amber-400" />
-          <h3 className="text-xs font-bold text-white/50 uppercase tracking-[0.15em]">
+          <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-[0.15em]">
             Application Pipeline
           </h3>
         </div>
@@ -363,10 +363,10 @@ export default function EmployerAnalytics() {
           <div className="relative w-28 h-28 shrink-0">
             <DonutChart segments={pipelineSegments} />
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-lg font-black text-white">
+              <span className="text-lg font-black text-foreground">
                 {summary.totalApplications}
               </span>
-              <span className="text-[9px] text-white/30 font-semibold uppercase tracking-wider">
+              <span className="text-[9px] text-muted-foreground font-semibold uppercase tracking-wider">
                 Total
               </span>
             </div>
@@ -405,7 +405,7 @@ export default function EmployerAnalytics() {
                     {item.label}
                   </span>
                 </div>
-                <p className="text-2xl font-black text-white">
+                <p className="text-2xl font-black text-foreground">
                   <AnimatedNumber value={item.count} />
                 </p>
               </div>
@@ -414,7 +414,7 @@ export default function EmployerAnalytics() {
         </div>
         {/* Progress bar */}
         {summary.totalApplications > 0 && (
-          <div className="mt-5 w-full h-2.5 rounded-full bg-white/5 overflow-hidden flex">
+          <div className="mt-5 w-full h-2.5 rounded-full bg-muted overflow-hidden flex">
             {pipelineSegments.map((seg, i) => (
               <div
                 key={i}
@@ -442,10 +442,10 @@ export default function EmployerAnalytics() {
                     🔥 Most Viewed
                   </span>
                 </div>
-                <p className="text-white font-bold truncate text-lg">
+                <p className="text-foreground font-bold truncate text-lg">
                   {highlights.mostViewedJob.title}
                 </p>
-                <p className="text-indigo-300/60 text-sm mt-1 font-medium">
+                <p className="text-primary/60 text-sm mt-1 font-medium">
                   {highlights.mostViewedJob.views.toLocaleString()} views
                 </p>
               </div>
@@ -461,10 +461,10 @@ export default function EmployerAnalytics() {
                     ⚡ Best Conversion
                   </span>
                 </div>
-                <p className="text-white font-bold truncate text-lg">
+                <p className="text-foreground font-bold truncate text-lg">
                   {highlights.highestConvertingJob.title}
                 </p>
-                <p className="text-emerald-300/60 text-sm mt-1 font-medium">
+                <p className="text-emerald-600 dark:text-emerald-400/60 text-sm mt-1 font-medium">
                   {highlights.highestConvertingJob.conversionRate}% conversion
                 </p>
               </div>
@@ -475,12 +475,12 @@ export default function EmployerAnalytics() {
 
       {/* ── Job Performance Table ── */}
       {sortedJobs.length > 0 && (
-        <div className="rounded-2xl border border-white/6 bg-linear-to-br from-white/3 to-transparent overflow-hidden">
+        <div className="rounded-2xl border border-border bg-card overflow-hidden">
           <div className="p-5 border-b border-white/5 flex items-center justify-between">
-            <h3 className="text-xs font-bold text-white/50 uppercase tracking-[0.15em]">
+            <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-[0.15em]">
               Job Performance
             </h3>
-            <span className="text-[10px] text-white/25">
+            <span className="text-[10px] text-muted-foreground/50">
               {sortedJobs.length} job{sortedJobs.length !== 1 ? "s" : ""}
             </span>
           </div>
@@ -490,13 +490,13 @@ export default function EmployerAnalytics() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/5">
-                  <th className="text-left text-[10px] font-bold text-white/40 uppercase tracking-wider p-4">
+                  <th className="text-left text-[10px] font-bold text-muted-foreground uppercase tracking-wider p-4">
                     Job Title
                   </th>
                   <SortBtn field="views" label="Views" />
                   <SortBtn field="applications" label="Apps" />
                   <SortBtn field="conversionRate" label="Conv. Rate" />
-                  <th className="text-right text-[10px] font-bold text-white/40 uppercase tracking-wider p-4">
+                  <th className="text-right text-[10px] font-bold text-muted-foreground uppercase tracking-wider p-4">
                     Status
                   </th>
                 </tr>
@@ -505,14 +505,14 @@ export default function EmployerAnalytics() {
                 {sortedJobs.map((job, idx) => (
                   <tr
                     key={job.id}
-                    className="border-b border-white/3 hover:bg-white/2.5 transition-colors"
+                    className="border-b border-border hover:bg-muted/50 transition-colors"
                     style={{ animationDelay: `${idx * 50}ms` }}
                   >
                     <td className="p-4">
-                      <span className="text-sm font-semibold text-white truncate block max-w-[280px]">
+                      <span className="text-sm font-semibold text-foreground truncate block max-w-[280px]">
                         {job.title}
                       </span>
-                      <span className="text-xs text-white/25 mt-0.5 block">
+                      <span className="text-xs text-muted-foreground mt-0.5 block">
                         {job.location}
                       </span>
                     </td>
@@ -522,13 +522,13 @@ export default function EmployerAnalytics() {
                       </span>
                     </td>
                     <td className="p-4 text-right">
-                      <span className="text-sm font-bold text-white/80 tabular-nums">
+                      <span className="text-sm font-bold text-foreground tabular-nums">
                         {job.applications}
                       </span>
                     </td>
                     <td className="p-4 text-right">
                       <div className="flex items-center justify-end gap-2.5">
-                        <div className="w-20 h-2 rounded-full bg-white/5 overflow-hidden">
+                        <div className="w-20 h-2 rounded-full bg-muted overflow-hidden">
                           <div
                             className={`h-full rounded-full transition-all duration-700 ${
                               job.conversionRate >= 10
@@ -537,7 +537,7 @@ export default function EmployerAnalytics() {
                                   ? "bg-linear-to-r from-indigo-500 to-indigo-400"
                                   : job.conversionRate > 0
                                     ? "bg-linear-to-r from-amber-500 to-amber-400"
-                                    : "bg-white/10"
+                                    : "bg-muted"
                             }`}
                             style={{
                               width: `${Math.min(job.conversionRate * 2, 100)}%`,
@@ -552,7 +552,7 @@ export default function EmployerAnalytics() {
                                 ? "text-indigo-400"
                                 : job.conversionRate > 0
                                   ? "text-amber-400"
-                                  : "text-white/25"
+                                  : "text-muted-foreground/30"
                           }`}
                         >
                           {job.conversionRate}%
@@ -564,7 +564,7 @@ export default function EmployerAnalytics() {
                         className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
                           job.available
                             ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                            : "bg-white/5 text-white/25 border border-white/10"
+                            : "bg-muted text-muted-foreground/50 border border-border"
                         }`}
                       >
                         {job.available && (
@@ -584,14 +584,14 @@ export default function EmployerAnalytics() {
             {sortedJobs.map((job) => (
               <div
                 key={job.id}
-                className="p-4 rounded-xl bg-white/2 border border-white/5 space-y-3"
+                className="p-4 rounded-xl bg-card border border-border space-y-3"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="text-sm font-bold text-white truncate">
+                    <p className="text-sm font-bold text-foreground truncate">
                       {job.title}
                     </p>
-                    <p className="text-xs text-white/25 mt-0.5">
+                    <p className="text-xs text-muted-foreground mt-0.5">
                       {job.location}
                     </p>
                   </div>
@@ -599,7 +599,7 @@ export default function EmployerAnalytics() {
                     className={`shrink-0 px-2 py-0.5 rounded-full text-[10px] font-bold ${
                       job.available
                         ? "bg-emerald-500/15 text-emerald-400"
-                        : "bg-white/5 text-white/30"
+                        : "bg-muted text-muted-foreground"
                     }`}
                   >
                     {job.available ? "Active" : "Closed"}
@@ -607,8 +607,8 @@ export default function EmployerAnalytics() {
                 </div>
                 <div className="grid grid-cols-3 gap-3">
                   {[
-                    { l: "Views", v: job.views, c: "text-white" },
-                    { l: "Apps", v: job.applications, c: "text-white" },
+                    { l: "Views", v: job.views, c: "text-foreground" },
+                    { l: "Apps", v: job.applications, c: "text-foreground" },
                     {
                       l: "Conv.",
                       v: `${job.conversionRate}%`,
@@ -622,9 +622,9 @@ export default function EmployerAnalytics() {
                   ].map((m) => (
                     <div
                       key={m.l}
-                      className="text-center p-2 rounded-lg bg-white/2"
+                      className="text-center p-2 rounded-lg bg-muted"
                     >
-                      <p className="text-[10px] text-white/25 font-semibold uppercase tracking-wider">
+                      <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">
                         {m.l}
                       </p>
                       <p className={`text-sm font-bold mt-0.5 ${m.c}`}>{m.v}</p>

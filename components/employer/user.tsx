@@ -35,7 +35,8 @@ function gradientFromString(str: string) {
     "from-amber-500 to-amber-600",
   ];
   let hash = 0;
-  for (let i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  for (let i = 0; i < str.length; i++)
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
   return gradients[Math.abs(hash) % gradients.length];
 }
 
@@ -142,9 +143,9 @@ export default function USER() {
             <Users className="w-4 h-4 text-white" />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-white">Job Seekers</h2>
+            <h2 className="text-lg font-bold text-foreground">Job Seekers</h2>
             {pagination && !loading && (
-              <p className="text-xs text-white/40">
+              <p className="text-xs text-muted-foreground">
                 {pagination.total} candidates registered
               </p>
             )}
@@ -154,10 +155,10 @@ export default function USER() {
         <div className="flex items-center gap-3 w-full sm:w-auto">
           {/* Search */}
           <div className="relative flex-1 sm:w-64 sm:flex-none">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input
               id="candidate-search"
-              className="w-full h-10 pl-10 pr-4 rounded-xl bg-white/6 border border-white/10 text-white placeholder-white/35 text-sm focus:outline-none focus:border-indigo-500/60 focus:ring-2 focus:ring-indigo-500/20 transition-all duration-200"
+              className="w-full h-10 pl-10 pr-4 rounded-xl bg-muted border border-border text-foreground placeholder:text-muted-foreground/35 text-sm focus:outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
               placeholder="Search name or email…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -175,18 +176,22 @@ export default function USER() {
 
       {/* ── Results info ── */}
       {pagination && !loading && (
-        <p className="text-xs text-white/40">
+        <p className="text-xs text-muted-foreground">
           Showing{" "}
-          <span className="text-white/70 font-semibold">
+          <span className="text-foreground font-semibold">
             {(pagination.page - 1) * LIMIT + 1}–
             {Math.min(pagination.page * LIMIT, pagination.total)}
           </span>{" "}
           of{" "}
-          <span className="text-white/70 font-semibold">{pagination.total}</span>{" "}
+          <span className="text-foreground font-semibold">
+            {pagination.total}
+          </span>{" "}
           candidates
           {debouncedSearch && (
             <>
-              {" "}for &quot;<em className="text-indigo-300">{debouncedSearch}</em>&quot;
+              {" "}
+              for &quot;<em className="text-primary">{debouncedSearch}</em>
+              &quot;
             </>
           )}
         </p>
@@ -201,12 +206,14 @@ export default function USER() {
         </div>
       ) : users.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-28 gap-4 glass-card rounded-3xl">
-          <Users className="w-14 h-14 text-white/15" />
-          <p className="text-lg font-semibold text-white/40">No candidates found</p>
+          <Users className="w-14 h-14 text-muted-foreground/15" />
+          <p className="text-lg font-semibold text-muted-foreground">
+            No candidates found
+          </p>
           {debouncedSearch && (
             <button
               onClick={() => setSearch("")}
-              className="text-sm text-indigo-400 hover:text-indigo-300 transition-colors"
+              className="text-sm text-primary hover:text-primary/80 transition-colors"
             >
               Clear search
             </button>
@@ -224,15 +231,15 @@ export default function USER() {
                 {/* Top */}
                 <div className="flex items-start gap-3">
                   <div
-                    className={`shrink-0 w-12 h-12 rounded-2xl bg-gradient-to-br ${grad} flex items-center justify-center text-base font-extrabold text-white shadow-lg`}
+                    className={`shrink-0 w-12 h-12 rounded-2xl bg-linear-to-br ${grad} flex items-center justify-center text-base font-extrabold text-white shadow-lg`}
                   >
                     {user.name?.charAt(0)?.toUpperCase() ?? "U"}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-bold text-base text-white group-hover:text-indigo-200 transition-colors truncate">
+                    <h3 className="font-bold text-base text-foreground group-hover:text-primary transition-colors truncate">
                       {user.name}
                     </h3>
-                    <p className="text-xs text-white/40 truncate flex items-center gap-1 mt-0.5">
+                    <p className="text-xs text-muted-foreground truncate flex items-center gap-1 mt-0.5">
                       <Mail className="w-3 h-3" />
                       {user.email}
                     </p>
@@ -275,7 +282,10 @@ export default function USER() {
           <div className="flex items-center gap-1">
             {pageNumbers.map((item, idx) =>
               item === "..." ? (
-                <span key={`ellipsis-${idx}`} className="px-2 text-white/30 text-sm">
+                <span
+                  key={`ellipsis-${idx}`}
+                  className="px-2 text-white/30 text-sm"
+                >
                   …
                 </span>
               ) : (
@@ -290,7 +300,7 @@ export default function USER() {
                 >
                   {item}
                 </button>
-              )
+              ),
             )}
           </div>
 

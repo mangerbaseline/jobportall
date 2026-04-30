@@ -121,10 +121,10 @@ export function SearchSelect() {
   return (
     <div className="w-full max-w-5xl mx-auto px-4 sm:px-6">
       {/* Main bar */}
-      <div className="glass-card rounded-2xl sm:rounded-full p-2 sm:p-3 flex flex-col sm:flex-row items-center gap-3 shadow-2xl glow-indigo border-white/10">
+      <div className="glass-card rounded-2xl sm:rounded-full p-2 sm:p-3 flex flex-col sm:flex-row items-center gap-3 shadow-2xl glow-indigo border-border">
         {/* ── Title / Company ── */}
         <div ref={titleRef} className="relative flex-1 w-full group">
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 group-focus-within:text-indigo-400 transition-colors pointer-events-none z-10">
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/40 group-focus-within:text-primary transition-colors pointer-events-none z-10">
             {filtersLoading ? (
               <Loader2 className="size-4 animate-spin" />
             ) : (
@@ -144,7 +144,7 @@ export function SearchSelect() {
               if (e.key === "Enter") handleSearch();
               if (e.key === "Escape") setShowTitleDrop(false);
             }}
-            className="w-full bg-transparent border-none h-11 pl-11 pr-9 focus-visible:ring-0 text-white placeholder:text-white/30 text-sm sm:text-base"
+            className="w-full bg-transparent border-none h-11 pl-11 pr-9 focus-visible:ring-0 text-foreground placeholder:text-muted-foreground/30 text-sm sm:text-base"
           />
           {title && (
             <button
@@ -152,7 +152,7 @@ export function SearchSelect() {
                 setTitle("");
                 setShowTitleDrop(false);
               }}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/70 transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/30 hover:text-foreground transition-colors"
             >
               <X className="size-3.5" />
             </button>
@@ -160,8 +160,8 @@ export function SearchSelect() {
 
           {/* Title dropdown */}
           {showTitleDrop && filters.titles.length > 0 && (
-            <div className="absolute top-full left-0 mt-2 w-full z-200 bg-gray-950 border border-white/10 rounded-xl overflow-hidden shadow-2xl">
-              <p className="px-3 py-1.5 text-[10px] font-semibold text-white/30 uppercase tracking-wider border-b border-white/5">
+            <div className="absolute top-full left-0 mt-2 w-full z-200 bg-card border border-border rounded-xl overflow-hidden shadow-2xl">
+              <p className="px-3 py-1.5 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider border-b border-border">
                 Job Titles
               </p>
               {filters.titles.map((t) => (
@@ -172,7 +172,7 @@ export function SearchSelect() {
                     setTitle(t);
                     setShowTitleDrop(false);
                   }}
-                  className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm text-white/80 hover:bg-indigo-500/15 hover:text-white transition-colors text-left"
+                  className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm text-foreground/80 hover:bg-primary/15 hover:text-foreground transition-colors text-left"
                 >
                   <Briefcase className="size-3.5 text-indigo-400 shrink-0" />
                   {t}
@@ -183,14 +183,14 @@ export function SearchSelect() {
         </div>
 
         {/* Separator */}
-        <div className="hidden sm:block w-px h-8 bg-white/10 shrink-0" />
+        <div className="hidden sm:block w-px h-8 bg-border shrink-0" />
 
         {/* ── Location ── */}
         <div
           ref={locationRef}
           className="relative w-full sm:w-auto min-w-[170px] group"
         >
-          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 group-focus-within:text-indigo-400 transition-colors pointer-events-none z-10">
+          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/40 group-focus-within:text-primary transition-colors pointer-events-none z-10">
             <MapPin className="size-4" />
           </div>
           <Input
@@ -206,7 +206,7 @@ export function SearchSelect() {
               if (e.key === "Enter") handleSearch();
               if (e.key === "Escape") setShowLocationDrop(false);
             }}
-            className="w-full bg-transparent border-none h-11 pl-10 pr-9 focus-visible:ring-0 text-white placeholder:text-white/30 text-sm sm:text-base"
+            className="w-full bg-transparent border-none h-11 pl-10 pr-9 focus-visible:ring-0 text-foreground placeholder:text-muted-foreground/30 text-sm sm:text-base"
           />
           {location && (
             <button
@@ -214,7 +214,7 @@ export function SearchSelect() {
                 setLocation("");
                 setShowLocationDrop(false);
               }}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/70 transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/30 hover:text-foreground transition-colors"
             >
               <X className="size-3.5" />
             </button>
@@ -222,8 +222,8 @@ export function SearchSelect() {
 
           {/* Location dropdown */}
           {showLocationDrop && filters.locations.length > 0 && (
-            <div className="absolute top-full left-0 mt-2 w-full z-200 bg-gray-950 border border-white/10 rounded-xl overflow-hidden shadow-2xl">
-              <p className="px-3 py-1.5 text-[10px] font-semibold text-white/30 uppercase tracking-wider border-b border-white/5">
+            <div className="absolute top-full left-0 mt-2 w-full z-200 bg-card border border-border rounded-xl overflow-hidden shadow-2xl">
+              <p className="px-3 py-1.5 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider border-b border-border">
                 Locations
               </p>
               {filters.locations.map((loc) => (
@@ -234,7 +234,7 @@ export function SearchSelect() {
                     setLocation(loc);
                     setShowLocationDrop(false);
                   }}
-                  className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm text-white/80 hover:bg-indigo-500/15 hover:text-white transition-colors text-left"
+                  className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm text-foreground/80 hover:bg-primary/15 hover:text-foreground transition-colors text-left"
                 >
                   <MapPin className="size-3.5 text-violet-400 shrink-0" />
                   {loc}
@@ -245,11 +245,11 @@ export function SearchSelect() {
         </div>
 
         {/* Separator */}
-        <div className="hidden sm:block w-px h-8 bg-white/10 shrink-0" />
+        <div className="hidden sm:block w-px h-8 bg-border shrink-0" />
 
         {/* ── Keyword (no debounce) ── */}
         <div className="relative w-full sm:w-auto min-w-[160px] group">
-          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 group-focus-within:text-indigo-400 transition-colors pointer-events-none z-10">
+          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/40 group-focus-within:text-primary transition-colors pointer-events-none z-10">
             <Tag className="size-4" />
           </div>
           <Input
@@ -260,12 +260,12 @@ export function SearchSelect() {
             onKeyDown={(e) => {
               if (e.key === "Enter") handleSearch();
             }}
-            className="w-full bg-transparent border-none h-11 pl-10 pr-9 focus-visible:ring-0 text-white placeholder:text-white/30 text-sm sm:text-base"
+            className="w-full bg-transparent border-none h-11 pl-10 pr-9 focus-visible:ring-0 text-foreground placeholder:text-muted-foreground/30 text-sm sm:text-base"
           />
           {keyword && (
             <button
               onClick={() => setKeyword("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/70 transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/30 hover:text-foreground transition-colors"
             >
               <X className="size-3.5" />
             </button>
@@ -291,13 +291,13 @@ export function SearchSelect() {
       </div>
 
       {/* Popular Tags */}
-      <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-xs text-white/40">
+      <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground">
         <span>Popular:</span>
         {POPULAR_TAGS.map((tag) => (
           <button
             key={tag}
             onClick={() => handleTagClick(tag)}
-            className="px-2 py-1 rounded-md bg-white/5 border border-white/5 hover:border-white/20 hover:text-white/70 transition-colors"
+            className="px-2 py-1 rounded-md bg-muted border border-border hover:border-primary/20 hover:text-foreground transition-colors"
           >
             {tag}
           </button>

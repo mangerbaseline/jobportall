@@ -26,7 +26,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} h-full antialiased`}>
+    <html lang="en" className={`${inter.variable} h-full antialiased`} suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                var t = localStorage.getItem('theme');
+                if (t === 'dark') document.documentElement.classList.add('dark');
+              })();
+            `,
+          }}
+        />
+      </head>
       <body className="relative min-h-screen w-full bg-background text-foreground">
         <div className="relative z-10">
           <StoreProvider>
@@ -39,13 +51,6 @@ export default function RootLayout({
               <Toaster
                 position="top-right"
                 richColors
-                toastOptions={{
-                  style: {
-                    background: "oklch(0.14 0.006 264)",
-                    border: "1px solid oklch(1 0 0 / 10%)",
-                    color: "oklch(0.96 0 0)",
-                  },
-                }}
               />
             </AuthProvider>
           </StoreProvider>

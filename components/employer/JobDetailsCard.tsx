@@ -28,9 +28,9 @@ export default function JobDetailsCard({ job }: JobDetailsCardProps) {
   console.log(job.vacancy);
 
   return (
-    <div className="glass-card rounded-3xl overflow-hidden border border-white/10 shadow-2xl shadow-black/20">
+    <div className="glass-card rounded-3xl overflow-hidden border border-border shadow-2xl">
       {/* Header with Gradient Background */}
-      <div className="bg-linear-to-br from-indigo-500/20 to-violet-500/20 p-8 border-b border-white/10 relative overflow-hidden">
+      <div className="bg-primary/5 p-8 border-b border-border relative overflow-hidden">
         <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
           <Briefcase className="w-32 h-32 text-indigo-400" />
         </div>
@@ -38,12 +38,12 @@ export default function JobDetailsCard({ job }: JobDetailsCardProps) {
         <div className="relative z-10">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="space-y-2">
-              <h1 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
+              <h1 className="text-3xl md:text-4xl font-extrabold text-foreground tracking-tight">
                 {job.title}
               </h1>
               <h1></h1>
-              <div className="flex flex-wrap items-center gap-4 text-sm text-white/60">
-                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/5">
+              <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-muted border border-border">
                   <MapPin className="w-4 h-4 text-indigo-400" />
                   {job.location}
                 </div>
@@ -53,7 +53,7 @@ export default function JobDetailsCard({ job }: JobDetailsCardProps) {
                     ? `$${job.salary.toLocaleString()}`
                     : "Not specified"}
                 </div>
-                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/5">
+                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-muted border border-border">
                   <Calendar className="w-4 h-4 text-violet-400" />
                   {new Date(job.createdAt).toLocaleDateString()}
                 </div>
@@ -74,32 +74,32 @@ export default function JobDetailsCard({ job }: JobDetailsCardProps) {
       {/* Description Content */}
       <div className="p-8 space-y-8">
         <div>
-          <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-            <div className="w-1.5 h-6 rounded-full bg-indigo-500" />
+          <h3 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+            <div className="w-1.5 h-6 rounded-full bg-primary" />
             Job Description
           </h3>
-          <div className="text-white/70 leading-relaxed whitespace-pre-wrap text-sm md:text-base">
+          <div className="text-foreground/80 leading-relaxed whitespace-pre-wrap text-sm md:text-base">
             {job.description}
           </div>
         </div>
 
         {/* Stats Summary */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="p-4 rounded-2xl bg-white/5 border border-white/5 space-y-1">
-            <div className="flex items-center gap-2 text-white/40 text-xs font-semibold uppercase tracking-wider">
+          <div className="p-4 rounded-2xl bg-muted border border-border space-y-1">
+            <div className="flex items-center gap-2 text-muted-foreground text-xs font-semibold uppercase tracking-wider">
               <Users className="w-3.5 h-3.5" />
               Positions
             </div>
-            <div className="text-2xl font-bold text-white">
+            <div className="text-2xl font-bold text-foreground">
               {job.vacancy || 0} Openings
             </div>
           </div>
-          <div className="p-4 rounded-2xl bg-white/5 border border-white/5 space-y-1">
-            <div className="flex items-center gap-2 text-white/40 text-xs font-semibold uppercase tracking-wider">
+          <div className="p-4 rounded-2xl bg-muted border border-border space-y-1">
+            <div className="flex items-center gap-2 text-muted-foreground text-xs font-semibold uppercase tracking-wider">
               <Calendar className="w-3.5 h-3.5" />
               Posted On
             </div>
-            <div className="text-2xl font-bold text-white">
+            <div className="text-2xl font-bold text-foreground">
               {new Date(job.createdAt).toLocaleDateString("en-US", {
                 month: "long",
                 day: "numeric",

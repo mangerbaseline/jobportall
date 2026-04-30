@@ -58,12 +58,14 @@ export default function ApplicationsList({
   if (!applications || applications.length === 0) {
     return (
       <div className="glass-card rounded-3xl p-12 flex flex-col items-center justify-center text-center gap-4 border-dashed">
-        <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
-          <User className="w-8 h-8 text-white/20" />
+        <div className="w-16 h-16 rounded-2xl bg-muted border border-border flex items-center justify-center">
+          <User className="w-8 h-8 text-muted-foreground/30" />
         </div>
         <div className="space-y-1">
-          <h4 className="text-lg font-bold text-white">No Applications Yet</h4>
-          <p className="text-white/40 text-sm max-w-xs">
+          <h4 className="text-lg font-bold text-foreground">
+            No Applications Yet
+          </h4>
+          <p className="text-muted-foreground/60 text-sm max-w-xs">
             As soon as candidates start applying, they will appear here.
           </p>
         </div>
@@ -74,10 +76,10 @@ export default function ApplicationsList({
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between px-2">
-        <h3 className="text-xl font-bold text-white flex items-center gap-2">
+        <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
           <div className="w-1.5 h-6 rounded-full bg-indigo-500" />
           Received Applications
-          <span className="ml-2 px-2 py-0.5 rounded-lg bg-indigo-500/20 text-indigo-400 text-xs">
+          <span className="ml-2 px-2 py-0.5 rounded-lg bg-primary/20 text-primary text-xs">
             {applications.length}
           </span>
         </h3>
@@ -87,7 +89,7 @@ export default function ApplicationsList({
         {applications.map((app) => (
           <div
             key={app.id}
-            className="group glass-card rounded-2xl p-6 hover:border-indigo-500/40 hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-300"
+            className="group glass-card rounded-2xl p-6 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300"
           >
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
               {/* Applicant Info */}
@@ -101,20 +103,20 @@ export default function ApplicationsList({
                 }}
               >
                 <div className="flex items-center gap-4 cursor-pointer">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-xl font-bold text-white shadow-lg">
+                  <div className="w-12 h-12 rounded-xl bg-linear-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-xl font-bold text-white shadow-lg">
                     {app.user.name.charAt(0).toUpperCase()}
                   </div>
                   <div>
-                    <h4 className="font-bold text-white group-hover:text-indigo-300 transition-colors text-left">
+                    <h4 className="font-bold text-foreground group-hover:text-primary transition-colors text-left">
                       {app.user.name}
                     </h4>
                     <div className="flex items-center gap-3 mt-1">
-                      <span className="flex items-center gap-1.5 text-xs text-white/40">
-                        <Mail className="w-3.5 h-3.5 text-white/20" />
+                      <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                        <Mail className="w-3.5 h-3.5 text-muted-foreground/30" />
                         {app.user.email}
                       </span>
-                      <span className="flex items-center gap-1.5 text-xs text-white/40 border-l border-white/10 pl-3">
-                        <Clock className="w-3.5 h-3.5 text-white/20" />
+                      <span className="flex items-center gap-1.5 text-xs text-muted-foreground border-l border-border pl-3">
+                        <Clock className="w-3.5 h-3.5 text-muted-foreground/30" />
                         Applied {new Date(app.createdAt).toLocaleDateString()}
                       </span>
                     </div>
@@ -136,7 +138,7 @@ export default function ApplicationsList({
                     href={app.resumeUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white/60 text-xs font-bold hover:bg-white/10 hover:text-white transition-all"
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-muted border border-border text-muted-foreground text-xs font-bold hover:bg-accent hover:text-foreground transition-all"
                   >
                     <FileText className="w-3.5 h-3.5" />
                     Resume

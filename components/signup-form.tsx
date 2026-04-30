@@ -112,17 +112,17 @@ export function SignupForm({
         <div className="w-9 h-9 rounded-xl brand-gradient flex items-center justify-center shadow-lg shadow-indigo-500/30">
           <Briefcase className="w-5 h-5 text-white" />
         </div>
-        <span className="font-bold text-xl text-white">
+        <span className="font-bold text-xl text-foreground">
           Job<span className="brand-text">Portal</span>
         </span>
       </div>
 
       {/* Heading */}
       <div className="mb-8">
-        <h1 className="text-3xl font-extrabold text-white mb-2">
+        <h1 className="text-3xl font-extrabold text-foreground mb-2">
           Create your account
         </h1>
-        <p className="text-white/50 text-sm">
+        <p className="text-muted-foreground text-sm">
           Join thousands connecting Job with opportunity.
         </p>
       </div>
@@ -135,23 +135,23 @@ export function SignupForm({
           className={cn(
             "group relative flex flex-col items-center gap-2 p-4 rounded-2xl border transition-all duration-200",
             selectedRole === "USER"
-              ? "border-indigo-500/60 bg-indigo-500/12 shadow-lg shadow-indigo-500/15"
-              : "border-white/10 bg-white/4 hover:border-indigo-500/30 hover:bg-white/8",
+              ? "border-primary bg-primary/10 shadow-lg shadow-primary/15"
+              : "border-border bg-muted hover:border-primary/30 hover:bg-accent",
           )}
         >
           {selectedRole === "USER" && (
-            <CheckCircle2 className="absolute top-2.5 right-2.5 w-4 h-4 text-indigo-400" />
+            <CheckCircle2 className="absolute top-2.5 right-2.5 w-4 h-4 text-primary" />
           )}
           <div
             className={cn(
               "w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200",
-              selectedRole === "USER" ? "bg-indigo-500/20" : "bg-white/8",
+              selectedRole === "USER" ? "bg-primary/20" : "bg-muted",
             )}
           >
             <UserCircle
               className={cn(
                 "w-5 h-5",
-                selectedRole === "USER" ? "text-indigo-400" : "text-white/40",
+                selectedRole === "USER" ? "text-primary" : "text-muted-foreground",
               )}
             />
           </div>
@@ -159,12 +159,12 @@ export function SignupForm({
             <p
               className={cn(
                 "text-sm font-bold",
-                selectedRole === "USER" ? "text-indigo-200" : "text-white/70",
+                selectedRole === "USER" ? "text-primary" : "text-muted-foreground",
               )}
             >
               Job Seeker
             </p>
-            <p className="text-xs text-white/35 mt-0.5">Find your next role</p>
+            <p className="text-xs text-muted-foreground mt-0.5">Find your next role</p>
           </div>
         </button>
 
@@ -174,25 +174,25 @@ export function SignupForm({
           className={cn(
             "group relative flex flex-col items-center gap-2 p-4 rounded-2xl border transition-all duration-200",
             selectedRole === "EMPLOYER"
-              ? "border-violet-500/60 bg-violet-500/12 shadow-lg shadow-violet-500/15"
-              : "border-white/10 bg-white/4 hover:border-violet-500/30 hover:bg-white/8",
+              ? "border-violet-500 bg-violet-500/10 shadow-lg shadow-violet-500/15"
+              : "border-border bg-muted hover:border-violet-500/30 hover:bg-accent",
           )}
         >
           {selectedRole === "EMPLOYER" && (
-            <CheckCircle2 className="absolute top-2.5 right-2.5 w-4 h-4 text-violet-400" />
+            <CheckCircle2 className="absolute top-2.5 right-2.5 w-4 h-4 text-violet-500" />
           )}
           <div
             className={cn(
               "w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200",
-              selectedRole === "EMPLOYER" ? "bg-violet-500/20" : "bg-white/8",
+              selectedRole === "EMPLOYER" ? "bg-violet-500/20" : "bg-muted",
             )}
           >
             <Briefcase
               className={cn(
                 "w-5 h-5",
                 selectedRole === "EMPLOYER"
-                  ? "text-violet-400"
-                  : "text-white/40",
+                  ? "text-violet-500"
+                  : "text-muted-foreground",
               )}
             />
           </div>
@@ -201,13 +201,13 @@ export function SignupForm({
               className={cn(
                 "text-sm font-bold",
                 selectedRole === "EMPLOYER"
-                  ? "text-violet-200"
-                  : "text-white/70",
+                  ? "text-violet-500"
+                  : "text-muted-foreground",
               )}
             >
               Employer
             </p>
-            <p className="text-xs text-white/35 mt-0.5">Post jobs & hire</p>
+            <p className="text-xs text-muted-foreground mt-0.5">Post jobs & hire</p>
           </div>
         </button>
       </div>
@@ -215,7 +215,7 @@ export function SignupForm({
       {/* Form */}
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {error && (
-          <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/25 text-red-300 text-sm animate-in fade-in zoom-in duration-200">
+          <div className="p-3.5 rounded-xl bg-destructive/10 border border-destructive/25 text-destructive text-sm animate-in fade-in zoom-in duration-200">
             {error}
           </div>
         )}
@@ -224,9 +224,9 @@ export function SignupForm({
         <div className="space-y-1.5">
           <label
             htmlFor="name"
-            className="flex items-center gap-2 text-sm font-semibold text-white/70"
+            className="flex items-center gap-2 text-sm font-semibold text-muted-foreground"
           >
-            <User className="w-3.5 h-3.5 text-indigo-400" />
+            <User className="w-3.5 h-3.5 text-primary" />
             {selectedRole === "EMPLOYER" ? "Contact Person Name" : "Full Name"}
           </label>
           <Input
@@ -236,14 +236,14 @@ export function SignupForm({
             }
             disabled={isSubmitting}
             className={cn(
-              "h-11 bg-white/6 border-white/12 text-white placeholder:text-white/30 focus:border-indigo-500/60 focus:ring-indigo-500/20",
+              "h-11 bg-muted border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-ring",
               errors.name &&
-                "border-red-500/50 focus:border-red-500/60 focus:ring-red-500/10",
+                "border-destructive focus:border-destructive focus:ring-destructive/20",
             )}
             {...register("name")}
           />
           {errors.name && (
-            <p className="text-xs text-red-400 mt-1 ml-1">
+            <p className="text-xs text-destructive mt-1 ml-1">
               {errors.name.message}
             </p>
           )}
@@ -254,9 +254,9 @@ export function SignupForm({
           <div className="space-y-1.5 animate-in slide-in-from-top-2 duration-200">
             <label
               htmlFor="companyName"
-              className="flex items-center gap-2 text-sm font-semibold text-white/70"
+              className="flex items-center gap-2 text-sm font-semibold text-muted-foreground"
             >
-              <Briefcase className="w-3.5 h-3.5 text-violet-400" />
+              <Briefcase className="w-3.5 h-3.5 text-violet-500" />
               Company Name
             </label>
             <Input
@@ -264,14 +264,14 @@ export function SignupForm({
               placeholder="Your Business Name"
               disabled={isSubmitting}
               className={cn(
-                "h-11 bg-white/6 border-white/12 text-white placeholder:text-white/30 focus:border-violet-500/60 focus:ring-violet-500/20",
+                "h-11 bg-muted border-border text-foreground placeholder:text-muted-foreground focus:border-violet-500 focus:ring-violet-500/20",
                 errors.companyName &&
-                  "border-red-500/50 focus:border-red-500/60 focus:ring-red-500/10",
+                  "border-destructive focus:border-destructive focus:ring-destructive/20",
               )}
               {...register("companyName")}
             />
             {errors.companyName && (
-              <p className="text-xs text-red-400 mt-1 ml-1">
+              <p className="text-xs text-destructive mt-1 ml-1">
                 {errors.companyName.message}
               </p>
             )}
@@ -282,9 +282,9 @@ export function SignupForm({
         <div className="space-y-1.5">
           <label
             htmlFor="email"
-            className="flex items-center gap-2 text-sm font-semibold text-white/70"
+            className="flex items-center gap-2 text-sm font-semibold text-muted-foreground"
           >
-            <Mail className="w-3.5 h-3.5 text-indigo-400" />
+            <Mail className="w-3.5 h-3.5 text-primary" />
             {selectedRole === "EMPLOYER" ? "Company Email" : "Email"}
           </label>
           <Input
@@ -293,14 +293,14 @@ export function SignupForm({
             placeholder="you@example.com"
             disabled={isSubmitting}
             className={cn(
-              "h-11 bg-white/6 border-white/12 text-white placeholder:text-white/30 focus:border-indigo-500/60 focus:ring-indigo-500/20",
+              "h-11 bg-muted border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-ring",
               errors.email &&
-                "border-red-500/50 focus:border-red-500/60 focus:ring-red-500/10",
+                "border-destructive focus:border-destructive focus:ring-destructive/20",
             )}
             {...register("email")}
           />
           {errors.email && (
-            <p className="text-xs text-red-400 mt-1 ml-1">
+            <p className="text-xs text-destructive mt-1 ml-1">
               {errors.email.message}
             </p>
           )}
@@ -311,9 +311,9 @@ export function SignupForm({
           <div className="space-y-1.5">
             <label
               htmlFor="password"
-              className="flex items-center gap-2 text-sm font-semibold text-white/70"
+              className="flex items-center gap-2 text-sm font-semibold text-muted-foreground"
             >
-              <Lock className="w-3.5 h-3.5 text-indigo-400" />
+              <Lock className="w-3.5 h-3.5 text-primary" />
               Password
             </label>
             <div className="relative">
@@ -322,16 +322,16 @@ export function SignupForm({
                 type={showPass ? "text" : "password"}
                 disabled={isSubmitting}
                 className={cn(
-                  "h-11 pr-10 bg-white/6 border-white/12 text-white placeholder:text-white/30 focus:border-indigo-500/60 focus:ring-indigo-500/20",
+                  "h-11 pr-10 bg-muted border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-ring",
                   errors.password &&
-                    "border-red-500/50 focus:border-red-500/60 focus:ring-red-500/10",
+                    "border-destructive focus:border-destructive focus:ring-destructive/20",
                 )}
                 {...register("password")}
               />
               <button
                 type="button"
                 onClick={() => setShowPass(!showPass)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
               >
                 {showPass ? (
                   <EyeOff className="w-4 h-4" />
@@ -341,7 +341,7 @@ export function SignupForm({
               </button>
             </div>
             {errors.password && (
-              <p className="text-xs text-red-400 mt-1 ml-1">
+              <p className="text-xs text-destructive mt-1 ml-1">
                 {errors.password.message}
               </p>
             )}
@@ -350,7 +350,7 @@ export function SignupForm({
           <div className="space-y-1.5">
             <label
               htmlFor="confirmPassword"
-              className="text-sm font-semibold text-white/70 block"
+              className="text-sm font-semibold text-muted-foreground block"
             >
               Confirm
             </label>
@@ -360,16 +360,16 @@ export function SignupForm({
                 type={showConfirmPass ? "text" : "password"}
                 disabled={isSubmitting}
                 className={cn(
-                  "h-11 pr-10 bg-white/6 border-white/12 text-white placeholder:text-white/30 focus:border-indigo-500/60 focus:ring-indigo-500/20",
+                  "h-11 pr-10 bg-muted border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-ring",
                   errors.confirmPassword &&
-                    "border-red-500/50 focus:border-red-500/60 focus:ring-red-500/10",
+                    "border-destructive focus:border-destructive focus:ring-destructive/20",
                 )}
                 {...register("confirmPassword")}
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPass(!showConfirmPass)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
               >
                 {showConfirmPass ? (
                   <EyeOff className="w-4 h-4" />
@@ -379,7 +379,7 @@ export function SignupForm({
               </button>
             </div>
             {errors.confirmPassword && (
-              <p className="text-xs text-red-400 mt-1 ml-1">
+              <p className="text-xs text-destructive mt-1 ml-1">
                 {errors.confirmPassword.message}
               </p>
             )}
@@ -406,11 +406,11 @@ export function SignupForm({
         </button>
       </form>
 
-      <p className="text-center text-sm text-white/45 mt-6">
+      <p className="text-center text-sm text-muted-foreground mt-6">
         Already have an account?{" "}
         <Link
           href="/auth/signin"
-          className="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors"
+          className="text-primary hover:text-primary/80 font-semibold transition-colors"
         >
           Sign in
         </Link>

@@ -6,7 +6,8 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter, usePathname } from "next/navigation";
-import { Briefcase, Menu, X, ChevronDown, LogOut, User } from "lucide-react";
+import { Briefcase, Menu, X, LogOut } from "lucide-react";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const AppleNavbar = () => {
   const user = useAppSelector((state) => state.user);
@@ -50,13 +51,14 @@ const AppleNavbar = () => {
           ? "/user"
           : null;
 
-  // When logged in: Dashboard first, no Home link
-  // When guest: Home, About, Contact
   const navItems = user.role
     ? [
         { name: "Dashboard", href: dashboardLink! },
         ...(user.role === "ADMIN"
           ? [{ name: "Customer Queries", href: "/admin/customer-queries" }]
+          : []),
+        ...(user.role === "EMPLOYER"
+          ? [{ name: "Interviews", href: "/employer/schedule" }]
           : []),
         { name: "About", href: "/about" },
         { name: "Contact", href: "/contact" },
@@ -73,7 +75,7 @@ const AppleNavbar = () => {
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
-            ? "bg-[oklch(0.09_0_0/95%)] backdrop-blur-xl border-b border-white/8 shadow-xl shadow-black/30"
+            ? "bg-background/95 backdrop-blur-xl border-b border-border shadow-sm dark:shadow-xl dark:shadow-black/30"
             : "bg-transparent"
         }`}
       >
@@ -84,7 +86,7 @@ const AppleNavbar = () => {
               <div className="relative flex items-center justify-center w-8 h-8 rounded-lg brand-gradient shadow-lg shadow-indigo-500/30 group-hover:shadow-indigo-500/50 transition-shadow duration-300">
                 <Briefcase className="w-4 h-4 text-white" />
               </div>
-              <span className="font-bold text-lg tracking-tight text-white">
+              <span className="font-bold text-lg tracking-tight text-foreground">
                 Job
                 <span className="brand-text">Portal</span>
               </span>
@@ -96,31 +98,35 @@ const AppleNavbar = () => {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="relative px-4 py-2 text-sm font-medium text-white/70 hover:text-white rounded-lg hover:bg-white/8 transition-all duration-200"
+                  className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                    pathname === item.href
+                      ? "text-primary bg-primary/10"
+                      : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                  }`}
                 >
                   {item.name}
                 </Link>
               ))}
-              {/* Dashboard is already included in navItems when logged in */}
             </div>
 
             {/* ── Right Actions (Desktop) ── */}
             <div className="hidden md:flex items-center gap-3">
+              <ThemeToggle />
               {user.loading ? (
                 <div className="flex items-center gap-3">
-                  <div className="w-32 h-9 rounded-xl bg-white/8 animate-pulse" />
+                  <div className="w-32 h-9 rounded-xl bg-muted animate-pulse" />
                 </div>
               ) : user.role ? (
                 <div className="flex items-center gap-3">
                   {/* User chip */}
-                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/8 border border-white/10">
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-card border border-border">
                     <div className="w-6 h-6 rounded-full brand-gradient flex items-center justify-center text-xs font-bold text-white">
                       {user?.name?.charAt(0)?.toUpperCase() ?? "U"}
                     </div>
-                    <span className="text-sm text-white/80 font-medium">
+                    <span className="text-sm text-foreground font-medium">
                       {user.name?.split(" ")[0]}
                     </span>
-                    <span className="text-xs px-1.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 font-semibold">
+                    <span className="text-xs px-1.5 py-0.5 rounded-full bg-primary/10 text-primary font-semibold">
                       {user.role === "ADMIN"
                         ? "Admin"
                         : user.role === "EMPLOYER"
@@ -131,7 +137,7 @@ const AppleNavbar = () => {
                   {/* Logout */}
                   <button
                     onClick={handelLogout}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-white/60 hover:text-white rounded-lg hover:bg-white/8 transition-all duration-200"
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground rounded-lg hover:bg-accent transition-all duration-200"
                     aria-label="Logout"
                   >
                     <LogOut className="w-4 h-4" />
@@ -143,7 +149,7 @@ const AppleNavbar = () => {
                   <Link
                     href="/auth/signin"
                     prefetch={false}
-                    className="px-4 py-2 text-sm font-medium text-white/70 hover:text-white transition-colors duration-200"
+                    className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
                   >
                     Sign In
                   </Link>
@@ -159,17 +165,20 @@ const AppleNavbar = () => {
             </div>
 
             {/* ── Mobile Hamburger ── */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden flex items-center justify-center w-9 h-9 rounded-lg bg-white/8 border border-white/10 text-white transition-all duration-200 hover:bg-white/12"
-              aria-label="Toggle menu"
-            >
-              {isMobileMenuOpen ? (
-                <X className="w-5 h-5" />
-              ) : (
-                <Menu className="w-5 h-5" />
-              )}
-            </button>
+            <div className="flex items-center gap-2 md:hidden">
+              <ThemeToggle />
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="flex items-center justify-center w-9 h-9 rounded-lg bg-card border border-border text-foreground transition-all duration-200 hover:bg-accent"
+                aria-label="Toggle menu"
+              >
+                {isMobileMenuOpen ? (
+                  <X className="w-5 h-5" />
+                ) : (
+                  <Menu className="w-5 h-5" />
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </nav>
@@ -182,42 +191,45 @@ const AppleNavbar = () => {
             : "opacity-0 -translate-y-3 pointer-events-none"
         }`}
       >
-        <div className="mx-4 mt-2 rounded-2xl bg-[oklch(0.14_0.006_264)] border border-white/10 shadow-2xl shadow-black/50 overflow-hidden">
+        <div className="mx-4 mt-2 rounded-2xl bg-card border border-border shadow-2xl overflow-hidden">
           <div className="p-4 space-y-1">
             {navItems.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className="flex items-center px-4 py-3 text-base font-medium text-white/80 hover:text-white hover:bg-white/8 rounded-xl transition-all duration-200"
+                className={`flex items-center px-4 py-3 text-base font-medium rounded-xl transition-all duration-200 ${
+                  pathname === item.href
+                    ? "text-primary bg-primary/10"
+                    : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                }`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {item.name}
               </Link>
             ))}
-            {/* Dashboard is already included in navItems when logged in */}
           </div>
 
           {/* Mobile auth section */}
-          <div className="border-t border-white/8 p-4">
+          <div className="border-t border-border p-4">
             {user.loading ? (
-              <div className="flex items-center gap-3 px-4 py-3 bg-white/5 rounded-xl animate-pulse">
-                <div className="w-9 h-9 rounded-full bg-white/10 shrink-0" />
+              <div className="flex items-center gap-3 px-4 py-3 bg-muted rounded-xl animate-pulse">
+                <div className="w-9 h-9 rounded-full bg-muted-foreground/20 shrink-0" />
                 <div className="space-y-2 w-full">
-                  <div className="h-4 bg-white/10 rounded w-1/2" />
-                  <div className="h-3 bg-white/10 rounded w-1/3" />
+                  <div className="h-4 bg-muted-foreground/20 rounded w-1/2" />
+                  <div className="h-3 bg-muted-foreground/20 rounded w-1/3" />
                 </div>
               </div>
             ) : user.role ? (
               <div className="space-y-3">
-                <div className="flex items-center gap-3 px-4 py-3 bg-white/5 rounded-xl">
+                <div className="flex items-center gap-3 px-4 py-3 bg-muted rounded-xl">
                   <div className="w-9 h-9 rounded-full brand-gradient flex items-center justify-center text-sm font-bold text-white shrink-0">
                     {user?.name?.charAt(0)?.toUpperCase() ?? "U"}
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-white">
+                    <p className="text-sm font-semibold text-foreground">
                       {user.name}
                     </p>
-                    <p className="text-xs text-indigo-300">
+                    <p className="text-xs text-primary">
                       {user.role === "ADMIN"
                         ? "Admin"
                         : user.role === "EMPLOYER"
@@ -228,7 +240,7 @@ const AppleNavbar = () => {
                 </div>
                 <button
                   onClick={handelLogout}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-white/70 hover:text-white bg-white/5 hover:bg-white/10 rounded-xl transition-all duration-200"
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground bg-muted hover:bg-accent rounded-xl transition-all duration-200"
                 >
                   <LogOut className="w-4 h-4" />
                   Sign Out
@@ -239,7 +251,7 @@ const AppleNavbar = () => {
                 <Link
                   href="/auth/signin"
                   prefetch={false}
-                  className="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white/80 hover:text-white bg-white/5 hover:bg-white/10 rounded-xl transition-all duration-200"
+                  className="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground bg-muted hover:bg-accent rounded-xl transition-all duration-200"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Sign In

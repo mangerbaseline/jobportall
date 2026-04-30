@@ -55,10 +55,10 @@ export default function ContactPage() {
             {/* Contact Info */}
             <div className="space-y-12 animate-fade-up">
               <div>
-                <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-6">
+                <h1 className="text-4xl sm:text-5xl font-extrabold text-foreground mb-6">
                   Get in <span className="brand-text">Touch</span>
                 </h1>
-                <p className="text-lg text-white/55 leading-relaxed">
+                <p className="text-lg text-muted-foreground leading-relaxed">
                   Have questions about our platform or need assistance with your job search? 
                   Our team is here to help you every step of the way.
                 </p>
@@ -66,42 +66,42 @@ export default function ContactPage() {
 
               <div className="space-y-6">
                 <div className="flex items-center gap-5 group">
-                  <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 group-hover:brand-gradient group-hover:text-white transition-all duration-300">
+                  <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary group-hover:brand-gradient group-hover:text-white transition-all duration-300">
                     <Mail className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="text-xs text-white/40 font-medium uppercase tracking-wider mb-1">Email Us</p>
-                    <p className="text-white font-semibold">support@jobportal.com</p>
+                    <p className="text-xs text-muted-foreground/60 font-medium uppercase tracking-wider mb-1">Email Us</p>
+                    <p className="text-foreground font-semibold">support@jobportal.com</p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-5 group">
-                  <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 group-hover:brand-gradient group-hover:text-white transition-all duration-300">
+                  <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary group-hover:brand-gradient group-hover:text-white transition-all duration-300">
                     <Phone className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="text-xs text-white/40 font-medium uppercase tracking-wider mb-1">Call Us</p>
-                    <p className="text-white font-semibold">+1 (555) 000-0000</p>
+                    <p className="text-xs text-muted-foreground/60 font-medium uppercase tracking-wider mb-1">Call Us</p>
+                    <p className="text-foreground font-semibold">+1 (555) 000-0000</p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-5 group">
-                  <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 group-hover:brand-gradient group-hover:text-white transition-all duration-300">
+                  <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary group-hover:brand-gradient group-hover:text-white transition-all duration-300">
                     <MapPin className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="text-xs text-white/40 font-medium uppercase tracking-wider mb-1">Visit Us</p>
-                    <p className="text-white font-semibold">123 Career Blvd, Suite 100, SF, CA</p>
+                    <p className="text-xs text-muted-foreground/60 font-medium uppercase tracking-wider mb-1">Visit Us</p>
+                    <p className="text-foreground font-semibold">123 Career Blvd, Suite 100, SF, CA</p>
                   </div>
                 </div>
               </div>
 
-              <div className="p-8 rounded-3xl bg-white/5 border border-white/10 space-y-4">
-                <div className="flex items-center gap-3 text-indigo-300">
+              <div className="p-8 rounded-3xl bg-muted border border-border space-y-4">
+                <div className="flex items-center gap-3 text-primary">
                   <MessageSquare className="w-5 h-5" />
-                  <h3 className="font-bold">Live Support</h3>
+                  <h3 className="font-bold text-foreground">Live Support</h3>
                 </div>
-                <p className="text-sm text-white/50 leading-relaxed">
+                <p className="text-sm text-muted-foreground leading-relaxed">
                   Our support team is available Monday through Friday, 9am - 6pm PST. 
                   Expect a response within 24 hours.
                 </p>
@@ -114,16 +114,16 @@ export default function ContactPage() {
               <div className="relative glass-card rounded-3xl p-8 sm:p-10">
                 {submitted ? (
                   <div className="text-center py-12 space-y-6">
-                    <div className="w-20 h-20 rounded-full bg-green-500/20 border border-green-500/30 flex items-center justify-center mx-auto text-green-400">
+                    <div className="w-20 h-20 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center mx-auto text-emerald-500">
                       <CheckCircle2 className="w-10 h-10" />
                     </div>
                     <div>
-                      <h2 className="text-2xl font-bold text-white mb-2">Message Sent!</h2>
-                      <p className="text-white/50">Thank you for reaching out. Our team will review your message and contact you soon.</p>
+                      <h2 className="text-2xl font-bold text-foreground mb-2">Message Sent!</h2>
+                      <p className="text-muted-foreground">Thank you for reaching out. Our team will review your message and contact you soon.</p>
                     </div>
                     <button 
                       onClick={() => setSubmitted(false)}
-                      className="text-indigo-400 hover:text-indigo-300 font-medium text-sm transition-colors"
+                      className="text-primary hover:text-primary/80 font-medium text-sm transition-colors"
                     >
                       Send another message
                     </button>
@@ -132,50 +132,50 @@ export default function ContactPage() {
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid sm:grid-cols-2 gap-6">
                       <div className="space-y-2">
-                        <label htmlFor="name" className="text-sm font-medium text-white/70 ml-1">Full Name</label>
+                        <label htmlFor="name" className="text-sm font-medium text-muted-foreground/70 ml-1">Full Name</label>
                         <input
                           id="name"
                           name="name"
                           type="text"
                           required
                           placeholder="John Doe"
-                          className="w-full px-5 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all"
+                          className="w-full px-5 py-3.5 rounded-xl bg-muted border border-border text-foreground placeholder:text-muted-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all"
                         />
                       </div>
                       <div className="space-y-2">
-                        <label htmlFor="email" className="text-sm font-medium text-white/70 ml-1">Email Address</label>
+                        <label htmlFor="email" className="text-sm font-medium text-muted-foreground/70 ml-1">Email Address</label>
                         <input
                           id="email"
                           name="email"
                           type="email"
                           required
                           placeholder="john@example.com"
-                          className="w-full px-5 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all"
+                          className="w-full px-5 py-3.5 rounded-xl bg-muted border border-border text-foreground placeholder:text-muted-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all"
                         />
                       </div>
                     </div>
 
                     <div className="space-y-2">
-                      <label htmlFor="subject" className="text-sm font-medium text-white/70 ml-1">Subject</label>
+                      <label htmlFor="subject" className="text-sm font-medium text-muted-foreground/70 ml-1">Subject</label>
                       <input
                         id="subject"
                         name="subject"
                         type="text"
                         required
                         placeholder="How can we help?"
-                        className="w-full px-5 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all"
+                        className="w-full px-5 py-3.5 rounded-xl bg-muted border border-border text-foreground placeholder:text-muted-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all"
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <label htmlFor="message" className="text-sm font-medium text-white/70 ml-1">Message</label>
+                      <label htmlFor="message" className="text-sm font-medium text-muted-foreground/70 ml-1">Message</label>
                       <textarea
                         id="message"
                         name="message"
                         required
                         rows={5}
                         placeholder="Tell us more about your inquiry..."
-                        className="w-full px-5 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all resize-none"
+                        className="w-full px-5 py-3.5 rounded-xl bg-muted border border-border text-foreground placeholder:text-muted-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all resize-none"
                       />
                     </div>
 

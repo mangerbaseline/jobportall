@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { verifyToken } from "@/lib/jwt";
 import { CheckAuth } from "@/utility/checkAuth";
+import { findNextAvailableSlot } from "@/lib/schedule";
+import { sendInterviewEmail } from "@/lib/email";
 
 export async function GET(
   request: NextRequest,
@@ -41,7 +43,7 @@ export async function GET(
     if (!application) {
       return NextResponse.json(
         { error: "Application not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -154,7 +156,14 @@ export async function PATCH(
 
     const application = await prisma.application.findUnique({
       where: { id },
-      include: { job: true },
+      include: {
+        job: {
+          include: {
+            company: true,
+          },
+        },
+        user: { select: { id: true, name: true, email: true } },
+      },
     });
 
     if (!application) {
@@ -193,8 +202,22 @@ export async function PATCH(
     }
 
     if (status === "ACCEPTED") {
-      // transaction — accept application + mark user as employed
-      const [updatedApplication] = await prisma.$transaction([
+      // ── Step 1: Find the next available interview slot ──
+      const slot = await findNextAvailableSlot(user.id);
+
+      if (!slot) {
+        return NextResponse.json(
+          {
+            success: false,
+            message:
+              "All interview slots are fully booked for the next 30 days. Please clear some slots before accepting more candidates.",
+          },
+          { status: 409 },
+        );
+      }
+
+      // ── Step 2: Transaction — accept app + mark employed + create interview ──
+      const [updatedApplication, , interview] = await prisma.$transaction([
         prisma.application.update({
           where: { id },
           data: { status: "ACCEPTED" },
@@ -203,9 +226,39 @@ export async function PATCH(
           where: { id: application.userId },
           data: { employed: true },
         }),
+        prisma.interview.create({
+          data: {
+            scheduledDate: slot.scheduledDate,
+            startTime: slot.startTime,
+            endTime: slot.endTime,
+            applicationId: id,
+            employerId: user.id,
+          },
+        }),
       ]);
+
+      // ── Step 3: Send interview email (non-blocking) ──
+      const companyName = application.job.company?.name || "Our Company";
+
+      sendInterviewEmail({
+        candidateEmail: application.user.email,
+        candidateName: application.user.name,
+        jobTitle: application.job.title,
+        companyName: companyName,
+        scheduledDate: slot.scheduledDate,
+        startTime: slot.startTime,
+        endTime: slot.endTime,
+      }).catch((err) => console.error("Failed to send interview email:", err));
+
       return NextResponse.json(
-        { success: true, data: updatedApplication },
+        {
+          success: true,
+          data: updatedApplication,
+          interview: {
+            date: slot.scheduledDate,
+            time: `${slot.startTime} – ${slot.endTime}`,
+          },
+        },
         { status: 200 },
       );
     }
@@ -218,6 +271,7 @@ export async function PATCH(
 
     return NextResponse.json({ success: true, data: updated }, { status: 200 });
   } catch (error) {
+    console.error("Application PATCH error:", error);
     return NextResponse.json(
       { success: false, message: "Internal server error", error },
       { status: 500 },

@@ -71,12 +71,12 @@ export function AddCompanyDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="glass-card border-white/10 sm:max-w-md bg-zinc-950">
+      <DialogContent className="glass-card border-border sm:max-w-md bg-card">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-white">
+          <DialogTitle className="text-xl font-bold text-foreground">
             Add New Company
           </DialogTitle>
-          <DialogDescription className="text-white/60">
+          <DialogDescription className="text-muted-foreground">
             Create a new company to post jobs under its name.
           </DialogDescription>
         </DialogHeader>
@@ -89,39 +89,39 @@ export function AddCompanyDialog({
           )}
 
           <div className="space-y-1.5">
-            <label className="text-sm font-medium text-white/80">
-              Company Name <span className="text-red-400">*</span>
+            <label className="text-sm font-medium text-foreground/80">
+              Company Name <span className="text-destructive">*</span>
             </label>
             <Input
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Acme Corp"
-              className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
+              className="bg-muted border-border text-foreground placeholder:text-muted-foreground/30"
               disabled={loading}
             />
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-sm font-medium text-white/80">
+            <label className="text-sm font-medium text-foreground/80">
               Description
             </label>
             <Input
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Brief description about the company"
-              className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
+              className="bg-muted border-border text-foreground placeholder:text-muted-foreground/30"
               disabled={loading}
             />
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-sm font-medium text-white/80">Website</label>
+            <label className="text-sm font-medium text-foreground/80">Website</label>
             <Input
               value={website}
               onChange={(e) => setWebsite(e.target.value)}
               placeholder="https://acme.com"
               type="url"
-              className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
+              className="bg-muted border-border text-foreground placeholder:text-muted-foreground/30"
               disabled={loading}
             />
           </div>
@@ -131,7 +131,7 @@ export function AddCompanyDialog({
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
-              className="border-white/10 text-white hover:bg-white/10 hover:text-white"
+              className="border-border text-foreground hover:bg-accent hover:text-foreground"
               disabled={loading}
             >
               Cancel

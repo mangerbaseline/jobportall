@@ -25,8 +25,8 @@ export default function EmployerDashboard() {
     return (
       <div className="flex h-screen w-full justify-center items-center">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="w-8 h-8 text-indigo-400 animate-spin" />
-          <p className="text-white/40 text-sm">Loading dashboard…</p>
+          <Loader2 className="w-8 h-8 text-primary animate-spin" />
+          <p className="text-muted-foreground text-sm">Loading dashboard…</p>
         </div>
       </div>
     );
@@ -40,10 +40,10 @@ export default function EmployerDashboard() {
         {/* ── Page Header ── */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-extrabold text-white">
+            <h1 className="text-3xl font-extrabold text-foreground">
               Employer <span className="brand-text">Dashboard</span>
             </h1>
-            <p className="text-sm text-white/45 mt-1">
+            <p className="text-sm text-muted-foreground mt-1">
               Welcome back, {user.name || "Employer"} — manage your listings and
               track applications.
             </p>
@@ -53,7 +53,7 @@ export default function EmployerDashboard() {
             onClick={() => setPostjob((prev) => !prev)}
             className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 shrink-0 ${
               postjob
-                ? "bg-white/10 border border-white/15 text-white/70 hover:bg-white/15"
+                ? "bg-muted border border-border text-muted-foreground hover:bg-accent"
                 : "brand-gradient text-white shadow-lg shadow-indigo-500/25 hover:opacity-90 hover:scale-105"
             }`}
           >
@@ -81,13 +81,13 @@ export default function EmployerDashboard() {
         {postjob && (
           <div className="animate-fade-up">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                <Briefcase className="w-4 h-4 text-indigo-400" />
+              <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
+                <Briefcase className="w-4 h-4 text-primary" />
                 New Job Listing
               </h2>
               <button
                 onClick={() => setPostjob(false)}
-                className="w-8 h-8 rounded-lg bg-white/8 border border-white/10 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/12 transition-all duration-200"
+                className="w-8 h-8 rounded-lg bg-muted border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-all duration-200"
                 aria-label="Close form"
               >
                 <X className="w-4 h-4" />

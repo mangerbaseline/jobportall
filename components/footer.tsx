@@ -26,7 +26,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="relative mt-20 border-t border-white/8 bg-[oklch(0.09_0_0/50%)] backdrop-blur-md">
+    <footer className="relative mt-20 border-t border-border bg-card/50 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand Section */}
@@ -35,11 +35,11 @@ const Footer = () => {
               <div className="relative flex items-center justify-center w-8 h-8 rounded-lg brand-gradient shadow-lg shadow-indigo-500/30 group-hover:shadow-indigo-500/50 transition-shadow duration-300">
                 <Briefcase className="w-4 h-4 text-white" />
               </div>
-              <span className="font-bold text-lg tracking-tight text-white">
+              <span className="font-bold text-lg tracking-tight text-foreground">
                 Job<span className="brand-text">Portal</span>
               </span>
             </Link>
-            <p className="text-sm text-white/50 leading-relaxed max-w-xs">
+            <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
               The world&apos;s leading job board for exceptional Job and
               world-class employers. Connecting talent with opportunity since
               2024.
@@ -47,7 +47,7 @@ const Footer = () => {
             <div className="flex items-center gap-4">
               <a
                 href="#"
-                className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/50 hover:text-white hover:bg-indigo-500/20 hover:border-indigo-500/30 transition-all duration-200"
+                className="w-9 h-9 rounded-lg bg-muted border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-primary/10 hover:border-primary/30 transition-all duration-200"
                 aria-label="X (formerly Twitter)"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -56,7 +56,7 @@ const Footer = () => {
               </a>
               <a
                 href="#"
-                className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/50 hover:text-white hover:bg-indigo-500/20 hover:border-indigo-500/30 transition-all duration-200"
+                className="w-9 h-9 rounded-lg bg-muted border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-primary/10 hover:border-primary/30 transition-all duration-200"
                 aria-label="LinkedIn"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -65,7 +65,7 @@ const Footer = () => {
               </a>
               <a
                 href="#"
-                className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/50 hover:text-white hover:bg-indigo-500/20 hover:border-indigo-500/30 transition-all duration-200"
+                className="w-9 h-9 rounded-lg bg-muted border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-primary/10 hover:border-primary/30 transition-all duration-200"
                 aria-label="GitHub"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -77,7 +77,7 @@ const Footer = () => {
 
           {/* Links Sections */}
           <div>
-            <h3 className="text-sm font-bold text-white mb-6 uppercase tracking-wider">
+            <h3 className="text-sm font-bold text-foreground mb-6 uppercase tracking-wider">
               Platform
             </h3>
             <ul className="space-y-4">
@@ -85,7 +85,7 @@ const Footer = () => {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/50 hover:text-indigo-300 transition-colors duration-200"
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200"
                   >
                     {link.name}
                   </Link>
@@ -95,7 +95,7 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="text-sm font-bold text-white mb-6 uppercase tracking-wider">
+            <h3 className="text-sm font-bold text-foreground mb-6 uppercase tracking-wider">
               Company
             </h3>
             <ul className="space-y-4">
@@ -103,7 +103,7 @@ const Footer = () => {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/50 hover:text-indigo-300 transition-colors duration-200"
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200"
                   >
                     {link.name}
                   </Link>
@@ -114,23 +114,23 @@ const Footer = () => {
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-sm font-bold text-white mb-6 uppercase tracking-wider">
+            <h3 className="text-sm font-bold text-foreground mb-6 uppercase tracking-wider">
               Contact
             </h3>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
-                <Mail className="w-4 h-4 text-indigo-400 mt-0.5" />
-                <span className="text-sm text-white/50">
+                <Mail className="w-4 h-4 text-primary mt-0.5" />
+                <span className="text-sm text-muted-foreground">
                   support@jobportal.com
                 </span>
               </li>
               <li className="flex items-start gap-3">
-                <Phone className="w-4 h-4 text-indigo-400 mt-0.5" />
-                <span className="text-sm text-white/50">+1 (555) 000-0000</span>
+                <Phone className="w-4 h-4 text-primary mt-0.5" />
+                <span className="text-sm text-muted-foreground">+1 (555) 000-0000</span>
               </li>
               <li className="flex items-start gap-3">
-                <MapPin className="w-4 h-4 text-indigo-400 mt-0.5" />
-                <span className="text-sm text-white/50">
+                <MapPin className="w-4 h-4 text-primary mt-0.5" />
+                <span className="text-sm text-muted-foreground">
                   123 Career Blvd, Suite 100
                   <br />
                   San Francisco, CA 94103
@@ -141,8 +141,8 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-white/30">
+        <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-xs text-muted-foreground">
             © {currentYear} JobPortal Inc. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
@@ -150,7 +150,7 @@ const Footer = () => {
               <Link
                 key={link.name}
                 href={link.href}
-                className="text-xs text-white/30 hover:text-white transition-colors duration-200"
+                className="text-xs text-muted-foreground hover:text-foreground transition-colors duration-200"
               >
                 {link.name}
               </Link>

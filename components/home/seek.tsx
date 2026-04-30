@@ -16,15 +16,15 @@ export function HomeCard({ seek, postJob, link }: CardHome) {
         className={`relative overflow-hidden h-full rounded-3xl border transition-all duration-300 p-8 flex flex-col items-start gap-6 cursor-pointer
           ${
             isSeeker
-              ? "bg-linear-to-br from-indigo-600/20 to-indigo-900/20 border-indigo-500/25 hover:border-indigo-400/50 hover:shadow-2xl hover:shadow-indigo-500/20"
-              : "bg-linear-to-br from-violet-600/20 to-violet-900/20 border-violet-500/25 hover:border-violet-400/50 hover:shadow-2xl hover:shadow-violet-500/20"
+              ? "bg-linear-to-br from-indigo-600/10 to-indigo-900/10 dark:from-indigo-600/20 dark:to-indigo-900/20 border-indigo-500/20 hover:border-indigo-400/50 hover:shadow-2xl hover:shadow-indigo-500/10 dark:hover:shadow-indigo-500/20"
+              : "bg-linear-to-br from-violet-600/10 to-violet-900/10 dark:from-violet-600/20 dark:to-violet-900/20 border-violet-500/20 hover:border-violet-400/50 hover:shadow-2xl hover:shadow-violet-500/10 dark:hover:shadow-violet-500/20"
           }
           hover:-translate-y-1
         `}
       >
         {/* Background glow orb */}
         <div
-          className={`absolute -top-10 -right-10 w-40 h-40 rounded-full blur-3xl opacity-30 transition-opacity duration-300 group-hover:opacity-50
+          className={`absolute -top-10 -right-10 w-40 h-40 rounded-full blur-3xl opacity-15 dark:opacity-30 transition-opacity duration-300 group-hover:opacity-25 dark:group-hover:opacity-50
             ${isSeeker ? "bg-indigo-500" : "bg-violet-500"}
           `}
         />
@@ -50,12 +50,12 @@ export function HomeCard({ seek, postJob, link }: CardHome) {
         <div className="relative z-10 flex-1">
           <h3
             className={`text-2xl font-bold mb-2 ${
-              isSeeker ? "text-indigo-100" : "text-violet-100"
+              isSeeker ? "text-indigo-700 dark:text-indigo-100" : "text-violet-700 dark:text-violet-100"
             }`}
           >
             {isSeeker ? "Find Jobs" : "Post Jobs"}
           </h3>
-          <p className="text-white/60 text-sm leading-relaxed">
+          <p className="text-muted-foreground text-sm leading-relaxed">
             {isSeeker
               ? "Browse thousands of curated opportunities matched to your skills and ambitions."
               : "Reach top Job instantly. Post openings and manage your hiring pipeline."}
@@ -65,7 +65,7 @@ export function HomeCard({ seek, postJob, link }: CardHome) {
         {/* CTA */}
         <div
           className={`relative z-10 flex items-center gap-2 text-sm font-semibold transition-all duration-200 group-hover:gap-3
-            ${isSeeker ? "text-indigo-300" : "text-violet-300"}
+            ${isSeeker ? "text-indigo-600 dark:text-indigo-300" : "text-violet-600 dark:text-violet-300"}
           `}
         >
           {isSeeker ? "Browse Jobs" : "Post a Job"}

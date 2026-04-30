@@ -140,11 +140,11 @@ export function UpdateJobForm({ jobId }: UpdateJobFormProps) {
   if (isFetching) {
     return (
       <div className="glass-card rounded-3xl p-8 w-full space-y-4 animate-pulse">
-        <div className="h-6 bg-white/8 rounded-lg w-1/3" />
-        <div className="h-3 bg-white/5 rounded-lg w-1/2" />
+        <div className="h-6 bg-muted rounded-lg w-1/3" />
+        <div className="h-3 bg-muted/50 rounded-lg w-1/2" />
         <div className="space-y-4 mt-6">
           {[...Array(5)].map((_, i) => (
-            <div key={i} className="h-11 bg-white/5 rounded-xl" />
+            <div key={i} className="h-11 bg-muted rounded-xl" />
           ))}
         </div>
       </div>
@@ -152,12 +152,12 @@ export function UpdateJobForm({ jobId }: UpdateJobFormProps) {
   }
 
   return (
-    <div className="glass-card rounded-3xl p-8 shadow-2xl shadow-black/30 w-full">
+    <div className="glass-card rounded-3xl p-8 shadow-2xl w-full">
       {/* Header */}
       <div className="flex items-center gap-4 mb-8">
         <button
           onClick={() => router.back()}
-          className="w-9 h-9 rounded-xl bg-white/8 border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/12 transition-all duration-200"
+          className="w-9 h-9 rounded-xl bg-muted border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-all duration-200"
           aria-label="Go back"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -167,8 +167,8 @@ export function UpdateJobForm({ jobId }: UpdateJobFormProps) {
             <Briefcase className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-white">Update Job</h2>
-            <p className="text-xs text-white/45 mt-0.5">
+            <h2 className="text-xl font-bold text-foreground">Update Job</h2>
+            <p className="text-xs text-muted-foreground mt-0.5">
               Edit the details of this job posting.
             </p>
           </div>
@@ -185,7 +185,7 @@ export function UpdateJobForm({ jobId }: UpdateJobFormProps) {
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel
                   htmlFor="update-job-title"
-                  className="text-white/70 text-sm font-semibold mb-1.5 flex items-center gap-2"
+                  className="text-muted-foreground text-sm font-semibold mb-1.5 flex items-center gap-2"
                 >
                   <Briefcase className="w-3.5 h-3.5 text-indigo-400" />
                   Job Title
@@ -197,7 +197,7 @@ export function UpdateJobForm({ jobId }: UpdateJobFormProps) {
                   aria-invalid={fieldState.invalid}
                   placeholder="e.g. Senior Frontend Engineer"
                   autoComplete="off"
-                  className="bg-white/5 border-white/12 focus:border-indigo-500/60 focus:ring-indigo-500/20 text-white placeholder-white/30 rounded-xl"
+                  className="bg-muted border-border focus:border-primary focus:ring-ring text-foreground placeholder:text-muted-foreground/30 rounded-xl"
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -215,7 +215,7 @@ export function UpdateJobForm({ jobId }: UpdateJobFormProps) {
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel
                     htmlFor="update-job-vacancy"
-                    className="text-white/70 text-sm font-semibold mb-1.5 flex items-center gap-2"
+                    className="text-muted-foreground text-sm font-semibold mb-1.5 flex items-center gap-2"
                   >
                     <Users className="w-3.5 h-3.5 text-indigo-400" />
                     Vacancies
@@ -227,7 +227,7 @@ export function UpdateJobForm({ jobId }: UpdateJobFormProps) {
                     aria-invalid={fieldState.invalid}
                     placeholder="e.g. 5"
                     autoComplete="off"
-                    className="bg-white/5 border-white/12 focus:border-indigo-500/60 focus:ring-indigo-500/20 text-white placeholder-white/30 rounded-xl"
+                    className="bg-muted border-border focus:border-primary focus:ring-ring text-foreground placeholder:text-muted-foreground/30 rounded-xl"
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -242,7 +242,7 @@ export function UpdateJobForm({ jobId }: UpdateJobFormProps) {
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel
                     htmlFor="update-job-location"
-                    className="text-white/70 text-sm font-semibold mb-1.5 flex items-center gap-2"
+                    className="text-muted-foreground text-sm font-semibold mb-1.5 flex items-center gap-2"
                   >
                     <MapPin className="w-3.5 h-3.5 text-indigo-400" />
                     Location
@@ -254,7 +254,7 @@ export function UpdateJobForm({ jobId }: UpdateJobFormProps) {
                     aria-invalid={fieldState.invalid}
                     placeholder="e.g. Remote / New York"
                     autoComplete="off"
-                    className="bg-white/5 border-white/12 focus:border-indigo-500/60 focus:ring-indigo-500/20 text-white placeholder-white/30 rounded-xl"
+                    className="bg-muted border-border focus:border-primary focus:ring-ring text-foreground placeholder:text-muted-foreground/30 rounded-xl"
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -272,7 +272,7 @@ export function UpdateJobForm({ jobId }: UpdateJobFormProps) {
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel
                   htmlFor="update-job-salary"
-                  className="text-white/70 text-sm font-semibold mb-1.5 flex items-center gap-2"
+                  className="text-muted-foreground text-sm font-semibold mb-1.5 flex items-center gap-2"
                 >
                   <DollarSign className="w-3.5 h-3.5 text-indigo-400" />
                   Salary Range
@@ -284,7 +284,7 @@ export function UpdateJobForm({ jobId }: UpdateJobFormProps) {
                   aria-invalid={fieldState.invalid}
                   placeholder="e.g. $80,000"
                   autoComplete="off"
-                  className="bg-white/5 border-white/12 focus:border-indigo-500/60 focus:ring-indigo-500/20 text-white placeholder-white/30 rounded-xl"
+                  className="bg-muted border-border focus:border-primary focus:ring-ring text-foreground placeholder:text-muted-foreground/30 rounded-xl"
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -301,7 +301,7 @@ export function UpdateJobForm({ jobId }: UpdateJobFormProps) {
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel
                   htmlFor="update-job-description"
-                  className="text-white/70 text-sm font-semibold mb-1.5 flex items-center gap-2"
+                  className="text-muted-foreground text-sm font-semibold mb-1.5 flex items-center gap-2"
                 >
                   <FileText className="w-3.5 h-3.5 text-indigo-400" />
                   Job Description
@@ -313,11 +313,11 @@ export function UpdateJobForm({ jobId }: UpdateJobFormProps) {
                     id="update-job-description"
                     placeholder="Describe responsibilities, requirements, and benefits…"
                     rows={6}
-                    className="min-h-36 resize-none bg-white/5 border-white/12 focus:border-indigo-500/60 text-white placeholder-white/30 rounded-xl"
+                    className="min-h-36 resize-none bg-muted border-border focus:border-primary text-foreground placeholder:text-muted-foreground/30 rounded-xl"
                     aria-invalid={fieldState.invalid}
                   />
                   <InputGroupAddon align="block-end">
-                    <InputGroupText className="tabular-nums text-white/40 text-xs">
+                    <InputGroupText className="tabular-nums text-muted-foreground/40 text-xs">
                       {(field.value ?? "").length}/1000
                     </InputGroupText>
                   </InputGroupAddon>
@@ -331,7 +331,7 @@ export function UpdateJobForm({ jobId }: UpdateJobFormProps) {
         </FieldGroup>
 
         {/* Submit */}
-        <div className="border-t border-white/8 mt-8 pt-6">
+        <div className="border-t border-border mt-8 pt-6">
           <button
             type="submit"
             form="update-job-form"

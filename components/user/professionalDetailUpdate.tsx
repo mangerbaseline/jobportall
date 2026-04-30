@@ -112,7 +112,7 @@ const ProfessionalDetailsForm = () => {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
         <Loader2 className="w-10 h-10 animate-spin text-primary" />
-        <p className="text-white/50 animate-pulse font-medium">
+        <p className="text-muted-foreground animate-pulse font-medium">
           Loading professional details...
         </p>
       </div>
@@ -123,13 +123,13 @@ const ProfessionalDetailsForm = () => {
     <div className="max-w-4xl mx-auto px-4 py-12 animate-fade-up">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-white tracking-tight flex items-center gap-3">
+          <h1 className="text-3xl font-bold text-foreground tracking-tight flex items-center gap-3">
             <div className="p-2.5 rounded-2xl bg-primary/10 border border-primary/20 shadow-lg shadow-primary/5">
               <Briefcase className="w-6 h-6 text-primary" />
             </div>
             Professional Details
           </h1>
-          <p className="text-white/50 mt-2 text-sm md:text-base max-w-lg">
+          <p className="text-muted-foreground mt-2 text-sm md:text-base max-w-lg">
             Highlight your career milestones, skills, and professional links to
             attract top opportunities.
           </p>
@@ -150,7 +150,7 @@ const ProfessionalDetailsForm = () => {
           </div>
         )}
 
-        <div className="glass-card p-6 md:p-8 rounded-[2.5rem] shadow-xl shadow-black/40">
+        <div className="glass-card p-6 md:p-8 rounded-[2.5rem] shadow-xl">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6">
             {/* Work Overview Header */}
             <div className="md:col-span-2 pb-2">
@@ -160,19 +160,19 @@ const ProfessionalDetailsForm = () => {
             </div>
 
             <div className="space-y-2 md:col-span-1">
-              <label className="text-xs font-bold text-white/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
+              <label className="text-xs font-bold text-muted-foreground/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
                 <Briefcase className="w-3 h-3 text-primary/60" /> Job Title
               </label>
               <input
                 {...register("title")}
                 type="text"
                 placeholder="Software Engineer"
-                className="w-full h-12 bg-white/5 border border-white/10 rounded-xl px-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-medium"
+                className="w-full h-12 bg-muted border border-border rounded-xl px-4 text-foreground placeholder:text-muted-foreground/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-medium"
               />
             </div>
 
             <div className="space-y-2 md:col-span-1">
-              <label className="text-xs font-bold text-white/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
+              <label className="text-xs font-bold text-muted-foreground/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
                 <Briefcase className="w-3 h-3 text-primary/60" /> Current
                 Company
               </label>
@@ -180,12 +180,12 @@ const ProfessionalDetailsForm = () => {
                 {...register("companyName")}
                 type="text"
                 placeholder="Tech Innovators Inc."
-                className="w-full h-12 bg-white/5 border border-white/10 rounded-xl px-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-medium"
+                className="w-full h-12 bg-muted border border-border rounded-xl px-4 text-foreground placeholder:text-muted-foreground/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-medium"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-bold text-white/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
+              <label className="text-xs font-bold text-muted-foreground/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
                 <Calendar className="w-3 h-3 text-primary/60" /> Experience
                 (Years)
               </label>
@@ -194,12 +194,12 @@ const ProfessionalDetailsForm = () => {
                 type="number"
                 placeholder="5"
                 min="0"
-                className="w-full h-12 bg-white/5 border border-white/10 rounded-xl px-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-medium"
+                className="w-full h-12 bg-muted border border-border rounded-xl px-4 text-foreground placeholder:text-muted-foreground/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-medium"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-bold text-white/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
+              <label className="text-xs font-bold text-muted-foreground/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
                 <AlertCircle className="w-3 h-3 text-primary/60" /> Notice
                 Period (Days)
               </label>
@@ -208,13 +208,13 @@ const ProfessionalDetailsForm = () => {
                 type="number"
                 placeholder="30"
                 min="0"
-                className="w-full h-12 bg-white/5 border border-white/10 rounded-xl px-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-medium"
+                className="w-full h-12 bg-muted border border-border rounded-xl px-4 text-foreground placeholder:text-muted-foreground/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-medium"
               />
             </div>
 
             {/* Salary Constraints */}
             <div className="space-y-2">
-              <label className="text-xs font-bold text-white/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
+              <label className="text-xs font-bold text-muted-foreground/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
                 <DollarSign className="w-3 h-3 text-primary/60" /> Current
                 Salary
               </label>
@@ -223,12 +223,12 @@ const ProfessionalDetailsForm = () => {
                 type="number"
                 placeholder="e.g. 100000"
                 min="0"
-                className="w-full h-12 bg-white/5 border border-white/10 rounded-xl px-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-medium"
+                className="w-full h-12 bg-muted border border-border rounded-xl px-4 text-foreground placeholder:text-muted-foreground/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-medium"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-bold text-white/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
+              <label className="text-xs font-bold text-muted-foreground/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
                 <DollarSign className="w-3 h-3 text-primary/60" /> Expected
                 Salary
               </label>
@@ -237,19 +237,19 @@ const ProfessionalDetailsForm = () => {
                 type="number"
                 placeholder="e.g. 120000"
                 min="0"
-                className="w-full h-12 bg-white/5 border border-white/10 rounded-xl px-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-medium"
+                className="w-full h-12 bg-muted border border-border rounded-xl px-4 text-foreground placeholder:text-muted-foreground/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-medium"
               />
             </div>
 
             {/* Skills & Background Header */}
-            <div className="md:col-span-2 pt-4 border-t border-white/5">
+            <div className="md:col-span-2 pt-4 border-t border-border">
               <h4 className="text-[10px] font-black text-primary uppercase tracking-[0.25em] mb-2 opacity-50">
                 Skills & Background
               </h4>
             </div>
 
             <div className="space-y-2 md:col-span-2">
-              <label className="text-xs font-bold text-white/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
+              <label className="text-xs font-bold text-muted-foreground/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
                 <Award className="w-3 h-3 text-primary/60" /> Top Skills (Comma
                 Separated)
               </label>
@@ -257,43 +257,43 @@ const ProfessionalDetailsForm = () => {
                 {...register("skills")}
                 rows={2}
                 placeholder="React, Next.js, Node.js, TypeScript..."
-                className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white text-sm placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all resize-none leading-relaxed"
+                className="w-full bg-muted border border-border rounded-xl p-4 text-foreground text-sm placeholder:text-muted-foreground/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all resize-none leading-relaxed"
               />
             </div>
 
             <div className="space-y-2 md:col-span-2">
-              <label className="text-xs font-bold text-white/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
+              <label className="text-xs font-bold text-muted-foreground/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
                 <GraduationCap className="w-3 h-3 text-primary/60" /> Education
               </label>
               <textarea
                 {...register("education")}
                 rows={2}
                 placeholder="B.Sc in Computer Science, State University..."
-                className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white text-sm placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all resize-none leading-relaxed"
+                className="w-full bg-muted border border-border rounded-xl p-4 text-foreground text-sm placeholder:text-muted-foreground/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all resize-none leading-relaxed"
               />
             </div>
 
             <div className="space-y-2 md:col-span-2">
-              <label className="text-xs font-bold text-white/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
+              <label className="text-xs font-bold text-muted-foreground/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
                 <Award className="w-3 h-3 text-primary/60" /> Certifications
               </label>
               <textarea
                 {...register("certifications")}
                 rows={2}
                 placeholder="AWS Certified Solutions Architect, Google Professional Developer..."
-                className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white text-sm placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all resize-none leading-relaxed"
+                className="w-full bg-muted border border-border rounded-xl p-4 text-foreground text-sm placeholder:text-muted-foreground/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all resize-none leading-relaxed"
               />
             </div>
 
             {/* Links Header */}
-            <div className="md:col-span-2 pt-4 border-t border-white/5">
+            <div className="md:col-span-2 pt-4 border-t border-border">
               <h4 className="text-[10px] font-black text-primary uppercase tracking-[0.25em] mb-2 opacity-50">
                 Links & URLs
               </h4>
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-bold text-white/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
+              <label className="text-xs font-bold text-muted-foreground/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
                 <FileText className="w-3 h-3 text-primary/60" /> Resume Link
                 (Drive/Dropbox/etc.)
               </label>
@@ -306,7 +306,7 @@ const ProfessionalDetailsForm = () => {
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-bold text-white/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
+              <label className="text-xs font-bold text-muted-foreground/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
                 <LinkIcon className="w-3 h-3 text-primary/60" /> LinkedIn
               </label>
               <input
@@ -318,7 +318,7 @@ const ProfessionalDetailsForm = () => {
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-bold text-white/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
+              <label className="text-xs font-bold text-muted-foreground/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
                 <div className="w-3 h-3 text-primary/60" /> GitHub
               </label>
               <input
@@ -330,7 +330,7 @@ const ProfessionalDetailsForm = () => {
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-bold text-white/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
+              <label className="text-xs font-bold text-muted-foreground/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
                 <Globe className="w-3 h-3 text-primary/60" /> Portfolio Website
               </label>
               <input

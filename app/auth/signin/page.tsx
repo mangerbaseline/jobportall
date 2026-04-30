@@ -18,8 +18,8 @@ export default function SignInPage() {
       <div className=" hidden lg:flex flex-col justify-between w-[45%] shrink-0 p-12 relative overflow-hidden">
         {/* Glow orbs */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-indigo-600/20 rounded-full blur-3xl" />
-          <div className="absolute bottom-1/4 right-1/4 w-56 h-56 bg-violet-600/15 rounded-full blur-3xl" />
+          <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-indigo-600/10 dark:bg-indigo-600/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-1/4 right-1/4 w-56 h-56 bg-violet-600/8 dark:bg-violet-600/15 rounded-full blur-3xl" />
         </div>
 
         <div className="relative z-10">
@@ -27,17 +27,17 @@ export default function SignInPage() {
             <div className="w-9 h-9 rounded-xl brand-gradient flex items-center justify-center shadow-lg shadow-indigo-500/30">
               <Briefcase className="w-5 h-5 text-white" />
             </div>
-            <span className="font-bold text-xl text-white">
+            <span className="font-bold text-xl text-foreground">
               Job<span className="brand-text">Portal</span>
             </span>
           </div>
 
-          <h2 className="text-4xl font-extrabold text-white leading-snug mb-4">
+          <h2 className="text-4xl font-extrabold text-foreground leading-snug mb-4">
             Your next opportunity
             <br />
             <span className="brand-text">starts here.</span>
           </h2>
-          <p className="text-white/50 text-base leading-relaxed mb-12 max-w-sm">
+          <p className="text-muted-foreground text-base leading-relaxed mb-12 max-w-sm">
             Join the platform connecting exceptional Job with world-class
             employers.
           </p>
@@ -45,10 +45,10 @@ export default function SignInPage() {
           <div className="space-y-4">
             {highlights.map(({ icon: Icon, text }) => (
               <div key={text} className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-500/25 flex items-center justify-center shrink-0">
-                  <Icon className="w-4 h-4 text-indigo-400" />
+                <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/25 flex items-center justify-center shrink-0">
+                  <Icon className="w-4 h-4 text-primary" />
                 </div>
-                <span className="text-white/65 text-sm">{text}</span>
+                <span className="text-muted-foreground text-sm">{text}</span>
               </div>
             ))}
           </div>

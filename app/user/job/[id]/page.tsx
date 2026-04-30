@@ -56,29 +56,29 @@ function timeAgo(dateStr: string): string {
 /* ─── Loading skeleton ─── */
 function LoadingSkeleton() {
   return (
-    <div className="min-h-screen bg-slate-950 flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4">
       <div className="w-full max-w-5xl space-y-6 animate-pulse">
-        <div className="h-4 w-24 bg-slate-800 rounded-full" />
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 space-y-6">
+        <div className="h-4 w-24 bg-muted rounded-full" />
+        <div className="bg-card border border-border rounded-2xl p-8 space-y-6">
           <div className="flex gap-4">
-            <div className="w-14 h-14 rounded-xl bg-slate-800 shrink-0" />
+            <div className="w-14 h-14 rounded-xl bg-muted shrink-0" />
             <div className="flex-1 space-y-3">
-              <div className="h-3 w-20 bg-slate-800 rounded-full" />
-              <div className="h-6 w-2/3 bg-slate-800 rounded-lg" />
-              <div className="h-3 w-28 bg-slate-800 rounded-full" />
+              <div className="h-3 w-20 bg-muted rounded-full" />
+              <div className="h-6 w-2/3 bg-muted rounded-lg" />
+              <div className="h-3 w-28 bg-muted rounded-full" />
             </div>
           </div>
           <div className="flex gap-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-8 w-28 bg-slate-800 rounded-lg" />
+              <div key={i} className="h-8 w-28 bg-muted rounded-lg" />
             ))}
           </div>
           <div className="space-y-2">
-            <div className="h-4 w-full bg-slate-800 rounded" />
-            <div className="h-4 w-5/6 bg-slate-800 rounded" />
-            <div className="h-4 w-4/6 bg-slate-800 rounded" />
+            <div className="h-4 w-full bg-muted rounded" />
+            <div className="h-4 w-5/6 bg-muted rounded" />
+            <div className="h-4 w-4/6 bg-muted rounded" />
           </div>
-          <div className="h-12 w-full bg-slate-800 rounded-xl" />
+          <div className="h-12 w-full bg-muted rounded-xl" />
         </div>
       </div>
     </div>
@@ -94,7 +94,7 @@ function ErrorState({
   onRetry: () => void;
 }) {
   return (
-    <div className="min-h-screen bg-slate-950 flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4">
       <div className="bg-slate-900 border border-red-900/50 rounded-2xl p-10 max-w-sm w-full text-center shadow-2xl">
         <div className="w-14 h-14 rounded-full bg-red-950 border border-red-800 flex items-center justify-center mx-auto mb-5">
           <svg
@@ -111,13 +111,13 @@ function ErrorState({
             />
           </svg>
         </div>
-        <h2 className="text-white font-bold text-lg mb-2 tracking-tight">
+        <h2 className="text-foreground font-bold text-lg mb-2 tracking-tight">
           Failed to load job
         </h2>
-        <p className="text-slate-400 text-sm leading-relaxed mb-6">{message}</p>
+        <p className="text-muted-foreground text-sm leading-relaxed mb-6">{message}</p>
         <button
           onClick={onRetry}
-          className="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-sm font-semibold transition-colors duration-200"
+          className="w-full py-2.5 bg-muted hover:bg-accent text-foreground rounded-xl text-sm font-semibold transition-colors duration-200"
         >
           Try again
         </button>
@@ -144,7 +144,7 @@ function Field({
 }) {
   return (
     <div className="space-y-1.5">
-      <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
         {label}
       </label>
       {children}
@@ -287,7 +287,7 @@ export default function JobPage() {
     .toUpperCase();
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white px-4 py-20">
+    <div className="min-h-screen text-foreground px-4 py-20">
       {/* Back link */}
       <div className="max-w-5xl mx-auto mb-6">
         <Link
@@ -313,14 +313,14 @@ export default function JobPage() {
 
       <div className="max-w-5xl mx-auto space-y-4">
         {/* ── Main card ── */}
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl shadow-black/40">
+        <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-2xl">
           {/* Accent bar */}
           <div className="h-1 w-full bg-linear-to-r from-emerald-500 via-teal-400 to-cyan-500" />
 
           <div className="p-8">
             {/* Header */}
             <div className="flex items-start gap-5 mb-6">
-              <div className="w-14 h-14 rounded-xl bg-linear-to-br from-emerald-600 to-teal-700 flex items-center justify-center text-white font-black text-xl shrink-0 shadow-lg shadow-emerald-900/40">
+              <div className="w-14 h-14 rounded-xl brand-gradient flex items-center justify-center text-white font-black text-xl shrink-0 shadow-lg">
                 {initials}
               </div>
 
@@ -345,11 +345,11 @@ export default function JobPage() {
                   )}
                 </div>
 
-                <h1 className="text-2xl font-black tracking-tight text-white leading-tight mb-1">
+                <h1 className="text-2xl font-black tracking-tight text-foreground leading-tight mb-1">
                   {job.title.trim()}
                 </h1>
-                <h3 className="text-slate-500">Company : {job.name}</h3>
-                <p className="text-slate-500 text-xs">
+                <h3 className="text-muted-foreground">Company : {job.name}</h3>
+                <p className="text-muted-foreground text-xs">
                   Posted {timeAgo(job.createdAt)}
                 </p>
               </div>
@@ -357,7 +357,7 @@ export default function JobPage() {
 
             {/* Meta chips */}
             <div className="flex flex-wrap gap-2.5 mb-8">
-              <div className="flex items-center gap-2 bg-slate-800/70 border border-slate-700/50 text-slate-300 text-sm px-4 py-2 rounded-lg">
+              <div className="flex items-center gap-2 bg-muted border border-border text-muted-foreground text-sm px-4 py-2 rounded-lg">
                 <svg
                   className="w-4 h-4 text-slate-400 shrink-0"
                   fill="none"
@@ -379,7 +379,7 @@ export default function JobPage() {
                 {job.location}
               </div>
 
-              <div className="flex items-center gap-2 bg-slate-800/70 border border-slate-700/50 text-slate-300 text-sm px-4 py-2 rounded-lg">
+              <div className="flex items-center gap-2 bg-muted border border-border text-muted-foreground text-sm px-4 py-2 rounded-lg">
                 <svg
                   className="w-4 h-4 text-slate-400 shrink-0"
                   fill="none"
@@ -396,7 +396,7 @@ export default function JobPage() {
                 ${job.salary} / Month
               </div>
 
-              <div className="flex items-center gap-2 bg-slate-800/70 border border-slate-700/50 text-slate-300 text-sm px-4 py-2 rounded-lg">
+              <div className="flex items-center gap-2 bg-muted border border-border text-muted-foreground text-sm px-4 py-2 rounded-lg">
                 <svg
                   className="w-4 h-4 text-slate-400 shrink-0"
                   fill="none"
@@ -419,7 +419,7 @@ export default function JobPage() {
               <h2 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">
                 About this role
               </h2>
-              <p className="text-slate-300 leading-relaxed text-[0.95rem]">
+              <p className="text-foreground/80 leading-relaxed text-[0.95rem]">
                 {job.description}
               </p>
             </div>
@@ -427,7 +427,7 @@ export default function JobPage() {
             {/* Apply section */}
             <div className="pt-6 border-t border-slate-800">
               {!job.available ? (
-                <div className="flex items-center gap-3 bg-slate-800/50 border border-slate-700 rounded-xl px-5 py-4">
+                <div className="flex items-center gap-3 bg-muted border border-border rounded-xl px-5 py-4">
                   <svg
                     className="w-5 h-5 text-slate-500 shrink-0"
                     fill="none"
@@ -450,8 +450,8 @@ export default function JobPage() {
                   <button
                     disabled
                     className="w-full py-3.5 rounded-xl font-bold text-sm tracking-wide
-                      bg-slate-800 text-slate-500 cursor-not-allowed
-                      border border-slate-700
+                      bg-muted text-muted-foreground cursor-not-allowed
+                      border border-border
                       flex items-center justify-center gap-2"
                   >
                     Already Applied
@@ -478,7 +478,7 @@ export default function JobPage() {
               ) : showForm ? (
                 /* ── Application form ── */
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-                  <h3 className="text-base font-bold text-white tracking-tight">
+                  <h3 className="text-base font-bold text-foreground tracking-tight">
                     Complete Your Application
                   </h3>
 
@@ -495,10 +495,10 @@ export default function JobPage() {
                           })}
                           type="text"
                           placeholder="e.g. Frontend Developer"
-                          className={`w-full h-11 bg-slate-800/60 border rounded-xl px-4 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:ring-2 transition-all ${
+                          className={`w-full h-11 bg-muted border rounded-xl px-4 text-foreground text-sm placeholder:text-muted-foreground/30 focus:outline-none focus:ring-2 transition-all ${
                             errors.jobTitle
-                              ? "border-rose-600 focus:ring-rose-500/30"
-                              : "border-slate-700 focus:ring-emerald-500/30 focus:border-emerald-500/50"
+                              ? "border-destructive focus:ring-destructive/30"
+                              : "border-border focus:ring-primary/30 focus:border-primary/50"
                           }`}
                         />
                       </Field>
@@ -517,10 +517,10 @@ export default function JobPage() {
                         type="number"
                         placeholder="e.g. 3"
                         min={0}
-                        className={`w-full h-11 bg-slate-800/60 border rounded-xl px-4 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:ring-2 transition-all ${
+                        className={`w-full h-11 bg-muted border rounded-xl px-4 text-foreground text-sm placeholder:text-muted-foreground/30 focus:outline-none focus:ring-2 transition-all ${
                           errors.experience
-                            ? "border-rose-600 focus:ring-rose-500/30"
-                            : "border-slate-700 focus:ring-emerald-500/30 focus:border-emerald-500/50"
+                            ? "border-destructive focus:ring-destructive/30"
+                            : "border-border focus:ring-primary/30 focus:border-primary/50"
                         }`}
                       />
                     </Field>
@@ -538,10 +538,10 @@ export default function JobPage() {
                         type="number"
                         placeholder="e.g. 30"
                         min={0}
-                        className={`w-full h-11 bg-slate-800/60 border rounded-xl px-4 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:ring-2 transition-all ${
+                        className={`w-full h-11 bg-muted border rounded-xl px-4 text-foreground text-sm placeholder:text-muted-foreground/30 focus:outline-none focus:ring-2 transition-all ${
                           errors.noticePeriod
-                            ? "border-rose-600 focus:ring-rose-500/30"
-                            : "border-slate-700 focus:ring-emerald-500/30 focus:border-emerald-500/50"
+                            ? "border-destructive focus:ring-destructive/30"
+                            : "border-border focus:ring-primary/30 focus:border-primary/50"
                         }`}
                       />
                     </Field>
@@ -559,10 +559,10 @@ export default function JobPage() {
                         type="number"
                         placeholder="e.g. 80000"
                         min={0}
-                        className={`w-full h-11 bg-slate-800/60 border rounded-xl px-4 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:ring-2 transition-all ${
+                        className={`w-full h-11 bg-muted border rounded-xl px-4 text-foreground text-sm placeholder:text-muted-foreground/30 focus:outline-none focus:ring-2 transition-all ${
                           errors.expectedSalary
-                            ? "border-rose-600 focus:ring-rose-500/30"
-                            : "border-slate-700 focus:ring-emerald-500/30 focus:border-emerald-500/50"
+                            ? "border-destructive focus:ring-destructive/30"
+                            : "border-border focus:ring-primary/30 focus:border-primary/50"
                         }`}
                       />
                     </Field>
@@ -577,10 +577,10 @@ export default function JobPage() {
                           required: "Available date is required",
                         })}
                         type="date"
-                        className={`w-full h-11 bg-slate-800/60 border rounded-xl px-4 text-white text-sm focus:outline-none focus:ring-2 transition-all scheme-dark ${
+                        className={`w-full h-11 bg-muted border rounded-xl px-4 text-foreground text-sm focus:outline-none focus:ring-2 transition-all ${
                           errors.availableDate
-                            ? "border-rose-600 focus:ring-rose-500/30"
-                            : "border-slate-700 focus:ring-emerald-500/30 focus:border-emerald-500/50"
+                            ? "border-destructive focus:ring-destructive/30"
+                            : "border-border focus:ring-primary/30 focus:border-primary/50"
                         }`}
                       />
                     </Field>
@@ -591,7 +591,7 @@ export default function JobPage() {
                     <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                       Resume *
                     </label>
-                    <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4">
+                    <div className="bg-muted border border-border rounded-xl p-4">
                       <ResumeUploader
                         id={`resume-${job.id}`}
                         onFileSelect={handleFileUpload}
@@ -633,7 +633,7 @@ export default function JobPage() {
                         bg-linear-to-rrom-emerald-500 to-teal-500
                         hover:from-emerald-400 hover:to-teal-400
                         disabled:opacity-50 disabled:cursor-not-allowed
-                        text-slate-950 transition-all duration-200
+                        text-white transition-all duration-200
                         shadow-lg shadow-emerald-900/30
                         flex items-center justify-center gap-2"
                     >
@@ -674,7 +674,7 @@ export default function JobPage() {
                       disabled={applyStatus === "loading"}
                       className="px-6 py-3.5 rounded-xl font-bold text-sm
                         bg-slate-800 hover:bg-slate-700
-                        text-slate-300 transition-all duration-200
+                        text-foreground transition-all duration-200
                         disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Cancel
@@ -733,7 +733,7 @@ export default function JobPage() {
                     </svg>
                   </button>
 
-                  <p className="text-center text-slate-600 text-xs mt-3">
+                  <p className="text-center text-muted-foreground/60 text-xs mt-3">
                     Takes less than 2 minutes.
                   </p>
                 </>
@@ -743,7 +743,7 @@ export default function JobPage() {
         </div>
 
         {/* Footer note */}
-        <p className="text-center text-slate-700 text-xs pb-6">
+        <p className="text-center text-muted-foreground/30 text-xs pb-6">
           Job ID: {job.id}
         </p>
 
@@ -752,14 +752,14 @@ export default function JobPage() {
           <div className="mt-16 mb-20">
             <div className="flex items-center justify-between mb-8">
               <div>
-                <h2 className="text-2xl font-black tracking-tight text-white">
+                <h2 className="text-2xl font-black tracking-tight text-foreground">
                   Related Opportunities
                 </h2>
                 <p className="text-slate-500 text-sm mt-1">
                   Jobs you might be interested in based on your tags
                 </p>
               </div>
-              <div className="h-px flex-1 bg-slate-800 mx-8 hidden sm:block" />
+              <div className="h-px flex-1 bg-border mx-8 hidden sm:block" />
               <Link
                 href="/user"
                 className="text-emerald-400 hover:text-emerald-300 text-sm font-bold transition-colors shrink-0"
@@ -776,14 +776,14 @@ export default function JobPage() {
                   className="group bg-slate-900/40 border border-slate-800 hover:border-emerald-500/30 rounded-2xl p-5 transition-all duration-300 hover:shadow-2xl hover:shadow-emerald-900/10 hover:-translate-y-1"
                 >
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-slate-800 flex items-center justify-center text-white font-bold text-sm shrink-0 group-hover:bg-emerald-500/10 group-hover:text-emerald-400 transition-colors">
+                    <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center text-foreground font-bold text-sm shrink-0 group-hover:bg-primary/10 group-hover:text-primary transition-colors">
                       {rj.title.substring(0, 2).toUpperCase()}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-white font-bold text-base truncate group-hover:text-emerald-400 transition-colors">
+                      <h3 className="text-foreground font-bold text-base truncate group-hover:text-primary transition-colors">
                         {rj.title}
                       </h3>
-                      <p className="text-slate-500 text-sm mb-3">{rj.name}</p>
+                      <p className="text-muted-foreground text-sm mb-3">{rj.name}</p>
                       
                       <div className="flex flex-wrap gap-3 items-center">
                         <div className="flex items-center gap-1.5 text-slate-400 text-xs">

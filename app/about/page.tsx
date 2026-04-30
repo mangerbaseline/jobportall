@@ -35,11 +35,11 @@ export default function AboutPage() {
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 text-center">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white mb-6 animate-fade-up">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground mb-6 animate-fade-up">
             Empowering Careers <br />
             <span className="brand-text">Building Futures</span>
           </h1>
-          <p className="text-lg text-white/55 max-w-2xl mx-auto leading-relaxed animate-fade-up" style={{ animationDelay: "0.1s" }}>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed animate-fade-up" style={{ animationDelay: "0.1s" }}>
             JobPortal is more than just a job board. We are a community of professionals 
             and innovators dedicated to making the hiring process faster, smarter, and more human.
           </p>
@@ -51,25 +51,25 @@ export default function AboutPage() {
         <div className="max-w-5xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6 animate-fade-up">
-              <h2 className="text-3xl font-bold text-white">Our Story</h2>
-              <p className="text-white/50 leading-relaxed">
+              <h2 className="text-3xl font-bold text-foreground">Our Story</h2>
+              <p className="text-muted-foreground leading-relaxed">
                 Founded in 2024, JobPortal started with a simple idea: that finding a job 
                 shouldn&apos;t be a full-time job itself. We saw the frustration in the market 
                 — complex forms, lack of transparency, and slow response times.
               </p>
-              <p className="text-white/50 leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed">
                 Today, we serve thousands of users daily, providing them with the tools they 
                 need to succeed in a rapidly evolving job market. Our platform leverages 
                 modern technology to match the right candidates with the right roles, 
                 saving time for everyone involved.
               </p>
               <div className="flex items-center gap-4 pt-4">
-                <div className="p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400">
+                <div className="p-3 rounded-xl bg-primary/10 border border-primary/20 text-primary">
                   <Award className="w-6 h-6" />
                 </div>
                 <div>
-                  <h4 className="text-white font-semibold text-sm">Award Winning Platform</h4>
-                  <p className="text-xs text-white/40">Recognized for innovation in HR tech</p>
+                  <h4 className="text-foreground font-semibold text-sm">Award Winning Platform</h4>
+                  <p className="text-xs text-muted-foreground/40">Recognized for innovation in HR tech</p>
                 </div>
               </div>
             </div>
@@ -77,8 +77,8 @@ export default function AboutPage() {
               <div className="absolute -inset-1 brand-gradient rounded-3xl blur opacity-25 group-hover:opacity-40 transition duration-1000"></div>
               <div className="relative glass-card rounded-3xl p-8 aspect-video flex items-center justify-center">
                 <div className="text-center">
-                   <Users className="w-20 h-20 text-indigo-400/20 mx-auto mb-4" />
-                   <p className="text-white/30 font-medium italic">&quot;Connecting millions of dreams with reality&quot;</p>
+                   <Users className="w-20 h-20 text-primary/20 mx-auto mb-4" />
+                   <p className="text-muted-foreground/30 font-medium italic">&quot;Connecting millions of dreams with reality&quot;</p>
                 </div>
               </div>
             </div>
@@ -91,9 +91,9 @@ export default function AboutPage() {
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {stats.map((stat, i) => (
-              <div key={i} className="glass-card rounded-2xl p-6 text-center hover:border-indigo-500/30 transition-all duration-300">
+              <div key={i} className="glass-card rounded-2xl p-6 text-center hover:border-primary/30 transition-all duration-300">
                 <div className="text-3xl font-extrabold brand-text mb-1">{stat.value}</div>
-                <div className="text-xs text-white/40 font-medium uppercase tracking-wider">{stat.label}</div>
+                <div className="text-xs text-muted-foreground/40 font-medium uppercase tracking-wider">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -101,20 +101,20 @@ export default function AboutPage() {
       </section>
 
       {/* Values Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white/2">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/20">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-white mb-4">Our Core Values</h2>
-            <p className="text-white/50">The principles that guide everything we do.</p>
+            <h2 className="text-3xl font-bold text-foreground mb-4">Our Core Values</h2>
+            <p className="text-muted-foreground">The principles that guide everything we do.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {values.map((value, i) => (
-              <div key={i} className="glass-card rounded-3xl p-8 hover:border-indigo-500/30 transition-all duration-300 group">
+              <div key={i} className="glass-card rounded-3xl p-8 hover:border-primary/30 transition-all duration-300 group">
                 <div className="w-12 h-12 rounded-xl brand-gradient flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                   <value.icon className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-3">{value.title}</h3>
-                <p className="text-sm text-white/50 leading-relaxed">{value.desc}</p>
+                <h3 className="text-xl font-bold text-foreground mb-3">{value.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{value.desc}</p>
               </div>
             ))}
           </div>

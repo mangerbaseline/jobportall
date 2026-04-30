@@ -117,15 +117,15 @@ export function CreatePostForm({ onClose }: CreatePostFormProps = {}) {
   }
 
   return (
-    <div className="glass-card rounded-3xl p-8 shadow-2xl shadow-black/30 w-full">
+    <div className="glass-card rounded-3xl p-8 shadow-2xl w-full">
       {/* Header */}
       <div className="flex items-center gap-3 mb-8">
         <div className="w-10 h-10 rounded-xl brand-gradient flex items-center justify-center shadow-lg shadow-indigo-500/25">
           <Briefcase className="w-5 h-5 text-white" />
         </div>
         <div>
-          <h2 className="text-xl font-bold text-white">Post a New Job</h2>
-          <p className="text-xs text-white/45 mt-0.5">
+          <h2 className="text-xl font-bold text-foreground">Post a New Job</h2>
+          <p className="text-xs text-muted-foreground mt-0.5">
             Fill in the details below — your listing goes live instantly.
           </p>
         </div>
@@ -141,7 +141,7 @@ export function CreatePostForm({ onClose }: CreatePostFormProps = {}) {
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel
                   htmlFor="create-post-company"
-                  className="text-white/70 text-sm font-semibold mb-1.5 flex items-center gap-2"
+                  className="text-muted-foreground text-sm font-semibold mb-1.5 flex items-center gap-2"
                 >
                   <Briefcase className="w-3.5 h-3.5 text-indigo-400" />
                   Company
@@ -152,13 +152,13 @@ export function CreatePostForm({ onClose }: CreatePostFormProps = {}) {
                   defaultValue={field.value}
                 >
                   <SelectTrigger 
-                    className="w-full bg-white/5 border-white/12 focus:border-indigo-500/60 focus:ring-indigo-500/20 text-white rounded-xl h-11"
+                    className="w-full bg-muted border-border focus:border-primary focus:ring-ring text-foreground rounded-xl h-11"
                   >
                     <SelectValue placeholder={isLoadingCompanies ? "Loading companies..." : (companies.length === 0 ? "No companies available" : "Select a company")} />
                   </SelectTrigger>
-                  <SelectContent className="bg-zinc-950 border-white/10 text-white">
+                  <SelectContent className="bg-card border-border text-foreground">
                     {companies.map((company) => (
-                      <SelectItem key={company.id} value={company.id} className="hover:bg-white/10 focus:bg-white/10 focus:text-white cursor-pointer">
+                      <SelectItem key={company.id} value={company.id} className="hover:bg-accent focus:bg-accent focus:text-foreground cursor-pointer">
                         {company.name}
                       </SelectItem>
                     ))}
@@ -179,7 +179,7 @@ export function CreatePostForm({ onClose }: CreatePostFormProps = {}) {
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel
                   htmlFor="create-post-title"
-                  className="text-white/70 text-sm font-semibold mb-1.5 flex items-center gap-2"
+                  className="text-muted-foreground text-sm font-semibold mb-1.5 flex items-center gap-2"
                 >
                   <Briefcase className="w-3.5 h-3.5 text-indigo-400" />
                   Job Title
@@ -191,7 +191,7 @@ export function CreatePostForm({ onClose }: CreatePostFormProps = {}) {
                   aria-invalid={fieldState.invalid}
                   placeholder="e.g. Senior Frontend Engineer"
                   autoComplete="off"
-                  className="bg-white/5 border-white/12 focus:border-indigo-500/60 focus:ring-indigo-500/20 text-white placeholder-white/30 rounded-xl"
+                  className="bg-muted border-border focus:border-primary focus:ring-ring text-foreground placeholder:text-muted-foreground/30 rounded-xl"
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -209,7 +209,7 @@ export function CreatePostForm({ onClose }: CreatePostFormProps = {}) {
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel
                     htmlFor="create-post-vacancy"
-                    className="text-white/70 text-sm font-semibold mb-1.5 flex items-center gap-2"
+                    className="text-muted-foreground text-sm font-semibold mb-1.5 flex items-center gap-2"
                   >
                     <Users className="w-3.5 h-3.5 text-indigo-400" />
                     Vacancies
@@ -221,7 +221,7 @@ export function CreatePostForm({ onClose }: CreatePostFormProps = {}) {
                     aria-invalid={fieldState.invalid}
                     placeholder="e.g. 5"
                     autoComplete="off"
-                    className="bg-white/5 border-white/12 focus:border-indigo-500/60 focus:ring-indigo-500/20 text-white placeholder-white/30 rounded-xl"
+                    className="bg-muted border-border focus:border-primary focus:ring-ring text-foreground placeholder:text-muted-foreground/30 rounded-xl"
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -236,7 +236,7 @@ export function CreatePostForm({ onClose }: CreatePostFormProps = {}) {
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel
                     htmlFor="create-post-location"
-                    className="text-white/70 text-sm font-semibold mb-1.5 flex items-center gap-2"
+                    className="text-muted-foreground text-sm font-semibold mb-1.5 flex items-center gap-2"
                   >
                     <MapPin className="w-3.5 h-3.5 text-indigo-400" />
                     Location
@@ -248,7 +248,7 @@ export function CreatePostForm({ onClose }: CreatePostFormProps = {}) {
                     aria-invalid={fieldState.invalid}
                     placeholder="e.g. Remote / New York"
                     autoComplete="off"
-                    className="bg-white/5 border-white/12 focus:border-indigo-500/60 focus:ring-indigo-500/20 text-white placeholder-white/30 rounded-xl"
+                    className="bg-muted border-border focus:border-primary focus:ring-ring text-foreground placeholder:text-muted-foreground/30 rounded-xl"
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -266,7 +266,7 @@ export function CreatePostForm({ onClose }: CreatePostFormProps = {}) {
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel
                   htmlFor="create-post-salary"
-                  className="text-white/70 text-sm font-semibold mb-1.5 flex items-center gap-2"
+                  className="text-muted-foreground text-sm font-semibold mb-1.5 flex items-center gap-2"
                 >
                   <DollarSign className="w-3.5 h-3.5 text-indigo-400" />
                   Salary Range
@@ -278,7 +278,7 @@ export function CreatePostForm({ onClose }: CreatePostFormProps = {}) {
                   aria-invalid={fieldState.invalid}
                   placeholder="e.g. $50k – $80k / year"
                   autoComplete="off"
-                  className="bg-white/5 border-white/12 focus:border-indigo-500/60 focus:ring-indigo-500/20 text-white placeholder-white/30 rounded-xl"
+                  className="bg-muted border-border focus:border-primary focus:ring-ring text-foreground placeholder:text-muted-foreground/30 rounded-xl"
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -295,7 +295,7 @@ export function CreatePostForm({ onClose }: CreatePostFormProps = {}) {
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel
                   htmlFor="create-post-tags"
-                  className="text-white/70 text-sm font-semibold mb-1.5 flex items-center gap-2"
+                  className="text-muted-foreground text-sm font-semibold mb-1.5 flex items-center gap-2"
                 >
                   <Tag className="w-3.5 h-3.5 text-indigo-400" />
                   Tags (comma separated)
@@ -307,9 +307,9 @@ export function CreatePostForm({ onClose }: CreatePostFormProps = {}) {
                   aria-invalid={fieldState.invalid}
                   placeholder="e.g. React, Next.js, TypeScript"
                   autoComplete="off"
-                  className="bg-white/5 border-white/12 focus:border-indigo-500/60 focus:ring-indigo-500/20 text-white placeholder-white/30 rounded-xl"
+                  className="bg-muted border-border focus:border-primary focus:ring-ring text-foreground placeholder:text-muted-foreground/30 rounded-xl"
                 />
-                <FieldDescription className="text-white/35 text-xs mt-1">
+                <FieldDescription className="text-muted-foreground/50 text-xs mt-1">
                   Separate tags with commas to help candidates find your job.
                 </FieldDescription>
                 {fieldState.invalid && (
@@ -327,7 +327,7 @@ export function CreatePostForm({ onClose }: CreatePostFormProps = {}) {
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel
                   htmlFor="create-post-description"
-                  className="text-white/70 text-sm font-semibold mb-1.5 flex items-center gap-2"
+                  className="text-muted-foreground text-sm font-semibold mb-1.5 flex items-center gap-2"
                 >
                   <FileText className="w-3.5 h-3.5 text-indigo-400" />
                   Job Description
@@ -339,16 +339,16 @@ export function CreatePostForm({ onClose }: CreatePostFormProps = {}) {
                     id="create-post-description"
                     placeholder="Describe responsibilities, requirements, and benefits…"
                     rows={6}
-                    className="min-h-36 resize-none bg-white/5 border-white/12 focus:border-indigo-500/60 text-white placeholder-white/30 rounded-xl"
+                    className="min-h-36 resize-none bg-muted border-border focus:border-primary text-foreground placeholder:text-muted-foreground/30 rounded-xl"
                     aria-invalid={fieldState.invalid}
                   />
                   <InputGroupAddon align="block-end">
-                    <InputGroupText className="tabular-nums text-white/40 text-xs">
+                    <InputGroupText className="tabular-nums text-muted-foreground/40 text-xs">
                       {field.value.length}/1000
                     </InputGroupText>
                   </InputGroupAddon>
                 </InputGroup>
-                <FieldDescription className="text-white/35 text-xs mt-1">
+                <FieldDescription className="text-muted-foreground/50 text-xs mt-1">
                   Include responsibilities, required skills, and benefits.
                 </FieldDescription>
                 {fieldState.invalid && (
@@ -360,7 +360,7 @@ export function CreatePostForm({ onClose }: CreatePostFormProps = {}) {
         </FieldGroup>
 
         {/* Divider */}
-        <div className="border-t border-white/8 mt-8 pt-6">
+        <div className="border-t border-border mt-8 pt-6">
           <button
             type="submit"
             form="create-post-form"

@@ -67,14 +67,14 @@ export default function Home() {
       <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 text-center">
         <div className="max-w-5xl mx-auto">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/25 text-indigo-300 text-xs font-semibold mb-6 animate-fade-up">
-            <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/25 text-primary text-xs font-semibold mb-6 animate-fade-up">
+            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
             1,200+ jobs posted this month
           </div>
 
           {/* Headline */}
           <h1
-            className="text-4xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight text-white mb-6 animate-fade-up"
+            className="text-4xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight text-foreground mb-6 animate-fade-up"
             style={{ animationDelay: "0.1s", opacity: 0 }}
           >
             Find Your <span className="brand-text">Dream Job</span>
@@ -84,14 +84,12 @@ export default function Home() {
 
           {/* Sub-headline */}
           <p
-            className="text-lg sm:text-xl text-white/55 max-w-2xl mx-auto mb-12 leading-relaxed animate-fade-up"
+            className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-12 leading-relaxed animate-fade-up"
             style={{ animationDelay: "0.2s", opacity: 0 }}
           >
             JobPortal connects exceptional Job with world-class employers.
             Whether you&apos;re searching or hiring — we make it seamless.
           </p>
-
-          {/* CTA Cards */}
 
           {/* Search Section */}
           <div
@@ -117,7 +115,7 @@ export default function Home() {
             {stats.map(({ icon: Icon, value, label }) => (
               <div
                 key={label}
-                className="glass-card rounded-2xl p-6 text-center hover:border-indigo-500/30 transition-all duration-300 group"
+                className="glass-card rounded-2xl p-6 text-center hover:border-primary/30 transition-all duration-300 group"
               >
                 <div className="w-10 h-10 rounded-xl brand-gradient mx-auto mb-3 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:scale-110 transition-transform duration-300">
                   <Icon className="w-5 h-5 text-white" />
@@ -125,7 +123,7 @@ export default function Home() {
                 <div className="text-2xl font-extrabold brand-text mb-1">
                   {value}
                 </div>
-                <div className="text-xs text-white/50 font-medium">{label}</div>
+                <div className="text-xs text-muted-foreground font-medium">{label}</div>
               </div>
             ))}
           </div>
@@ -136,37 +134,36 @@ export default function Home() {
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground mb-4">
               How <span className="brand-text">JobPortal</span> Works
             </h2>
-            <p className="text-white/50 max-w-xl mx-auto">
+            <p className="text-muted-foreground max-w-xl mx-auto">
               Simple, fast, and built for both job seekers and employers.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-10">
             {/* Seeker steps */}
-            <div className="glass-card rounded-3xl p-8 space-y-6 hover:border-indigo-500/30 transition-all duration-300">
+            <div className="glass-card rounded-3xl p-8 space-y-6 hover:border-primary/30 transition-all duration-300">
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-8 h-8 rounded-xl bg-linear-to-br from-indigo-500 to-indigo-700 flex items-center justify-center">
                   <Search className="w-4 h-4 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-indigo-200">
+                <h3 className="text-lg font-bold text-primary">
                   For Job Seekers
                 </h3>
               </div>
               {seekerSteps.map((step, i) => {
-                const Icon = step.icon;
                 return (
                   <div key={step.title} className="flex items-start gap-4">
-                    <div className="shrink-0 w-8 h-8 rounded-full bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center text-sm font-bold text-indigo-400">
+                    <div className="shrink-0 w-8 h-8 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center text-sm font-bold text-primary">
                       {i + 1}
                     </div>
                     <div>
-                      <p className="font-semibold text-white text-sm mb-0.5">
+                      <p className="font-semibold text-foreground text-sm mb-0.5">
                         {step.title}
                       </p>
-                      <p className="text-xs text-white/50 leading-relaxed">
+                      <p className="text-xs text-muted-foreground leading-relaxed">
                         {step.desc}
                       </p>
                     </div>
@@ -181,22 +178,21 @@ export default function Home() {
                 <div className="w-8 h-8 rounded-xl bg-linear-to-br from-violet-500 to-violet-700 flex items-center justify-center">
                   <Building2 className="w-4 h-4 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-violet-200">
+                <h3 className="text-lg font-bold text-violet-600 dark:text-violet-400">
                   For Employers
                 </h3>
               </div>
               {employerSteps.map((step, i) => {
-                const Icon = step.icon;
                 return (
                   <div key={step.title} className="flex items-start gap-4">
-                    <div className="shrink-0 w-8 h-8 rounded-full bg-violet-500/15 border border-violet-500/30 flex items-center justify-center text-sm font-bold text-violet-400">
+                    <div className="shrink-0 w-8 h-8 rounded-full bg-violet-500/10 border border-violet-500/30 flex items-center justify-center text-sm font-bold text-violet-600 dark:text-violet-400">
                       {i + 1}
                     </div>
                     <div>
-                      <p className="font-semibold text-white text-sm mb-0.5">
+                      <p className="font-semibold text-foreground text-sm mb-0.5">
                         {step.title}
                       </p>
-                      <p className="text-xs text-white/50 leading-relaxed">
+                      <p className="text-xs text-muted-foreground leading-relaxed">
                         {step.desc}
                       </p>
                     </div>
@@ -210,11 +206,11 @@ export default function Home() {
 
       {/* ─── Bottom CTA Banner ─── */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto text-center glass-card rounded-3xl p-12 border-indigo-500/20 glow-indigo">
-          <h2 className="text-3xl font-extrabold text-white mb-4">
+        <div className="max-w-3xl mx-auto text-center glass-card rounded-3xl p-12 border-primary/20 glow-indigo">
+          <h2 className="text-3xl font-extrabold text-foreground mb-4">
             Ready to take the next step?
           </h2>
-          <p className="text-white/50 mb-8">
+          <p className="text-muted-foreground mb-8">
             Join thousands of professionals already using JobPortal.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -226,7 +222,7 @@ export default function Home() {
             </Link>
             <Link
               href="/user"
-              className="px-8 py-3.5 font-semibold text-white/80 rounded-xl bg-white/8 border border-white/12 hover:bg-white/12 hover:text-white transition-all duration-200"
+              className="px-8 py-3.5 font-semibold text-foreground rounded-xl bg-muted border border-border hover:bg-accent transition-all duration-200"
             >
               Browse Jobs
             </Link>

@@ -77,8 +77,24 @@ model Application {
   employer       User              @relation("EmployerApplications", fields: [employerId], references: [id])
   job            Job               @relation(fields: [jobId], references: [id])
   user           User              @relation(fields: [userId], references: [id])
+  interview      Interview?
 
   @@unique([userId, jobId])
+}
+
+model Interview {
+  id            String          @id @default(cuid())
+  scheduledDate DateTime
+  startTime     String          // e.g. "09:00"
+  endTime       String          // e.g. "09:45"
+  status        InterviewStatus @default(SCHEDULED)
+  location      String?         // optional: room / link
+  notes         String?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  applicationId String          @unique
+  employerId    String
+  application   Application     @relation(fields: [applicationId], references: [id], onDelete: Cascade)
 }
 
 model PersonalDetail {
@@ -177,4 +193,10 @@ enum ApplicationStatus {
   PENDING
   ACCEPTED
   REJECTED
+}
+
+enum InterviewStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
 }

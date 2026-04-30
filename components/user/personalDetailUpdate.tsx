@@ -167,7 +167,7 @@ const PersonalDetailsForm = () => {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
         <Loader2 className="w-10 h-10 animate-spin text-primary" />
-        <p className="text-white/50 animate-pulse font-medium">
+        <p className="text-muted-foreground animate-pulse font-medium">
           Loading your profile...
         </p>
       </div>
@@ -179,13 +179,13 @@ const PersonalDetailsForm = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-white tracking-tight flex items-center gap-3">
+          <h1 className="text-3xl font-bold text-foreground tracking-tight flex items-center gap-3">
             <div className="p-2.5 rounded-2xl bg-primary/10 border border-primary/20 shadow-lg shadow-primary/5">
               <User className="w-6 h-6 text-primary" />
             </div>
             Personal Details
           </h1>
-          <p className="text-white/50 mt-2 text-sm md:text-base max-w-lg">
+          <p className="text-muted-foreground mt-2 text-sm md:text-base max-w-lg">
             Complete your profile to stand out to potential employers and build
             your professional presence.
           </p>
@@ -210,9 +210,9 @@ const PersonalDetailsForm = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column: Avatar & Bio */}
           <div className="lg:col-span-1 space-y-6">
-            <div className="glass-card p-8 rounded-[2.5rem] flex flex-col items-center gap-6 text-center shadow-xl shadow-black/40">
+            <div className="glass-card p-8 rounded-[2.5rem] flex flex-col items-center gap-6 text-center shadow-xl">
               <div className="relative group">
-                <div className="w-36 h-36 md:w-44 md:h-44 rounded-full border-4 border-white/10 overflow-hidden bg-white/5 shadow-2xl transition-all duration-500 group-hover:border-primary/40 group-hover:scale-[1.02]">
+                <div className="w-36 h-36 md:w-44 md:h-44 rounded-full border-4 border-border overflow-hidden bg-muted shadow-2xl transition-all duration-500 group-hover:border-primary/40 group-hover:scale-[1.02]">
                   {previewUrl ? (
                     <img
                       src={previewUrl}
@@ -221,11 +221,11 @@ const PersonalDetailsForm = () => {
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <User className="w-20 h-20 text-white/10" />
+                      <User className="w-20 h-20 text-muted-foreground/10" />
                     </div>
                   )}
                 </div>
-                <label className="absolute bottom-1 right-1 p-3 rounded-full brand-gradient text-white cursor-pointer shadow-xl hover:scale-110 active:scale-95 transition-all duration-200 border-2 border-background">
+                <label className="absolute bottom-1 right-1 p-3 rounded-full brand-gradient text-white cursor-pointer shadow-xl hover:scale-110 active:scale-95 transition-all duration-200 border-2 border-card">
                   <Camera className="w-5 h-5" />
                   <input
                     type="file"
@@ -236,8 +236,8 @@ const PersonalDetailsForm = () => {
                 </label>
               </div>
               <div className="space-y-1.5">
-                <h3 className="font-bold text-lg text-white">Profile Photo</h3>
-                <p className="text-xs text-white/30 leading-relaxed px-4">
+                <h3 className="font-bold text-lg text-foreground">Profile Photo</h3>
+                <p className="text-xs text-muted-foreground/30 leading-relaxed px-4">
                   Professional photos help establish trust with recruiters.
                 </p>
               </div>
@@ -256,20 +256,20 @@ const PersonalDetailsForm = () => {
                 value={formData.bio}
                 onChange={handleInputChange}
                 rows={5}
-                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white text-sm placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50 transition-all resize-none leading-relaxed"
+                className="w-full bg-muted border border-border rounded-2xl p-4 text-foreground text-sm placeholder:text-muted-foreground/20 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50 transition-all resize-none leading-relaxed"
               />
             </div>
           </div>
 
           {/* Right Column: Information Grid */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="glass-card p-6 md:p-8 rounded-[2.5rem] shadow-xl shadow-black/40">
+            <div className="glass-card p-6 md:p-8 rounded-[2.5rem] shadow-xl">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6">
                 
                 {/* Email (Read-only) & Verification */}
                 <div className="md:col-span-2 space-y-2">
                   <div className="flex justify-between items-center">
-                    <label className="text-xs font-bold text-white/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
+                    <label className="text-xs font-bold text-muted-foreground/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
                       <Mail className="w-3 h-3 text-primary/60" /> Email Address
                     </label>
                     {isVerified ? (
@@ -287,7 +287,7 @@ const PersonalDetailsForm = () => {
                       type="email"
                       value={userEmail}
                       disabled
-                      className="w-full h-12 bg-white/5 border border-white/10 rounded-xl px-4 text-white/50 focus:outline-none font-medium cursor-not-allowed"
+                      className="w-full h-12 bg-muted border border-border rounded-xl px-4 text-muted-foreground/50 focus:outline-none font-medium cursor-not-allowed"
                     />
                     {!isVerified && (
                       <button
@@ -309,7 +309,7 @@ const PersonalDetailsForm = () => {
 
                 {/* Phone */}
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-white/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
+                  <label className="text-xs font-bold text-muted-foreground/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
                     <Phone className="w-3 h-3 text-primary/60" /> contact number
                   </label>
                   <input
@@ -318,13 +318,13 @@ const PersonalDetailsForm = () => {
                     placeholder="+91 98765 43210"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    className="w-full h-12 bg-white/5 border border-white/10 rounded-xl px-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-medium"
+                    className="w-full h-12 bg-muted border border-border rounded-xl px-4 text-foreground placeholder:text-muted-foreground/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-medium"
                   />
                 </div>
 
                 {/* Date of Birth */}
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-white/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
+                  <label className="text-xs font-bold text-muted-foreground/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
                     <Calendar className="w-3 h-3 text-primary/60" /> date of
                     birth
                   </label>
@@ -333,13 +333,13 @@ const PersonalDetailsForm = () => {
                     name="dob"
                     value={formData.dob}
                     onChange={handleInputChange}
-                    className="w-full h-12 bg-white/5 border border-white/10 rounded-xl px-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all scheme-dark cursor-pointer"
+                    className="w-full h-12 bg-muted border border-border rounded-xl px-4 text-foreground placeholder:text-muted-foreground/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all cursor-pointer"
                   />
                 </div>
 
                 {/* Website */}
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-white/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
+                  <label className="text-xs font-bold text-muted-foreground/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
                     <Globe className="w-3 h-3 text-primary/60" /> personal
                     website
                   </label>
@@ -349,13 +349,13 @@ const PersonalDetailsForm = () => {
                     placeholder="https://yourportfolio.com"
                     value={formData.website}
                     onChange={handleInputChange}
-                    className="w-full h-12 bg-white/5 border border-white/10 rounded-xl px-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-medium"
+                    className="w-full h-12 bg-muted border border-border rounded-xl px-4 text-foreground placeholder:text-muted-foreground/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-medium"
                   />
                 </div>
 
                 {/* Gender */}
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-white/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
+                  <label className="text-xs font-bold text-muted-foreground/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
                     <User className="w-3 h-3 text-primary/60" /> gender
                   </label>
                   <div className="relative">
@@ -363,29 +363,29 @@ const PersonalDetailsForm = () => {
                       name="gender"
                       value={formData.gender}
                       onChange={handleInputChange}
-                      className="w-full h-12 bg-white/5 border border-white/10 rounded-xl px-4 text-white focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all appearance-none cursor-pointer font-medium"
+                      className="w-full h-12 bg-muted border border-border rounded-xl px-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all appearance-none cursor-pointer font-medium"
                     >
-                      <option value="" disabled className="bg-[#0f0f0f]">
+                      <option value="" disabled className="bg-card">
                         Select Gender
                       </option>
-                      <option value="male" className="bg-[#0f0f0f]">
+                      <option value="male" className="bg-card">
                         Male
                       </option>
-                      <option value="female" className="bg-[#0f0f0f]">
+                      <option value="female" className="bg-card">
                         Female
                       </option>
-                      <option value="other" className="bg-[#0f0f0f]">
+                      <option value="other" className="bg-card">
                         Other
                       </option>
                     </select>
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-white/30">
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground/30">
                       <ChevronRight className="w-4 h-4 rotate-90" />
                     </div>
                   </div>
                 </div>
 
                 {/* Location Header */}
-                <div className="md:col-span-2 pt-6 mt-2 border-t border-white/5">
+                <div className="md:col-span-2 pt-6 mt-2 border-t border-border">
                   <h4 className="text-[10px] font-black text-primary uppercase tracking-[0.25em] mb-4 opacity-50">
                     Location Details
                   </h4>
@@ -393,7 +393,7 @@ const PersonalDetailsForm = () => {
 
                 {/* Address */}
                 <div className="md:col-span-2 space-y-2">
-                  <label className="text-xs font-bold text-white/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
+                  <label className="text-xs font-bold text-muted-foreground/40 uppercase tracking-wider ml-1 flex items-center gap-2 italic">
                     <MapPin className="w-3 h-3 text-primary/60" /> street
                     address
                   </label>
@@ -403,7 +403,7 @@ const PersonalDetailsForm = () => {
                     placeholder="123 Tech Park, Silicon Valley"
                     value={formData.address}
                     onChange={handleInputChange}
-                    className="w-full h-12 bg-white/5 border border-white/10 rounded-xl px-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-medium"
+                    className="w-full h-12 bg-muted border border-border rounded-xl px-4 text-foreground placeholder:text-muted-foreground/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-medium"
                   />
                 </div>
 
@@ -415,7 +415,7 @@ const PersonalDetailsForm = () => {
                     placeholder="City"
                     value={formData.city}
                     onChange={handleInputChange}
-                    className="w-full h-12 bg-white/5 border border-white/10 rounded-xl px-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-medium"
+                    className="w-full h-12 bg-muted border border-border rounded-xl px-4 text-foreground placeholder:text-muted-foreground/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-medium"
                   />
                 </div>
                 <div className="space-y-2">
@@ -425,7 +425,7 @@ const PersonalDetailsForm = () => {
                     placeholder="State"
                     value={formData.state}
                     onChange={handleInputChange}
-                    className="w-full h-12 bg-white/5 border border-white/10 rounded-xl px-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-medium"
+                    className="w-full h-12 bg-muted border border-border rounded-xl px-4 text-foreground placeholder:text-muted-foreground/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-medium"
                   />
                 </div>
 
@@ -437,7 +437,7 @@ const PersonalDetailsForm = () => {
                     placeholder="Country"
                     value={formData.country}
                     onChange={handleInputChange}
-                    className="w-full h-12 bg-white/5 border border-white/10 rounded-xl px-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-medium"
+                    className="w-full h-12 bg-muted border border-border rounded-xl px-4 text-foreground placeholder:text-muted-foreground/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-medium"
                   />
                 </div>
                 <div className="space-y-2">
@@ -447,7 +447,7 @@ const PersonalDetailsForm = () => {
                     placeholder="Postal Code"
                     value={formData.zipcode}
                     onChange={handleInputChange}
-                    className="w-full h-12 bg-white/5 border border-white/10 rounded-xl px-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-medium"
+                    className="w-full h-12 bg-muted border border-border rounded-xl px-4 text-foreground placeholder:text-muted-foreground/20 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-medium"
                   />
                 </div>
               </div>
