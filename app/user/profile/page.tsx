@@ -37,7 +37,24 @@ export default function Profile() {
   const user = useAppSelector((state) => state.user);
   const { data, loading, error } = useAppSelector((state) => state.details);
   const [showApplications, setShowApplications] = React.useState(false);
-  console.log("data : ", data);
+  
+  const [feedback, setFeedback] = React.useState<{type: 'success' | 'error', message: string} | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const verified = params.get("verified");
+      const errorParam = params.get("error");
+      
+      if (verified === "true") {
+        setFeedback({type: 'success', message: "Email verified successfully! You now have full access."});
+        window.history.replaceState({}, '', window.location.pathname);
+      } else if (errorParam) {
+        setFeedback({type: 'error', message: errorParam});
+        window.history.replaceState({}, '', window.location.pathname);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (user?.id) {
@@ -71,6 +88,23 @@ export default function Profile() {
 
   return (
     <div className="max-w-5xl mx-auto mt-20 p-6 space-y-8 animate-in fade-in duration-500">
+      {/* Feedback Messages */}
+      {feedback && (
+        <div className={`p-4 rounded-xl border flex items-center gap-3 animate-in fade-in slide-in-from-top duration-500 ${
+          feedback.type === 'success' 
+            ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600' 
+            : 'bg-destructive/10 border-destructive/20 text-destructive'
+        }`}>
+          {feedback.type === 'success' ? <CheckCircle className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
+          <p className="text-sm font-medium">{feedback.message}</p>
+          <button 
+            onClick={() => setFeedback(null)}
+            className="ml-auto text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <XCircle className="w-4 h-4 opacity-50" />
+          </button>
+        </div>
+      )}
       {/* Profile Update Banner */}
       <Link href="/user/profile/update-profile" className="block w-full">
         <div className="bg-primary/10 border border-primary/20 px-4 py-3 rounded-xl flex items-center gap-3 hover:bg-primary/20 transition-colors cursor-pointer shadow-sm">

@@ -175,14 +175,15 @@ interface User {
   email: string;
   role: string;
 }
-export async function sendRegistrationEmail(user: User) {
+export async function sendRegistrationEmail(user: User, baseUrl: string) {
   try {
     const transporter = transpo;
+    const loginUrl = `${baseUrl}/auth/signin`;
     const info = await transporter.sendMail({
       from: '"Job Portal" <ajeshwork9@gmail.com>',
       to: user.email,
-      subject: `Welcome to JobPortal !-${user.name}`,
-      text: `Successfully Registered in job portal ! Complete your Profile and verify your account .`,
+      subject: `Welcome to JobPortal ! - ${user.name}`,
+      text: `Successfully Registered in job portal! Complete your Profile and verify your account.`,
       html: `
     <!DOCTYPE html>
     <html>
@@ -193,7 +194,7 @@ export async function sendRegistrationEmail(user: User) {
                 Hello <b>${user.name}</b>,<br><br>
                 Your account has been created successfully.
             </p>
-            <a href="http://localhost:3000/auth/signin"
+            <a href="${loginUrl}"
                style="display:inline-block; margin-top:20px; padding:12px 20px; background:#007bff; color:#fff; text-decoration:none; border-radius:5px;">
                Login Now
             </a>

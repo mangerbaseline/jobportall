@@ -2,15 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 export async function GET(req: NextRequest) {
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || `${req.headers.get("x-forwarded-proto") || "http"}://${req.headers.get("host")}`;
+  
   try {
     const searchParams = req.nextUrl.searchParams;
     const token = searchParams.get("token");
 
     if (!token) {
-      return NextResponse.json(
-        { error: "Verification token is missing" },
-        { status: 400 }
-      );
+      return NextResponse.redirect(`${baseUrl}/user/profile?error=Verification token is missing`);
     }
 
     const user = await prisma.user.findFirst({
@@ -20,17 +19,14 @@ export async function GET(req: NextRequest) {
     });
 
     if (!user) {
-      return NextResponse.json(
-        { error: "Invalid verification token" },
-        { status: 400 }
-      );
+      // If we can't find the user by token, they might already be verified
+      // But we don't have the user ID to check. 
+      // Redirect with a slightly more helpful message.
+      return NextResponse.redirect(`${baseUrl}/user/profile?error=Invalid or already used verification token`);
     }
 
     if (user.tokenExpires && new Date(user.tokenExpires) < new Date()) {
-      return NextResponse.json(
-        { error: "Verification token has expired" },
-        { status: 400 }
-      );
+      return NextResponse.redirect(`${baseUrl}/user/profile?error=Verification token has expired`);
     }
 
     // Update user to verified
@@ -43,14 +39,9 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    // Redirect to a success page or the profile page
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || `${req.headers.get("x-forwarded-proto") || "http"}://${req.headers.get("host")}`;
     return NextResponse.redirect(`${baseUrl}/user/profile?verified=true`);
   } catch (error) {
     console.error("Verification error:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.redirect(`${baseUrl}/user/profile?error=Internal server error`);
   }
 }

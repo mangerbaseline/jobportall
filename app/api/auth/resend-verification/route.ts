@@ -28,11 +28,12 @@ export async function POST(req: NextRequest) {
     if (user.verified) {
       return NextResponse.json(
         { error: "Email is already verified" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     const verificationToken = crypto.randomBytes(32).toString("hex");
+    console.log("Verification Token : ", verificationToken);
     const tokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
 
     await prisma.user.update({
@@ -43,22 +44,33 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || `${req.headers.get("x-forwarded-proto") || "http"}://${req.headers.get("host")}`;
-    const emailSent = await sendVerificationEmail(user.email, verificationToken, baseUrl);
+    const baseUrl =
+      process.env.NEXT_PUBLIC_APP_URL ||
+      `${req.headers.get("x-forwarded-proto") || "http"}://${req.headers.get("host")}`;
+    const emailSent = await sendVerificationEmail(
+      user.email,
+      verificationToken,
+      baseUrl,
+    );
 
     if (!emailSent) {
       return NextResponse.json(
         { error: "Failed to send verification email" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
-    return NextResponse.json({ success: true, message: "Verification email sent successfully." });
+    console.log;
+
+    return NextResponse.json({
+      success: true,
+      message: "Verification email sent successfully.",
+    });
   } catch (error) {
     console.error("Resend verification error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
