@@ -48,18 +48,21 @@ function colorFromString(str: string) {
 function JobCardSkeleton() {
   return (
     <div className="glass-card rounded-2xl p-5 flex flex-col gap-4 animate-pulse">
-      <div className="flex items-start gap-3">
-        <div className="h-4 bg-muted rounded-lg w-3/4" />
-        <div className="h-3 bg-muted rounded-lg w-1/2" />
+      <div className="flex items-start gap-4">
+        <div className="shrink-0 w-14 h-14 bg-muted rounded-xl" />
+        <div className="flex-1 space-y-3 pt-1">
+          <div className="h-4 bg-muted rounded-lg w-1/2" />
+          <div className="h-3 bg-muted rounded-lg w-1/4" />
+        </div>
       </div>
-      <div className="space-y-2">
+      <div className="space-y-2 mt-2">
         <div className="h-3 bg-muted rounded-lg" />
         <div className="h-3 bg-muted rounded-lg w-5/6" />
       </div>
-      <div className="flex gap-3 pt-2 border-t border-border">
+      <div className="flex gap-4 pt-3 border-t border-border">
+        <div className="h-3 w-24 bg-muted rounded-lg" />
         <div className="h-3 w-20 bg-muted rounded-lg" />
-        <div className="h-3 w-16 bg-muted rounded-lg" />
-        <div className="h-3 w-14 bg-muted rounded-lg ml-auto" />
+        <div className="h-3 w-24 bg-muted rounded-lg ml-auto" />
       </div>
     </div>
   );
@@ -226,9 +229,9 @@ export default function UserPage() {
           </p>
         )}
 
-        {/* ── Job Grid ── */}
+        {/* ── Job List ── */}
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="flex flex-col gap-4 max-w-4xl mx-auto w-full">
             {Array.from({ length: 6 }).map((_, i) => (
               <JobCardSkeleton key={i} />
             ))}
@@ -238,7 +241,7 @@ export default function UserPage() {
             <div className="text-destructive text-center">{error}</div>
           </div>
         ) : jobs.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-32 gap-4 glass-card rounded-3xl">
+          <div className="flex flex-col items-center justify-center py-32 gap-4 glass-card rounded-3xl max-w-4xl mx-auto w-full">
             <Briefcase className="w-14 h-14 text-muted-foreground/15" />
             <p className="text-lg font-semibold text-muted-foreground">
               No jobs found
@@ -253,16 +256,16 @@ export default function UserPage() {
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="flex flex-col gap-4 max-w-4xl mx-auto w-full">
             {jobs.map((job: any) => {
               const grad = colorFromString(job.title ?? "job");
               return (
                 <Link key={job.id} href={`/user/job/${job.id}`}>
                   <div className="group glass-card rounded-2xl p-5 flex flex-col gap-4 hover:border-primary/35 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-0.5 transition-all duration-200">
                     {/* Card top */}
-                    <div className="flex items-start gap-3">
+                    <div className="flex items-start gap-4">
                       <div
-                        className={`shrink-0 w-11 h-11 rounded-xl bg-linear-to-br ${grad} flex items-center justify-center text-base font-extrabold text-white shadow-lg`}
+                        className={`shrink-0 w-14 h-14 rounded-xl bg-linear-to-br ${grad} flex items-center justify-center text-xl font-extrabold text-white shadow-lg`}
                       >
                         {job.title?.charAt(0)?.toUpperCase() ?? "J"}
                       </div>

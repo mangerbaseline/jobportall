@@ -65,6 +65,13 @@ export async function POST(
     }
 
     if (update === "ACCEPTED") {
+      if (application.status === "ACCEPTED") {
+        return NextResponse.json(
+          { success: false, message: "Application is already accepted." },
+          { status: 400 },
+        );
+      }
+
       // ── Step 1: Find the next available interview slot ──
       const slot = await findNextAvailableSlot(application.job.employerId);
 
@@ -89,8 +96,15 @@ export async function POST(
           where: { id: application.userId },
           data: { employed: true },
         }),
-        prisma.interview.create({
-          data: {
+        prisma.interview.upsert({
+          where: { applicationId: id },
+          update: {
+            scheduledDate: slot.scheduledDate,
+            startTime: slot.startTime,
+            endTime: slot.endTime,
+            status: "SCHEDULED",
+          },
+          create: {
             scheduledDate: slot.scheduledDate,
             startTime: slot.startTime,
             endTime: slot.endTime,
@@ -134,12 +148,13 @@ export async function POST(
         { status: 200 },
       );
     }
-  } catch (error) {
-    console.log("Error : ", error);
+  } catch (error: any) {
+    console.error("Error : ", error);
     return NextResponse.json(
       {
         success: false,
-        message: "Internal server error ",
+        message: "Internal server error",
+        errorDetails: error?.message || String(error),
       },
       { status: 500 },
     );

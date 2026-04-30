@@ -74,9 +74,6 @@ export default function EmployerDashboard() {
         {/* ── Employer Profile Card ── */}
         <UserDetail />
 
-        {/* ── Analytics Section ── */}
-        <EmployerAnalytics />
-
         {/* ── Create Post Form (toggle) ── */}
         {postjob && (
           <div className="animate-fade-up">
@@ -96,6 +93,9 @@ export default function EmployerDashboard() {
             <CreatePostForm onClose={() => setPostjob(false)} />
           </div>
         )}
+
+        {/* ── Analytics Section ── */}
+        <EmployerAnalytics />
 
         {/* ── Jobs List ── */}
         <Jobs />
