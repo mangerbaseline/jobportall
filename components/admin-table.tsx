@@ -193,11 +193,11 @@ const AdminTable = () => {
   const getRoleIcon = (role: Role) => {
     switch (role) {
       case "ADMIN":
-        return <ShieldCheck className="w-4 h-4 text-purple-400" />;
+        return <ShieldCheck className="w-4 h-4 text-purple-500 dark:text-purple-400" />;
       case "EMPLOYER":
-        return <Briefcase className="w-4 h-4 text-blue-400" />;
+        return <Briefcase className="w-4 h-4 text-blue-500 dark:text-blue-400" />;
       default:
-        return <User className="w-4 h-4 text-indigo-400" />;
+        return <User className="w-4 h-4 text-primary" />;
     }
   };
 
@@ -216,15 +216,15 @@ const AdminTable = () => {
     <div className="w-full space-y-6 animate-fade-up">
       {/* ── Header & Toggles ── */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex p-1 bg-white/5 border border-white/10 rounded-xl w-fit">
+        <div className="flex p-1 bg-muted border border-border rounded-xl w-fit">
           {(["USER", "EMPLOYER", "ADMIN"] as Role[]).map((r) => (
             <button
               key={r}
               onClick={() => handleRoleChange(r)}
               className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
                 role === r
-                  ? "bg-indigo-500 text-white shadow-lg shadow-indigo-500/25"
-                  : "text-white/60 hover:text-white hover:bg-white/5"
+                  ? "bg-primary text-white shadow-lg shadow-indigo-500/25"
+                  : "text-muted-foreground hover:text-foreground hover:bg-accent"
               }`}
             >
               {r.charAt(0) + r.slice(1).toLowerCase()}s
@@ -234,7 +234,7 @@ const AdminTable = () => {
 
         <div className="relative group max-w-sm w-full">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search className="h-4 w-4 text-white/40 group-focus-within:text-indigo-400 transition-colors" />
+            <Search className="h-4 w-4 text-muted-foreground/40 group-focus-within:text-primary transition-colors" />
           </div>
           <input
             type="text"
@@ -244,57 +244,57 @@ const AdminTable = () => {
               setSearch(e.target.value);
               setPage(1);
             }}
-            className="block w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all"
+            className="block w-full pl-10 pr-4 py-2.5 bg-muted border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all"
           />
         </div>
       </div>
 
       {/* ── Table Container ── */}
-      <div className="relative overflow-hidden bg-white/5 border border-white/10 rounded-2xl backdrop-blur-sm">
+      <div className="relative overflow-hidden bg-card border border-border rounded-2xl backdrop-blur-sm">
         {loading && (
-          <div className="absolute inset-0 z-10 bg-black/20 backdrop-blur-[2px] flex items-center justify-center">
-            <Loader2 className="w-8 h-8 text-indigo-500 animate-spin" />
+          <div className="absolute inset-0 z-10 bg-background/60 backdrop-blur-[2px] flex items-center justify-center">
+            <Loader2 className="w-8 h-8 text-primary animate-spin" />
           </div>
         )}
 
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-white/10 bg-white/5">
-                <th className="px-6 py-4 text-xs font-semibold text-white/40 uppercase tracking-wider">
+              <tr className="border-b border-border bg-muted/50">
+                <th className="px-6 py-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                   User Details
                 </th>
-                <th className="px-6 py-4 text-xs font-semibold text-white/40 uppercase tracking-wider">
+                <th className="px-6 py-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                   Role
                 </th>
-                <th className="px-6 py-4 text-xs font-semibold text-white/40 uppercase tracking-wider text-center">
+                <th className="px-6 py-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider text-center">
                   {role === "EMPLOYER" ? "Jobs Posted" : "Applications"}
                 </th>
-                <th className="px-6 py-4 text-xs font-semibold text-white/40 uppercase tracking-wider">
+                <th className="px-6 py-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-4 text-xs font-semibold text-white/40 uppercase tracking-wider text-right">
+                <th className="px-6 py-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider text-right">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-border">
               {users.length > 0
                 ? users.map((user) => (
                     <tr
                       key={user.id}
-                      className="group hover:bg-white/2 transition-colors duration-150"
+                      className="group hover:bg-muted/30 transition-colors duration-150"
                     >
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full brand-gradient flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-500/20">
+                          <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold shadow-sm">
                             {user.name.charAt(0).toUpperCase()}
                           </div>
                           <div>
-                            <div className="text-sm font-medium text-white">
+                            <div className="text-sm font-medium text-foreground">
                               {user.name}
                             </div>
-                            <div className="flex items-center gap-1.5 text-xs text-white/40">
+                            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                               <Mail className="w-3 h-3" />
                               {user.email}
                             </div>
@@ -302,9 +302,9 @@ const AdminTable = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/5 border border-white/5 w-fit">
+                        <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-muted border border-border w-fit">
                           {getRoleIcon(user.role)}
-                          <span className="text-xs font-medium text-white/70">
+                          <span className="text-xs font-medium text-foreground/70">
                             {getRoleLabel(user.role)}
                           </span>
                         </div>
@@ -318,7 +318,7 @@ const AdminTable = () => {
                               fetchUserApplications(user);
                             }
                           }}
-                          className="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-bold border border-indigo-500/20 transition-all hover:bg-indigo-500/20 cursor-pointer"
+                          className="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-bold border border-primary/20 transition-all hover:bg-primary/20 cursor-pointer"
                         >
                           {role === "EMPLOYER"
                             ? user._count.jobs
@@ -327,11 +327,11 @@ const AdminTable = () => {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         {user.deleted ? (
-                          <span className="px-2 py-1 rounded-md bg-red-500/10 text-red-400 text-[10px] font-bold uppercase tracking-wider border border-red-500/20">
+                          <span className="px-2 py-1 rounded-md bg-red-500/10 text-red-600 dark:text-red-400 text-[10px] font-bold uppercase tracking-wider border border-red-500/20">
                             Blocked
                           </span>
                         ) : (
-                          <span className="px-2 py-1 rounded-md bg-emerald-500/10 text-emerald-400 text-[10px] font-bold uppercase tracking-wider border border-emerald-500/20">
+                          <span className="px-2 py-1 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold uppercase tracking-wider border border-emerald-500/20">
                             Active
                           </span>
                         )}
@@ -342,13 +342,13 @@ const AdminTable = () => {
                             onClick={() => toggleBlock(user.id, user.deleted)}
                             className={`px-3 py-1 text-xs font-medium rounded-lg border transition-all ${
                               user.deleted
-                                ? "text-emerald-400 border-emerald-500/20 hover:bg-emerald-500/10"
-                                : "text-red-400 border-red-500/20 hover:bg-red-500/10"
+                                ? "text-emerald-600 dark:text-emerald-400 border-emerald-500/20 hover:bg-emerald-500/10"
+                                : "text-red-600 dark:text-red-400 border-red-500/20 hover:bg-red-500/10"
                             }`}
                           >
                             {user.deleted ? "Unblock" : "Block"}
                           </button>
-                          <button className="p-2 text-white/40 hover:text-white hover:bg-white/10 rounded-lg transition-all">
+                          <button className="p-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-all">
                             <MoreHorizontal className="w-5 h-5" />
                           </button>
                         </div>
@@ -358,7 +358,7 @@ const AdminTable = () => {
                 : !loading && (
                     <tr>
                       <td colSpan={5} className="px-6 py-20 text-center">
-                        <div className="flex flex-col items-center gap-3 text-white/30">
+                        <div className="flex flex-col items-center gap-3 text-muted-foreground/30">
                           <User className="w-12 h-12 stroke-1" />
                           <p className="text-sm">
                             No users found matching your criteria
@@ -373,23 +373,23 @@ const AdminTable = () => {
 
         {/* ── Pagination ── */}
         {pagination && pagination.totalPages > 1 && (
-          <div className="px-6 py-4 flex items-center justify-between border-t border-white/10 bg-white/1">
-            <p className="text-xs text-white/40">
+          <div className="px-6 py-4 flex items-center justify-between border-t border-border bg-muted/20">
+            <p className="text-xs text-muted-foreground">
               Showing{" "}
-              <span className="text-white">
+              <span className="text-foreground">
                 {(pagination.page - 1) * pagination.limit + 1}
               </span>{" "}
               to{" "}
-              <span className="text-white">
+              <span className="text-foreground">
                 {Math.min(pagination.page * pagination.limit, pagination.total)}
               </span>{" "}
-              of <span className="text-white">{pagination.total}</span> results
+              of <span className="text-foreground">{pagination.total}</span> results
             </p>
             <div className="flex items-center gap-2">
               <button
                 disabled={!pagination.hasPrevPage || loading}
                 onClick={() => setPage((p) => p - 1)}
-                className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-lg border border-white/10 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+                className="p-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg border border-border disabled:opacity-30 disabled:hover:bg-transparent transition-all"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
@@ -400,8 +400,8 @@ const AdminTable = () => {
                     onClick={() => setPage(i + 1)}
                     className={`w-8 h-8 text-xs font-medium rounded-lg transition-all ${
                       pagination.page === i + 1
-                        ? "bg-indigo-500 text-white"
-                        : "text-white/40 hover:text-white hover:bg-white/10"
+                        ? "bg-primary text-white"
+                        : "text-muted-foreground hover:text-foreground hover:bg-accent"
                     }`}
                   >
                     {i + 1}
@@ -411,7 +411,7 @@ const AdminTable = () => {
               <button
                 disabled={!pagination.hasNextPage || loading}
                 onClick={() => setPage((p) => p + 1)}
-                className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-lg border border-white/10 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+                className="p-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg border border-border disabled:opacity-30 disabled:hover:bg-transparent transition-all"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -422,27 +422,27 @@ const AdminTable = () => {
 
       {/* ── Applications/Jobs Dialog ── */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-2xl bg-[#0B0F1A] border-white/10 text-white">
-          <DialogHeader>
-            <DialogTitle className="text-xl font-bold flex items-center gap-2">
-              <Briefcase className="w-5 h-5 text-indigo-400" />
+        <DialogContent className="max-w-2xl max-h-[90vh] bg-card border border-border text-foreground p-0 overflow-hidden shadow-2xl">
+          <DialogHeader className="p-6 border-b border-border bg-muted/20">
+            <DialogTitle className="text-xl font-bold flex items-center gap-2 text-foreground">
+              <Briefcase className="w-5 h-5 text-primary" />
               {viewType === "applications"
                 ? `Applications by ${selectedUser?.name}`
                 : `Jobs Posted by ${selectedUser?.name}`}
             </DialogTitle>
-            <DialogDescription className="text-white/40">
+            <DialogDescription className="text-muted-foreground">
               {viewType === "applications"
                 ? "Viewing all jobs applied for by this user."
                 : "Viewing all jobs posted by this employer."}
             </DialogDescription>
           </DialogHeader>
 
-          <div className="mt-4 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+          <div className="p-6 max-h-[60vh] overflow-y-auto custom-scrollbar">
             {viewType === "applications" ? (
               loadingApps ? (
                 <div className="flex flex-col items-center justify-center py-12 gap-3">
-                  <Loader2 className="w-8 h-8 text-indigo-500 animate-spin" />
-                  <p className="text-sm text-white/40">
+                  <Loader2 className="w-8 h-8 text-primary animate-spin" />
+                  <p className="text-sm text-muted-foreground">
                     Fetching applications...
                   </p>
                 </div>
@@ -451,19 +451,19 @@ const AdminTable = () => {
                   {userApplications.map((app) => (
                     <div
                       key={app.id}
-                      className="p-4 rounded-xl bg-white/5 border border-white/10 hover:border-white/20 transition-all group"
+                      className="p-4 rounded-xl bg-muted/50 border border-border hover:border-primary/20 transition-all group"
                     >
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex flex-col gap-3">
                           <div className="flex flex-col gap-1">
-                            <h4 className="font-semibold text-white group-hover:text-indigo-400 transition-colors">
+                            <h4 className="font-semibold text-foreground group-hover:text-primary transition-colors">
                               {app.job.title}
                             </h4>
-                            <p className="text-xs text-white/60">
+                            <p className="text-xs text-muted-foreground">
                               {app.employer?.companyName || app.employer?.name}
                             </p>
                           </div>
-                          <div className="flex items-center gap-3 text-xs text-white/40">
+                          <div className="flex items-center gap-3 text-xs text-muted-foreground">
                             <span className="flex items-center gap-1">
                               <Calendar className="w-3 h-3" />
                               {new Date(app.createdAt).toLocaleDateString()}
@@ -476,15 +476,15 @@ const AdminTable = () => {
                           <span
                             className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border ${
                               app.status === "PENDING"
-                                ? "bg-amber-500/10 text-amber-400 border-amber-500/20"
+                                ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20"
                                 : app.status === "ACCEPTED"
-                                  ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
-                                  : "bg-red-500/10 text-red-400 border-red-500/20"
+                                  ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20"
+                                  : "bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20"
                             }`}
                           >
                             {app.status}
                           </span>
-                          <div className="text-xs font-medium text-indigo-400">
+                          <div className="text-xs font-medium text-primary">
                             {app.job.salary}
                           </div>
                         </div>
@@ -493,7 +493,7 @@ const AdminTable = () => {
                   ))}
                 </div>
               ) : (
-                <div className="flex flex-col items-center justify-center py-12 text-white/20">
+                <div className="flex flex-col items-center justify-center py-12 text-muted-foreground/30">
                   <Briefcase className="w-12 h-12 stroke-1 mb-3" />
                   <p className="text-sm">
                     No applications found for this user.
@@ -502,22 +502,22 @@ const AdminTable = () => {
               )
             ) : loadingJobs ? (
               <div className="flex flex-col items-center justify-center py-12 gap-3">
-                <Loader2 className="w-8 h-8 text-indigo-500 animate-spin" />
-                <p className="text-sm text-white/40">Fetching jobs...</p>
+                <Loader2 className="w-8 h-8 text-primary animate-spin" />
+                <p className="text-sm text-muted-foreground">Fetching jobs...</p>
               </div>
             ) : userJobs.length > 0 ? (
               <div className="space-y-3">
                 {userJobs.map((job) => (
                   <div
                     key={job.id}
-                    className="p-4 rounded-xl bg-white/5 border border-white/10 hover:border-white/20 transition-all group"
+                    className="p-4 rounded-xl bg-muted/50 border border-border hover:border-primary/20 transition-all group"
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="space-y-1">
-                        <h4 className="font-semibold text-white group-hover:text-indigo-400 transition-colors">
+                        <h4 className="font-semibold text-foreground group-hover:text-primary transition-colors">
                           {job.title}
                         </h4>
-                        <div className="flex items-center gap-3 text-xs text-white/40">
+                        <div className="flex items-center gap-3 text-xs text-muted-foreground">
                           <span className="flex items-center gap-1">
                             <Calendar className="w-3 h-3" />
                             {new Date(job.createdAt).toLocaleDateString()}
@@ -535,16 +535,16 @@ const AdminTable = () => {
                         <span
                           className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border ${
                             job.available
-                              ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
-                              : "bg-red-500/10 text-red-400 border-red-500/20"
+                              ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20"
+                              : "bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20"
                           }`}
                         >
                           {job.available ? "Live" : "Closed"}
                         </span>
-                        <div className="text-xs font-medium text-indigo-400">
+                        <div className="text-xs font-medium text-primary">
                           {job.salary ? `$${job.salary}` : "Not Disclosed"}
                         </div>
-                        <div className="text-[10px] text-white/30">
+                        <div className="text-[10px] text-muted-foreground">
                           {job.vacancy} Vacancies
                         </div>
                       </div>
@@ -553,7 +553,7 @@ const AdminTable = () => {
                 ))}
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center py-12 text-white/20">
+              <div className="flex flex-col items-center justify-center py-12 text-muted-foreground/30">
                 <Briefcase className="w-12 h-12 stroke-1 mb-3" />
                 <p className="text-sm">No jobs posted by this employer.</p>
               </div>
