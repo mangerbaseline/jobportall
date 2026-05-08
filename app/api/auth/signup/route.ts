@@ -8,10 +8,6 @@ import { sendRegistrationEmail } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   try {
-    const hasToken = req.cookies.get("token")?.value;
-    if (hasToken)
-      return NextResponse.json({ error: "Already logged in" }, { status: 400 });
-
     const { name, email, password, role, companyName } = await req.json();
 
     if (!name || !email || !password || !role)
