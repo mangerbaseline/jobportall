@@ -18,7 +18,7 @@ export async function GET(
 
     const token = request.cookies.get("token");
     let user = null;
-    
+
     if (token) {
       try {
         user = await CheckAuth(token.value);
@@ -46,7 +46,7 @@ export async function GET(
       prisma.job.update({
         where: { id },
         data: { views: { increment: 1 } },
-      }).catch(() => {}); // silently ignore errors
+      }).catch(() => { }); // silently ignore errors
     }
 
     const [relatedJobs, Company, hasApplied] = await Promise.all([
@@ -76,13 +76,13 @@ export async function GET(
       }),
       user && user.id
         ? prisma.application.findUnique({
-            where: {
-              userId_jobId: {
-                userId: user.id,
-                jobId: id,
-              },
+          where: {
+            userId_jobId: {
+              userId: user.id,
+              jobId: id,
             },
-          })
+          },
+        })
         : Promise.resolve(null),
     ]);
 
