@@ -5,12 +5,12 @@ export interface Response {
 
 }
 
-export async function CheckAuth(token: any): Promise<Response> {
+export async function CheckAuth(token: any): Promise<any> {
 
-
+    // console.log("from check auth : ", token);
     const decoded = await verifyToken(token);
 
 
-    return decoded
+    return decoded;
 
 }

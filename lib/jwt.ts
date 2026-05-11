@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 
 //
 const SECRET = process.env.JWT_SECRET!;
+// console.log("Secret : ", SECRET);
 
 export function signToken(payload: { id: string; role: string }) {
   ////console.log("Running signToken")
@@ -9,6 +10,11 @@ export function signToken(payload: { id: string; role: string }) {
 }
 
 export async function verifyToken(token: string) {
-  ////console.log("Running verifyToken ")
-  return jwt.verify(token, SECRET) as { id: string; role: string };
+  try {
+    const cleanToken = token.replace(/^"|"$/g, '');
+    return jwt.verify(cleanToken, SECRET) as { id: string; role: string };
+  } catch (error: any) {
+    console.log("JWT Verification Error:", error.message);
+    return null;
+  }
 }

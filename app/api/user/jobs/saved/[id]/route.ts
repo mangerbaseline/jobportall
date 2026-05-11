@@ -30,6 +30,7 @@ export async function GET(
       );
     }
     //user is user
+    console.log("from job route : ", token);
     const user = await CheckAuth(token);
     if (!user) {
       return NextResponse.json(
