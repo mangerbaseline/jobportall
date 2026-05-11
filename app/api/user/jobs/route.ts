@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
         const userId = decodedToken.id;
-        const savedJobs = await prisma.application.findMany({
+        const applications = await prisma.application.findMany({
             where: {
                 userId: userId,
             },
@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
                 job: true,
             },
         });
-        return NextResponse.json({ savedJobs });
+        return NextResponse.json({ applications });
     } catch (error) {
         return NextResponse.json({ error: "Failed to Fetch you Application applied" }, { status: 500 });
     }
