@@ -53,6 +53,10 @@ export async function GET(
       where: {
         userId: id,
       },
+      select: {
+        id: true,
+        job: true,
+      }
     });
     return NextResponse.json({ success: true, data: SavedJobs });
   } catch (error) {
