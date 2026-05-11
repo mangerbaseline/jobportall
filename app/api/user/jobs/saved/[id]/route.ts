@@ -25,7 +25,7 @@ export async function GET(
     ////console.log("tere is no toke : ", token)
     if (!token) {
       return NextResponse.json(
-        { success: false, message: "Not Authorized" },
+        { success: false, message: "Not Authorized no token is provided." },
         { status: 401 },
       );
     }
@@ -33,7 +33,7 @@ export async function GET(
     const user = await CheckAuth(token);
     if (!user) {
       return NextResponse.json(
-        { success: false, message: "Not Authorized" },
+        { success: false, message: "Not Authorized or unverified user." },
         { status: 401 },
       );
     }
