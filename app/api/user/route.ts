@@ -4,8 +4,12 @@ import { CheckAuth } from "@/utility/checkAuth";
 import jwt from "jsonwebtoken";
 
 export async function GET(request: NextRequest) {
+  //IF TOKEN 401 AXIOS CALL API --> IT WILL CHECK THE USER VALUE AND SEND ELSE IF TOKEN EXPIRE SEND 401 AND DELETE THE TOKEN FROM STORAGE
   try {
-    const token = request.cookies.get("token")?.value;
+    let token = request.cookies.get("token")?.value;
+    if (!token) {
+      token = request.headers.get("token") as string;
+    }
     if (!token) {
       return NextResponse.json({ success: false, status: 401 });
     }
