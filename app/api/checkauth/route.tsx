@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
         if (!user) {
             return NextResponse.json({ success: false, status: 401 })
         }
-        return NextResponse.json({ success: true, data, message: "User fetched successfully." }, { status: 200 });
+        return NextResponse.json({ success: true, user: data, message: "User fetched successfully." }, { status: 200 });
     } catch (error) {
         return NextResponse.json({ success: false, message: "Internal Server Error" }, { status: 500 });
     }

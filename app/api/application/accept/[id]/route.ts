@@ -9,15 +9,23 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const token = req.cookies.get("token");
-    const user = await CheckAuth(token?.value);
+    //check token take userid -> check user is same employer or not -> then accept job
+    let token = req.cookies.get("token")?.value ?? req.headers.get("token") ?? undefined;
+    if (!token) {
+      return NextResponse.json(
+        { success: false, message: "Unauthorized" },
+        { status: 401 },
+      );
+    }
+
+    const user = await CheckAuth(token);
     if (!user) {
       return NextResponse.json(
         { success: false, message: "Unauthorized" },
         { status: 401 },
       );
     }
-    if (user.role !== "EMPLOYER" && user.role !== "ADMIN") {
+    if (user.role !== "EMPLOYER") {
       return NextResponse.json(
         { success: false, message: "Unauthorized" },
         { status: 401 },
