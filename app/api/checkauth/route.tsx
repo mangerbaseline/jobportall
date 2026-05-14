@@ -15,7 +15,18 @@ export async function GET(request: NextRequest) {
                 id: true,
                 role: true,
                 name: true,
-                email: true
+                email: true,
+                ...(user.role === "EMPLOYER" && {
+                    companies: {
+                        select: {
+                            id: true,
+                            name: true,
+                            description: true,
+                            logoUrl: true,
+                            website: true,
+                        }
+                    }
+                })
             }
         })
         if (!user) {
@@ -23,6 +34,7 @@ export async function GET(request: NextRequest) {
         }
         return NextResponse.json({ success: true, user: data, message: "User fetched successfully." }, { status: 200 });
     } catch (error) {
+        console.log("error: ", error)
         return NextResponse.json({ success: false, message: "Internal Server Error" }, { status: 500 });
     }
 }
