@@ -11,6 +11,7 @@ export async function POST(
     const { id } = await params;
 
     if (!id) {
+      console.log("🚫 no id")
       return NextResponse.json(
         { success: false, message: "Job id is needed in params." },
         { status: 400 },
@@ -23,6 +24,7 @@ export async function POST(
     const token = request.headers.get("token");
     ////console.log("tere is no toke : ", token)
     if (!token) {
+      console.log("🚫 no token", token)
       return NextResponse.json(
         { success: false, message: "Not Authorized" },
         { status: 401 },
@@ -30,6 +32,7 @@ export async function POST(
     }
     //user is user
     const user = await CheckAuth(token);
+    console.log("🚫 Verified Token", user)
     if (!user) {
       return NextResponse.json(
         { success: false, message: "Not Authorized" },
