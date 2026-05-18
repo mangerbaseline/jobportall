@@ -20,7 +20,7 @@ export async function POST(
     ////console.log(id)
 
     //validate token is here
-    const token = request.headers.get("Authorization");
+    const token = request.headers.get("token");
     ////console.log("tere is no toke : ", token)
     if (!token) {
       return NextResponse.json(
@@ -145,5 +145,5 @@ export async function DELETE(
       { success: false, data: deleted },
       { status: 200 },
     );
-  } catch (error) {}
+  } catch (error) { }
 }
