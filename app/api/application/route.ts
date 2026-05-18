@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { verifyToken } from "@/lib/jwt";
 import cloudinary from "@/lib/cloudinary/cloudinary";
+import { createNotification } from "@/utility/createNotification";
 
 export async function POST(req: NextRequest) {
   try {
@@ -52,7 +53,7 @@ export async function POST(req: NextRequest) {
     // Get the employerId from the job
     const job = await prisma.job.findUnique({
       where: { id: jobId },
-      select: { employerId: true },
+      select: { employerId: true, title: true },
     });
 
     if (!job) {
@@ -94,6 +95,14 @@ export async function POST(req: NextRequest) {
         job: true,
       },
     });
+
+    createNotification({
+      userId: job.employerId,
+      title: "New Application",
+      message: `New application received for job "${job.title}"`,
+      type: "APPLICATION_STATUS",
+      applicationId: application.id,
+    })
 
     return NextResponse.json(
       { success: true, data: application },
