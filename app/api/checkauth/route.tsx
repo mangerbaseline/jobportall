@@ -16,20 +16,19 @@ export async function GET(request: NextRequest) {
                 role: true,
                 name: true,
                 email: true,
-                professional : {
-                    omit : {
-                        createdAt : true,
-                        updatedAt : true,
-                        userId : true,
-                        user : true,
+                professional: {
+                    omit: {
+                        createdAt: true,
+                        updatedAt: true,
+                        userId: true,
+
                     }
                 },
-                personal : {
-                     omit : {
-                        createdAt : true,
-                        updatedAt : true,
-                        userId : true,
-                        user : true,
+                personal: {
+                    omit: {
+                        createdAt: true,
+                        updatedAt: true,
+                        userId: true,
                     }
                 },
                 ...(user.role === "EMPLOYER" && {

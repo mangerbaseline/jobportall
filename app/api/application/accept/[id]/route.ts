@@ -3,6 +3,7 @@ import { CheckAuth } from "@/utility/checkAuth";
 import { NextResponse, NextRequest } from "next/server";
 import { findNextAvailableSlot } from "@/lib/schedule";
 import { sendInterviewEmail } from "@/lib/email";
+import { createNotification } from "@/utility/createNotification";
 
 export async function POST(
   req: NextRequest,
@@ -135,6 +136,23 @@ export async function POST(
         endTime: slot.endTime,
       }).catch((err) => console.error("Failed to send interview email:", err));
 
+      // ── Step 4: Notify the applicant (non-blocking) ──
+      createNotification({
+        userId: application.userId,
+        title: "Application Accepted ",
+        message: `Congratulations! Your application for ${application.job.title} at ${companyName} has been accepted.`,
+        type: "APPLICATION_STATUS",
+        applicationId: id,
+      });
+
+      createNotification({
+        userId: application.userId,
+        title: "Interview Scheduled ",
+        message: `Your interview for ${application.job.title} is scheduled on ${slot.scheduledDate.toDateString()} from ${slot.startTime} to ${slot.endTime}.`,
+        type: "INTERVIEW_SCHEDULED",
+        applicationId: id,
+      });
+
       return NextResponse.json(
         {
           success: true,
@@ -151,6 +169,16 @@ export async function POST(
         where: { id },
         data: { status: "REJECTED" },
       });
+
+      // Notify the applicant about the rejection (non-blocking)
+      createNotification({
+        userId: application.userId,
+        title: "Application Update",
+        message: `We regret to inform you that your application for ${application.job.title} was not selected at this time.`,
+        type: "APPLICATION_STATUS",
+        applicationId: id,
+      });
+
       return NextResponse.json(
         { success: true, application: updatedApplication },
         { status: 200 },
