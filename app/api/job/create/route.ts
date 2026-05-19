@@ -5,12 +5,14 @@ import { verifyToken } from "@/lib/jwt";
 export async function POST(req: NextRequest) {
   try {
     //take from header
-    const token = req.cookies.get("token");
+    let token = req.cookies.get("token")?.value;
     //console.log(token);
+    if (!token) { token = req.headers.get("token") || ""; }
+
     if (!token)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const decoded = await verifyToken(token.value);
+    const decoded = await verifyToken(token);
     if (!decoded)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
@@ -52,6 +54,36 @@ export async function POST(req: NextRequest) {
         },
       },
     });
+
+    // Create notifications for users with matching skills
+    if (tags && tags.length > 0) {
+      const matchingUsers = await prisma.user.findMany({
+        where: {
+          professional: {
+            skills: {
+              hasSome: tags,
+            },
+          },
+          id: {
+            not: Employer.id, // Don't notify the employer who posted the job
+          },
+        },
+        select: { id: true },
+      });
+
+      if (matchingUsers.length > 0) {
+        const notificationsData = matchingUsers.map((u) => ({
+          userId: u.id,
+          title: "New Job Match!",
+          message: `A new job "${title}" matching your skills has been posted in ${location}.`,
+          type: "GENERAL",
+        }));
+
+        await prisma.notification.createMany({
+          data: notificationsData,
+        });
+      }
+    }
 
     return NextResponse.json({ success: true, job }, { status: 201 });
   } catch (err) {

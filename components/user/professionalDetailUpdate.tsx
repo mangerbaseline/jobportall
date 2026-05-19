@@ -71,7 +71,11 @@ const ProfessionalDetailsForm = () => {
           const existing = json.data[0];
           Object.keys(existing).forEach((key) => {
             if (existing[key] !== null && existing[key] !== undefined) {
-              setValue(key as keyof ProfessionalDetailsFormData, existing[key]);
+              if (key === "skills" && Array.isArray(existing[key])) {
+                setValue("skills", existing[key].join(", "));
+              } else {
+                setValue(key as keyof ProfessionalDetailsFormData, existing[key]);
+              }
             }
           });
         }
@@ -90,10 +94,15 @@ const ProfessionalDetailsForm = () => {
     setSuccess("");
 
     try {
+      const submitData = {
+        ...data,
+        skills: data.skills.split(",").map((s) => s.trim()).filter(Boolean),
+      };
+
       const response = await fetch("/api/user/profesionaldetail", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(submitData),
       });
 
       const result = await response.json();
