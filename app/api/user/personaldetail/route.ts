@@ -6,15 +6,18 @@ import cloudinary from "@/lib/cloudinary/cloudinary";
 // GET /api/user/personal?userId=xxx - Get personal details
 export async function GET(request: NextRequest) {
   try {
-    const tokenCookie = request.cookies.get("token");
+    let tokenCookie = request.cookies.get("token")?.value;
+    if (!tokenCookie) {
+      tokenCookie = request.headers.get('token') || "";
+    }
     //console.log(tokenCookie)
-    if (!tokenCookie?.value) {
+    if (!tokenCookie) {
       return NextResponse.json({
         success: false,
         status: 401,
       });
     }
-    const decoded: any = await CheckAuth(tokenCookie.value);
+    const decoded: any = await CheckAuth(tokenCookie);
     if (!decoded) {
       return NextResponse.json({
         success: false,

@@ -42,8 +42,11 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const token = request.cookies.get("token");
-    const userCheck = await CheckAuth(token?.value);
+    let tokenCookie = request.cookies.get("token")?.value;
+    if (!tokenCookie) {
+      tokenCookie = request.headers.get('token') || "";
+    }
+    const userCheck = await CheckAuth(tokenCookie);
 
     if (!userCheck || !userCheck.id || userCheck.role !== "USER") {
       return NextResponse.json(
