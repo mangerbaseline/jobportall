@@ -18,8 +18,10 @@ export async function PATCH(
 
     ////console.log(id)
 
-    const token = request.headers.get("Authorization");
+    const token = request.headers.get("token");
+
     ////console.log("tere is no toke : ", token)
+
     if (!token) {
       return NextResponse.json(
         { success: false, message: "Not Authorized" },
@@ -46,6 +48,7 @@ export async function PATCH(
     });
 
     ////console.log("--Available Statis : --", AvailableStatus)
+
     if (!AvailableStatus) {
       return NextResponse.json(
         { success: false, message: "No job find by this id" },

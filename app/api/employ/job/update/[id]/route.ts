@@ -16,7 +16,11 @@ export async function PATCH(
       );
     }
 
-    const token = request.cookies.get("token");
+    let token = request.cookies.get("token")?.value;
+    if (!token) {
+      token = request.headers.get("token") || "";
+    }
+
     if (!token) {
       return NextResponse.json(
         { success: false, message: "Not Authorized" },
@@ -24,7 +28,7 @@ export async function PATCH(
       );
     }
 
-    const user = await CheckAuth(token.value);
+    const user = await CheckAuth(token);
     if (!user || user.role !== "EMPLOYER") {
       return NextResponse.json(
         { success: false, message: "Not Authorized or not an Employer" },
