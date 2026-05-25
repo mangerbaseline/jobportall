@@ -3,13 +3,12 @@ import { prisma } from "@/lib/prisma";
 import { CheckAuth } from "@/utility/checkAuth";
 
 // GET /api/user/professional?userId=xxx - Get professional details
-export async function GET(request: Request) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const { searchParams } = new URL(request.url);
-    const userId = searchParams.get("userId");
-    const token = request.headers.get("Authorization");
+    const userId = (await params).id;
+    const token = request.headers.get("token");
     const auth = await CheckAuth(token);
-    if (auth.role !== "USER") {
+    if (!auth || auth.role !== "USER" || !auth.id) {
       return NextResponse.json(
         { success: false, message: "Not authenticated" },
         { status: 401 },
@@ -54,14 +53,17 @@ export async function GET(request: Request) {
 // POST /api/user/professional - Create new professional detail
 export async function POST(request: NextRequest) {
   try {
-    const token = request.cookies.get("token");
+    let token = request.cookies.get("token")?.value;
+    if (!token) {
+      token = request.headers.get("token") || "";
+    }
     if (!token) {
       return NextResponse.json(
         { success: false, message: "Not authenticated" },
         { status: 401 },
       );
     }
-    const auth = await CheckAuth(token?.value);
+    const auth = await CheckAuth(token);
     if (auth.role !== "USER") {
       return NextResponse.json(
         { success: false, message: "Not authenticated" },
@@ -141,9 +143,21 @@ export async function POST(request: NextRequest) {
 }
 
 // PUT /api/user/professional - Update professional detail
-export async function PUT(request: Request) {
+export async function PUT(request: NextRequest) {
   try {
     const body = await request.json();
+    let token = request.cookies.get("token")?.value;
+    if (!token) {
+      token = request.headers.get("token") || "";
+    }
+    const auth = await CheckAuth(token);
+    if (auth.role !== "USER") {
+      return NextResponse.json(
+        { success: false, message: "Not authenticated" },
+        { status: 401 },
+      );
+    }
+    const userId = auth.id;
     const {
       id,
       title,

@@ -4,14 +4,13 @@ import { CheckAuth } from "@/utility/checkAuth";
 
 export async function GET(request: NextRequest) {
   try {
-    const tokenCookie = request.cookies.get("token");
-    if (!tokenCookie?.value) {
+    const tokenCookie = request.cookies.get("token")?.value;
+    if (!tokenCookie) {
       return NextResponse.json({ success: false, status: 401 });
     }
-    
-    const decoded: any = await CheckAuth(tokenCookie.value);
-    if (!decoded) {
-      return NextResponse.json({ success: false, status: 401 });
+    const decoded: any = await CheckAuth(tokenCookie);
+    if (!decoded || !decoded.id || decoded.role !== "USER") {
+      return NextResponse.json({ success: false, status: 401, message: 'Not Authenticated' });
     }
     const userId = decoded.id;
 
