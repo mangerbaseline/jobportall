@@ -79,6 +79,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (!user) {
+      console.log("no user : ", user)
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
@@ -88,6 +89,7 @@ export async function POST(request: NextRequest) {
 
     let professionalDetail;
     if (existingDetail) {
+      console.log("updating  existingDetail")
       professionalDetail = await prisma.professionalDetail.update({
         where: { userId },
         data: {
