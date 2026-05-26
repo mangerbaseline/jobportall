@@ -1,15 +1,15 @@
 // PUT /api/user/personal - Update personal detail
-import { NextResponse } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { CheckAuth } from '@/utility/checkAuth';
 
 type RouteContext = {
     params: Promise<{ id: string }>;
 };
-export async function PUT(request: Request, context: RouteContext) {
+export async function PUT(request: NextRequest, context: RouteContext) {
     try {
         const body = await request.json()
-        const token = request.headers.get("Authorization");
+        let token = request.cookies.get("token")?.value || request.headers.get("token") || ""
         const userCheck = await CheckAuth(token)
         if (userCheck.role !== "USER") {
             return NextResponse.json({ success: false, message: "Not authenticated" }, { status: 401 })
