@@ -31,6 +31,7 @@ export async function GET(request: NextRequest) {
             avatar: true,
           },
         },
+        professional: true,
       },
     });
 
