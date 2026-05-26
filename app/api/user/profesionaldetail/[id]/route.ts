@@ -50,7 +50,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   }
 }
 
-// POST /api/user/professional - Create new professional detail
+// POST /api/user/profesionaldetail/[id] - Create or update professional detail
 export async function POST(request: NextRequest) {
   try {
     let token = request.cookies.get("token")?.value;
@@ -64,14 +64,14 @@ export async function POST(request: NextRequest) {
       );
     }
     const auth = await CheckAuth(token);
-    if (auth.role !== "USER") {
+    if (!auth || !auth.id || auth.role !== "USER") {
       return NextResponse.json(
         { success: false, message: "Not authenticated" },
         { status: 401 },
       );
     }
+    const userId = auth.id as string;
     const body = await request.json();
-    const userId = auth.id;
     const {
       title,
       companyName,
@@ -88,16 +88,8 @@ export async function POST(request: NextRequest) {
       portfolio,
     } = body;
 
-    // Validate required fields
-    if (!userId) {
-      return NextResponse.json(
-        { error: "userId is required" },
-        { status: 400 },
-      );
-    }
-
     // Check if user exists
-    const user = await prisma.user.findUnique({
+    const user = await prisma.user.findFirst({
       where: { id: userId, deleted: false },
     });
 
@@ -105,38 +97,60 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    // Create professional detail
-    const professionalDetail = await prisma.professionalDetail.create({
-      data: {
-        userId,
-        title,
-        companyName,
-        experience: Number(experience),
-        skills,
-        education,
-        certifications,
-        currentSalary: Number(currentSalary),
-        expectedSalary: Number(expectedSalary),
-        noticePeriod: Number(noticePeriod),
-        resume,
-        linkedin,
-        github,
-        portfolio,
-      },
+    const existingDetail = await prisma.professionalDetail.findUnique({
+      where: { userId },
     });
+
+    const detailData = {
+      title,
+      companyName,
+      experience: experience ? parseInt(String(experience)) : null,
+      skills,
+      education,
+      certifications,
+      currentSalary: currentSalary ? parseInt(String(currentSalary)) : null,
+      expectedSalary: expectedSalary ? parseInt(String(expectedSalary)) : null,
+      noticePeriod: noticePeriod ? parseInt(String(noticePeriod)) : null,
+      resume,
+      linkedin,
+      github,
+      portfolio,
+    };
+
+    let professionalDetail;
+    if (existingDetail) {
+      professionalDetail = await prisma.professionalDetail.update({
+        where: { userId },
+        data: detailData,
+      });
+    } else {
+      professionalDetail = await prisma.professionalDetail.create({
+        data: {
+          userId,
+          ...detailData,
+        },
+      });
+    }
 
     return NextResponse.json(
       {
         success: true,
-        message: "Professional detail created successfully",
+        message: existingDetail
+          ? "Professional detail updated successfully"
+          : "Professional detail created successfully",
         data: professionalDetail,
       },
-      { status: 201 },
+      { status: existingDetail ? 200 : 201 },
     );
   } catch (error) {
-    console.error("Error creating professional detail:", error);
+    console.error("Error saving professional details:", error);
     return NextResponse.json(
-      { error: "Failed to create professional detail" },
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "Failed to save professional details",
+      },
       { status: 500 },
     );
   }
