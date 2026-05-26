@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
       portfolio,
     } = body;
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma.user.findFirst({
       where: { id: userId, deleted: false },
     });
 
