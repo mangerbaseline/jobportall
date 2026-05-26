@@ -13,7 +13,32 @@ export async function POST(req: NextRequest) {
         { status: 400 },
       );
 
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await prisma.user.findUnique({
+      where: { email },
+      select: {
+        id: true,
+        role: true,
+        name: true,
+        email: true,
+        password: true,
+        deleted: true,
+        professional: {
+          omit: {
+            createdAt: true,
+            updatedAt: true,
+            userId: true,
+
+          }
+        },
+        personal: {
+          omit: {
+            createdAt: true,
+            updatedAt: true,
+            userId: true,
+          }
+        }
+      },
+    });
     if (!user || !user.password)
       return NextResponse.json(
         { error: "Invalid credentials" },
@@ -46,6 +71,9 @@ export async function POST(req: NextRequest) {
         name: user.name,
         email: user.email,
         role: user.role,
+        professional: user.professional,
+        personal: user.personal
+
       },
     });
     response.cookies.set("token", token, {
