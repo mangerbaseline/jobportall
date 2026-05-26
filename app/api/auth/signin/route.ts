@@ -22,6 +22,7 @@ export async function POST(req: NextRequest) {
         email: true,
         password: true,
         deleted: true,
+        companies: true,
         professional: {
           omit: {
             createdAt: true,
