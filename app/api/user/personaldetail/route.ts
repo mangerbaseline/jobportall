@@ -59,8 +59,11 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     // Get token and authenticate user
-    const token = request.cookies.get("token");
-    const userCheck = await CheckAuth(token?.value);
+    let token = request.cookies.get("token")?.value;
+    if (!token) {
+      token = request.headers.get('token') || "";
+    }
+    const userCheck = await CheckAuth(token);
 
     if (!userCheck || userCheck.role !== "USER") {
       return NextResponse.json(
