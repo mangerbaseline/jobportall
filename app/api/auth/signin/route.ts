@@ -73,7 +73,8 @@ export async function POST(req: NextRequest) {
         email: user.email,
         role: user.role,
         professional: user.professional,
-        personal: user.personal
+        personal: user.personal,
+        companies: user.companies
 
       },
     });
