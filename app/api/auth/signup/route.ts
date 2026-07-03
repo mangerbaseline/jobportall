@@ -8,7 +8,7 @@ import { sendRegistrationEmail } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   try {
-    const { name, email, password, role, companyName } = await req.json();
+    const { name, email, password, role, companyName, parsedResumeData } = await req.json();
 
     if (!name || !email || !password || !role)
       return NextResponse.json(
@@ -52,6 +52,28 @@ export async function POST(req: NextRequest) {
       User.companies = {
         create: {
           name: companyName,
+        },
+      };
+    }
+
+    if (role === "USER" && parsedResumeData) {
+      User.personal = {
+        create: {
+          phone: parsedResumeData.phone || null,
+          bio: parsedResumeData.bio || null,
+          website: parsedResumeData.portfolio || null,
+        },
+      };
+      User.professional = {
+        create: {
+          title: parsedResumeData.title || null,
+          experience: parsedResumeData.experience ? parseInt(parsedResumeData.experience) : null,
+          skills: parsedResumeData.skills || [],
+          education: parsedResumeData.education || null,
+          certifications: parsedResumeData.certifications || null,
+          linkedin: parsedResumeData.linkedin || null,
+          github: parsedResumeData.github || null,
+          portfolio: parsedResumeData.portfolio || null,
         },
       };
     }

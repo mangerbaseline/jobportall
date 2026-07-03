@@ -28,6 +28,7 @@ model User {
   personal             PersonalDetail?
   professional         ProfessionalDetail?
   savedJobs            SavedJob[]
+  messagesSent         Message[]           @relation("MessageSender")
 }
 
 model Job {
@@ -78,6 +79,7 @@ model Application {
   employer       User              @relation("EmployerApplications", fields: [employerId], references: [id])
   job            Job               @relation(fields: [jobId], references: [id])
   user           User              @relation(fields: [userId], references: [id])
+  conversation   Conversation?
   interview      Interview?
 
   @@unique([userId, jobId])
@@ -193,8 +195,35 @@ model PrivacyPolicy {
   content     String
   effectiveAt DateTime
   isActive    Boolean  @default(false)
-  createdAt   DateTime @default(now())
+  createdAt   DateTime @default(now())   
   updatedAt   DateTime @updatedAt
+}
+
+// ─── Chat Models ─────────────────────────────────────────
+
+model Conversation {
+  id            String      @id @default(cuid())
+  applicationId String      @unique
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  messages      Message[]
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  content        String
+  senderId       String
+  conversationId String
+  isRead         Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+  fileUrl        String?
+  fileName       String?
+  fileType       String?
+
+  sender       User         @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 }
 
 enum Role {
@@ -205,6 +234,7 @@ enum Role {
 
 enum ApplicationStatus {
   PENDING
+  REVIEWED
   ACCEPTED
   REJECTED
 }

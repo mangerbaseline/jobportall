@@ -118,8 +118,8 @@ export async function DELETE(
       );
     }
     const verifyUser = await prisma.savedJob.findUnique({
-      where: { id: id },
-      select: { userId: true },
+      where: { userId_jobId: { userId: user.id, jobId: id } },
+      select: { id: true, userId: true },
     });
     if (!verifyUser) {
       return NextResponse.json({
@@ -127,25 +127,16 @@ export async function DELETE(
         message: "No saved Job fron this id",
       });
     }
-    ////console.log("🔍 : ",verifyUser)
-    if (user.id !== verifyUser?.userId) {
-      ////console.log("User id : " ,user.id)
-      ////console.log("actual id : " ,verifyUser?.userId)
-      return NextResponse.json(
-        { success: false, message: "Forbidden" },
-        { status: 403 },
-      );
-    }
-
+    
     //save data
     const deleted = await prisma.savedJob.delete({
       where: {
-        id: id,
+        id: verifyUser.id,
       },
     });
 
     return NextResponse.json(
-      { success: false, data: deleted },
+      { success: true, data: deleted },
       { status: 200 },
     );
   } catch (error) { }

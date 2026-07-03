@@ -4,6 +4,8 @@ export const PROTECTED_ROUTES = [
   "/settings",
   "/jobs/apply",
   "/admin",
+  "/test",
+  "/chat"
 ];
 
 export const isProtectedRoute = (pathname: string): boolean => {

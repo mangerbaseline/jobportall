@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "../features/counter/counterslice";
 import UserReducer from "@/lib/features/user/userSlice";
 import UserDetailReducer from "@/lib/features/user/profileDetail";
 import interviewReducer from "@/lib/features/employer/interviewSlice";
@@ -7,7 +6,6 @@ import interviewReducer from "@/lib/features/employer/interviewSlice";
 export const makeStore = () =>
   configureStore({
     reducer: {
-      counter: counterReducer,
       user: UserReducer,
       details: UserDetailReducer,
       interviews: interviewReducer,

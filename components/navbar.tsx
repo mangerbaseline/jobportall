@@ -6,7 +6,7 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter, usePathname } from "next/navigation";
-import { Briefcase, Menu, X, LogOut } from "lucide-react";
+import { Briefcase, Menu, X, LogOut, MessageCircle } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
 
 const AppleNavbar = () => {
@@ -59,6 +59,15 @@ const AppleNavbar = () => {
           : []),
         ...(user.role === "EMPLOYER"
           ? [{ name: "Interviews", href: "/employer/schedule" }]
+          : []),
+        ...(user.role === "USER"
+          ? [
+              { name: "Saved Jobs", href: "/user/saved-jobs" },
+              { name: "My Applications", href: "/user/applications" },
+            ]
+          : []),
+        ...(user.role === "USER" || user.role === "EMPLOYER"
+          ? [{ name: "Chat", href: "/chat" }]
           : []),
         { name: "About", href: "/about" },
         { name: "Contact", href: "/contact" },
@@ -118,6 +127,20 @@ const AppleNavbar = () => {
                 </div>
               ) : user.role ? (
                 <div className="flex items-center gap-3">
+                  {/* Chat icon — only for USER and EMPLOYER */}
+                  {(user.role === "USER" || user.role === "EMPLOYER") && (
+                    <Link
+                      href="/chat"
+                      aria-label="Chat"
+                      className={`relative flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-200 ${
+                        pathname === "/chat"
+                          ? "text-primary bg-primary/10"
+                          : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                      }`}
+                    >
+                      <MessageCircle className="w-5 h-5" />
+                    </Link>
+                  )}
                   {/* User chip */}
                   <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-card border border-border">
                     <div className="w-6 h-6 rounded-full brand-gradient flex items-center justify-center text-xs font-bold text-white">

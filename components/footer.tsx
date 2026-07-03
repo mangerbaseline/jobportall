@@ -1,8 +1,12 @@
 "use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Briefcase, Mail, MapPin, Phone } from "lucide-react";
 
+const Hide_Footer_Routes = ["/chat"];
+
 const Footer = () => {
+  const pathname = usePathname();
   const currentYear = new Date().getFullYear();
 
   const footerLinks = {
@@ -24,6 +28,10 @@ const Footer = () => {
       { name: "Cookie Policy", href: "#" },
     ],
   };
+
+  if (Hide_Footer_Routes.includes(pathname)) {
+    return null;
+  }
 
   return (
     <footer className="relative mt-20 border-t border-border bg-card/50 backdrop-blur-md">

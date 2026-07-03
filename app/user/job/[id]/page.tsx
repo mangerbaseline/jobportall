@@ -6,6 +6,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import ResumeUploader from "@/components/user/resume";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { Bookmark, Loader2 } from "lucide-react";
+import { useAppSelector } from "@/lib/hook/hook";
 
 interface RelatedJob {
   id: string;
@@ -170,6 +173,70 @@ export default function JobPage() {
   const [showForm, setShowForm] = useState(false);
   const [resumeFile, setResumeFile] = useState<File | null>(null);
 
+  const user = useAppSelector((state) => state.user);
+  const [isSaved, setIsSaved] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+    if (user.loading || !user.id || user.role !== "USER" || !id) return;
+    const checkSavedStatus = async () => {
+      try {
+        const tokenRes = await fetch("/api/auth/token");
+        const { token } = await tokenRes.json();
+        if (!token) return;
+
+        const res = await fetch(`/api/user/jobs/saved/${user.id}`, {
+          headers: { token },
+        });
+        const data = await res.json();
+        if (data.success && data.data) {
+          const saved = data.data.some((item: any) => item.job.id === id);
+          setIsSaved(saved);
+        }
+      } catch (err) {
+        console.error("Failed to check saved status:", err);
+      }
+    };
+    checkSavedStatus();
+  }, [user.id, user.loading, user.role, id]);
+
+  const toggleSaveJob = async () => {
+    if (!user.id || user.role !== "USER") {
+      router.push("/auth/signin");
+      return;
+    }
+    setIsSaving(true);
+    try {
+      const tokenRes = await fetch("/api/auth/token");
+      const { token } = await tokenRes.json();
+
+      let res;
+      if (isSaved) {
+        res = await fetch(`/api/user/jobs/save/${id}`, {
+          method: "DELETE",
+          headers: { Authorization: token },
+        });
+      } else {
+        res = await fetch(`/api/user/jobs/save/${id}`, {
+          method: "POST",
+          headers: { token },
+        });
+      }
+      const data = await res.json();
+      if (data.success) {
+        setIsSaved(!isSaved);
+        toast.success(isSaved ? "Job removed from saved" : "Job saved successfully");
+      } else {
+        toast.error("Failed to update saved job");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const {
     register,
     handleSubmit,
@@ -230,7 +297,9 @@ export default function JobPage() {
 
   const onSubmit = async (data: ApplicationFormData) => {
     if (!resumeFile) {
-      setApplyError("Please upload your resume before submitting.");
+      const errNoResume = "Please upload your resume before submitting.";
+      setApplyError(errNoResume);
+      toast.error(errNoResume);
       return;
     }
 
@@ -262,14 +331,15 @@ export default function JobPage() {
         setApplyStatus("success");
         setShowForm(false);
         setResumeFile(null);
+        toast.success("Application submitted successfully!");
       } else {
         throw new Error(result.error || "Failed to submit application");
       }
     } catch (err) {
-      setApplyError(
-        err instanceof Error ? err.message : "Failed to submit application",
-      );
+      const errMsg = err instanceof Error ? err.message : "Failed to submit application";
+      setApplyError(errMsg);
       setApplyStatus("error");
+      toast.error(errMsg);
     }
   };
 
@@ -347,13 +417,35 @@ export default function JobPage() {
                   )}
                 </div>
 
-                <h1 className="text-2xl font-black tracking-tight text-foreground leading-tight mb-1">
-                  {job.title.trim()}
-                </h1>
-                <h3 className="text-muted-foreground">Company : {job.name}</h3>
-                <p className="text-muted-foreground text-xs">
-                  Posted {timeAgo(job.createdAt)}
-                </p>
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <h1 className="text-2xl font-black tracking-tight text-foreground leading-tight mb-1">
+                      {job.title.trim()}
+                    </h1>
+                    <h3 className="text-muted-foreground">Company : {job.name}</h3>
+                    <p className="text-muted-foreground text-xs mt-1">
+                      Posted {timeAgo(job.createdAt)}
+                    </p>
+                  </div>
+                  
+                  {/* Bookmark Button */}
+                  <button
+                    onClick={toggleSaveJob}
+                    disabled={isSaving}
+                    title={isSaved ? "Remove from saved" : "Save job"}
+                    className={`shrink-0 p-3 rounded-xl transition-all duration-200 border ${
+                      isSaved
+                        ? "bg-primary/10 border-primary/30 text-primary hover:bg-primary/20"
+                        : "bg-muted border-border text-muted-foreground hover:bg-accent hover:text-foreground hover:border-border/80"
+                    }`}
+                  >
+                    {isSaving ? (
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                    ) : (
+                      <Bookmark className="w-5 h-5" fill={isSaved ? "currentColor" : "none"} />
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
 

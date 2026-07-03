@@ -4,7 +4,6 @@ import { CheckAuth } from "@/utility/checkAuth";
 import jwt from "jsonwebtoken";
 
 export async function GET(request: NextRequest) {
-  //IF TOKEN 401 AXIOS CALL API --> IT WILL CHECK THE USER VALUE AND SEND ELSE IF TOKEN EXPIRE SEND 401 AND DELETE THE TOKEN FROM STORAGE
   try {
     let token = request.cookies.get("token")?.value;
     if (!token) {
@@ -14,10 +13,16 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ success: false, status: 401 });
     }
 
-    const { id } = (await CheckAuth(token)) as jwt.JwtPayload;
-    if (!id) {
+    // const { id } = (await CheckAuth(token)) as jwt.JwtPayload;
+    // if (!id) {
+    //   return NextResponse.json({ success: false, status: 401 });
+    // }
+    const decoded = await CheckAuth(token);
+    if (!decoded) {
       return NextResponse.json({ success: false, status: 401 });
     }
+    const { id } = decoded as jwt.JwtPayload;
+
     const user = await prisma.user.findUnique({
       where: { id },
       select: {

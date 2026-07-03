@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   Search,
   ChevronLeft,
@@ -132,60 +132,60 @@ const CustomerQueriesTable = () => {
             <tbody className="divide-y divide-border">
               {queries.length > 0
                 ? queries.map((query) => (
-                    <tr
-                      key={query.id}
-                      className="group hover:bg-muted/30 transition-colors duration-150"
-                    >
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold">
-                            {query.name.charAt(0).toUpperCase()}
+                  <tr
+                    key={query.id}
+                    className="group hover:bg-muted/30 transition-colors duration-150"
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold">
+                          {query.name.charAt(0).toUpperCase()}
+                        </div>
+                        <div>
+                          <div className="text-sm font-medium text-foreground">
+                            {query.name}
                           </div>
-                          <div>
-                            <div className="text-sm font-medium text-foreground">
-                              {query.name}
-                            </div>
-                            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                              <Mail className="w-3 h-3" />
-                              {query.email}
-                            </div>
+                          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                            <Mail className="w-3 h-3" />
+                            {query.email}
                           </div>
                         </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="text-sm text-foreground/80 line-clamp-1 max-w-[250px]">
-                          {query.subject}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                          <Calendar className="w-3.5 h-3.5" />
-                          {new Date(query.createdAt).toLocaleDateString()}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right">
-                        <button
-                          onClick={() => {
-                            setSelectedQuery(query);
-                            setIsDialogOpen(true);
-                          }}
-                          className="px-3 py-1.5 text-xs font-medium text-primary bg-primary/10 border border-primary/20 rounded-lg hover:bg-primary/20 transition-all"
-                        >
-                          View Details
-                        </button>
-                      </td>
-                    </tr>
-                  ))
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="text-sm text-foreground/80 line-clamp-1 max-w-62.5">
+                        {query.subject}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                        <Calendar className="w-3.5 h-3.5" />
+                        {new Date(query.createdAt).toLocaleDateString()}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-right">
+                      <button
+                        onClick={() => {
+                          setSelectedQuery(query);
+                          setIsDialogOpen(true);
+                        }}
+                        className="px-3 py-1.5 text-xs font-medium text-primary bg-primary/10 border border-primary/20 rounded-lg hover:bg-primary/20 transition-all"
+                      >
+                        View Details
+                      </button>
+                    </td>
+                  </tr>
+                ))
                 : !loading && (
-                    <tr>
-                      <td colSpan={4} className="px-6 py-20 text-center">
-                        <div className="flex flex-col items-center gap-3 text-muted-foreground/30">
-                          <MessageSquare className="w-12 h-12 stroke-1" />
-                          <p className="text-sm">No submissions found</p>
-                        </div>
-                      </td>
-                    </tr>
-                  )}
+                  <tr>
+                    <td colSpan={4} className="px-6 py-20 text-center">
+                      <div className="flex flex-col items-center gap-3 text-muted-foreground/30">
+                        <MessageSquare className="w-12 h-12 stroke-1" />
+                        <p className="text-sm">No submissions found</p>
+                      </div>
+                    </td>
+                  </tr>
+                )}
             </tbody>
           </table>
         </div>
@@ -217,11 +217,10 @@ const CustomerQueriesTable = () => {
                   <button
                     key={i}
                     onClick={() => setPage(i + 1)}
-                    className={`w-8 h-8 text-xs font-medium rounded-lg transition-all ${
-                      pagination.page === i + 1
-                        ? "bg-primary text-white"
-                        : "text-muted-foreground hover:text-foreground hover:bg-accent"
-                    }`}
+                    className={`w-8 h-8 text-xs font-medium rounded-lg transition-all ${pagination.page === i + 1
+                      ? "bg-primary text-white"
+                      : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                      }`}
                   >
                     {i + 1}
                   </button>
@@ -308,7 +307,7 @@ const CustomerQueriesTable = () => {
               <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
                 Message Content
               </p>
-              <div className="p-5 rounded-2xl bg-muted/50 border border-border text-sm text-foreground/70 leading-relaxed whitespace-pre-wrap min-h-[140px] shadow-inner font-light">
+              <div className="p-5 rounded-2xl bg-muted/50 border border-border text-sm text-foreground/70 leading-relaxed whitespace-pre-wrap min-h-35 shadow-inner font-light">
                 {selectedQuery?.message}
               </div>
             </div>

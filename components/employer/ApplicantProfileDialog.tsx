@@ -174,9 +174,10 @@ export default function ApplicantProfileDialog({
                         Skills
                       </span>
                       <div className="flex flex-wrap gap-2">
-                        {professional.skills
-                          .split(",")
-                          .map((skill: string, i: number) => (
+                        {(Array.isArray(professional.skills)
+                          ? professional.skills
+                          : professional.skills.split(",")
+                        ).map((skill: string, i: number) => (
                             <span
                               key={i}
                               className="px-3 py-1 bg-primary/20 text-primary rounded-full text-xs border border-primary/20"

@@ -12,8 +12,10 @@ import {
   DollarSign,
   Users,
   LogOut,
+  Bookmark,
 } from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 import { clearUser } from "@/lib/features/user/userSlice";
 import GradientBlobs from "@/components/bg/gradientblobs";
@@ -80,6 +82,8 @@ export default function UserPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [savedJobIds, setSavedJobIds] = useState<Set<string>>(new Set());
+  const [savingJobIds, setSavingJobIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -122,6 +126,87 @@ export default function UserPage() {
     };
     fetchJobs();
   }, [debouncedSearch, currentPage, user.loading, user.role]);
+
+  useEffect(() => {
+    if (user.loading || !user.id || user.role !== "USER") return;
+    const fetchSavedJobs = async () => {
+      try {
+        const tokenRes = await fetch("/api/auth/token");
+        const { token } = await tokenRes.json();
+        if (!token) return;
+
+        const res = await fetch(`/api/user/jobs/saved/${user.id}`, {
+          headers: { token },
+        });
+        const data = await res.json();
+        if (data.success) {
+          const ids = new Set<string>();
+          data.data.forEach((item: any) => ids.add(item.job.id));
+          setSavedJobIds(ids);
+        }
+      } catch (err) {
+        console.error("Failed to fetch saved jobs:", err);
+      }
+    };
+    fetchSavedJobs();
+  }, [user.id, user.loading, user.role]);
+
+  const toggleSaveJob = async (e: React.MouseEvent, jobId: string) => {
+    e.preventDefault(); // Prevent navigating to job details
+    e.stopPropagation();
+
+    if (!user.id || user.role !== "USER") {
+      router.push("/auth/signin");
+      return;
+    }
+
+    setSavingJobIds((prev) => {
+      const next = new Set(prev);
+      next.add(jobId);
+      return next;
+    });
+
+    const isSaved = savedJobIds.has(jobId);
+
+    try {
+      const tokenRes = await fetch("/api/auth/token");
+      const { token } = await tokenRes.json();
+
+      let res;
+      if (isSaved) {
+        res = await fetch(`/api/user/jobs/save/${jobId}`, {
+          method: "DELETE",
+          headers: { Authorization: token },
+        });
+      } else {
+        res = await fetch(`/api/user/jobs/save/${jobId}`, {
+          method: "POST",
+          headers: { token },
+        });
+      }
+      const data = await res.json();
+      if (data.success) {
+        setSavedJobIds((prev) => {
+          const next = new Set(prev);
+          if (isSaved) next.delete(jobId);
+          else next.add(jobId);
+          return next;
+        });
+        toast.success(isSaved ? "Job removed from saved" : "Job saved successfully");
+      } else {
+        toast.error("Failed to update saved job");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred");
+    } finally {
+      setSavingJobIds((prev) => {
+        const next = new Set(prev);
+        next.delete(jobId);
+        return next;
+      });
+    }
+  };
 
   if (user.loading) {
     return (
@@ -269,13 +354,31 @@ export default function UserPage() {
                       >
                         {job.title?.charAt(0)?.toUpperCase() ?? "J"}
                       </div>
-                      <div className="flex-1 min-w-0">
+                      <div className="flex-1 min-w-0 pr-10 relative">
                         <h3 className="font-bold text-base text-foreground group-hover:text-primary transition-colors line-clamp-1">
                           {job.title}
                         </h3>
                         <p className="text-xs text-muted-foreground mt-0.5 font-medium">
                           Full Time
                         </p>
+                        <button
+                          onClick={(e) => toggleSaveJob(e, job.id)}
+                          disabled={savingJobIds.has(job.id)}
+                          className={`absolute top-0 right-0 p-2 rounded-full transition-colors ${
+                            savedJobIds.has(job.id)
+                              ? "text-primary bg-primary/10"
+                              : "text-muted-foreground hover:bg-muted"
+                          }`}
+                        >
+                          {savingJobIds.has(job.id) ? (
+                            <Loader2 className="w-5 h-5 animate-spin" />
+                          ) : (
+                            <Bookmark
+                              className="w-5 h-5"
+                              fill={savedJobIds.has(job.id) ? "currentColor" : "none"}
+                            />
+                          )}
+                        </button>
                       </div>
                     </div>
 

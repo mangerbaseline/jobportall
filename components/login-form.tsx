@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/lib/hook/hook";
 import { setUser } from "@/lib/features/user/userSlice";
 import type { LoginUser } from "@/types";
+import { toast } from "sonner";
 import {
   Briefcase,
   Mail,
@@ -45,7 +46,9 @@ export function LoginForm({
       const data: LoginUser = await res.json();
 
       if (!res.ok) {
-        setError(typeof data.error === "string" ? data.error : "Invalid credentials");
+        const errorMsg = typeof data.error === "string" ? data.error : "Invalid credentials";
+        setError(errorMsg);
+        toast.error(errorMsg);
         return;
       }
 
@@ -58,6 +61,8 @@ export function LoginForm({
         }),
       );
 
+      toast.success("Welcome back! Signed in successfully.");
+
       if (data?.user?.role === "EMPLOYER") {
         router.refresh();
         router.push("/employer");
@@ -67,6 +72,7 @@ export function LoginForm({
       }
     } catch (err) {
       setError("Something went wrong. Please try again.");
+      toast.error("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }

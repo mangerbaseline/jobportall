@@ -16,9 +16,11 @@ import {
   EyeOff,
   ArrowRight,
   CheckCircle2,
+  FileText,
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 const signupSchema = z
   .object({
@@ -58,6 +60,8 @@ export function SignupForm({
   const [error, setError] = useState("");
   const [showPass, setShowPass] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
+  const [parsing, setParsing] = useState(false);
+  const [parsedResumeData, setParsedResumeData] = useState<any>(null);
 
   const {
     register,
@@ -84,13 +88,71 @@ export function SignupForm({
     if (error) setError("");
   };
 
+  const handleResumeAutofill = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.type !== "application/pdf") {
+      toast.error("Please upload a PDF file only.");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("File size must be under 5 MB.");
+      return;
+    }
+
+    try {
+      setParsing(true);
+      setError("");
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("/api/resume/parse", {
+        method: "POST",
+        body: formData,
+      });
+
+      const contentType = res.headers.get("content-type") || "";
+      if (!contentType.includes("application/json")) {
+        throw new Error("Server returned an unexpected response. Please try again.");
+      }
+
+      const json = await res.json();
+      if (!res.ok) {
+        throw new Error(json.error || "Failed to parse resume");
+      }
+
+      if (json.success && json.data) {
+        const { name, email, companyName } = json.data;
+        if (name) setValue("name", name, { shouldValidate: true });
+        if (email) setValue("email", email, { shouldValidate: true });
+        if (companyName && selectedRole === "EMPLOYER") {
+          setValue("companyName", companyName, { shouldValidate: true });
+        }
+
+        setParsedResumeData(json.data);
+        toast.success("Resume parsed! Profile fields pre-filled.");
+      }
+    } catch (err: any) {
+      console.error(err);
+      toast.error(err.message || "Failed to parse resume. You can still sign up manually.");
+    } finally {
+      setParsing(false);
+    }
+  };
+
   const onSubmit = async (data: SignupValues) => {
     setError("");
     try {
       const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          ...(parsedResumeData && { parsedResumeData }),
+        }),
       });
 
       const result = await res.json();
@@ -99,9 +161,12 @@ export function SignupForm({
         throw new Error(result.error || "Something went wrong");
       }
 
+      toast.success("Account created successfully! Please sign in.");
       router.push("/auth/signin");
     } catch (err: any) {
-      setError(err.message || "Something went wrong. Please try again.");
+      const errMsg = err.message || "Something went wrong. Please try again.";
+      setError(errMsg);
+      toast.error(errMsg);
     }
   };
 
@@ -211,6 +276,47 @@ export function SignupForm({
           </div>
         </button>
       </div>
+
+      {/* Optional Resume Auto-fill */}
+      {selectedRole === "USER" && (
+        <div className="mb-6 p-4 rounded-2xl border border-dashed border-primary/30 bg-primary/5 flex flex-col gap-3">
+          <div>
+            <p className="text-sm font-bold text-primary flex items-center gap-1.5">
+              <FileText className="w-4 h-4" />
+              Auto-fill Profile (Optional)
+            </p>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Upload a PDF resume to instantly pre-fill your name, email, skills, and more.
+            </p>
+          </div>
+          <div className="relative">
+            <input
+              type="file"
+              accept=".pdf"
+              id="resume-autofill"
+              className="hidden"
+              onChange={handleResumeAutofill}
+              disabled={parsing}
+            />
+            <label
+              htmlFor="resume-autofill"
+              className={cn(
+                "flex items-center justify-center gap-2 w-full h-10 rounded-xl bg-primary text-white font-semibold text-xs cursor-pointer hover:bg-primary/95 transition-colors text-center",
+                parsing && "opacity-50 cursor-not-allowed"
+              )}
+            >
+              {parsing ? (
+                <>
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  AI parsing your resume...
+                </>
+              ) : (
+                "Upload Resume (PDF)"
+              )}
+            </label>
+          </div>
+        </div>
+      )}
 
       {/* Form */}
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
